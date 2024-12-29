@@ -25,7 +25,7 @@ const Home = () => {
 
   const products = [
     {
-      title: "Wireless Earbudsssss",
+      title: "Boat Earbudssssss",
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
