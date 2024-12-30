@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import ProductCard from './Components/productCard';
+import Categories from './Components/Categories';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -106,6 +107,8 @@ const Home = () => {
           ))}
         </div>
       </div>
+
+      <Categories />  
 
       {/* Products Section */}
       <div className="max-w-7xl mx-auto px-4 py-12">
