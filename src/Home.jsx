@@ -18,7 +18,7 @@ const Home = () => {
       setCurrentSlide((prevSlide) => 
         prevSlide === slides.length - 1 ? 0 : prevSlide + 1
       );
-    }, 5000);
+    }, 6000);
 
     return () => clearInterval(timer);
   }, []);
