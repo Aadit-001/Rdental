@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import ProductCard from './productCard';
+import ProductCard from './ProductCard';
 
 // eslint-disable-next-line react/prop-types
 const ProductSection = ({ title, path, products }) => {
