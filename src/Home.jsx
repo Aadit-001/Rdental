@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import ProductCard from './Components/productCard';
 import Categories from './Components/Categories';
+import AdminPage from './Pages/adminPage';
+import ProductSection from './Components/ProductSection'; 
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -52,13 +54,14 @@ const Home = () => {
   ];
 
   return (
-    <div className="pt-16"> {/* Added padding-top to account for fixed navbar */}
+    <div className="pt-16 max-w-[1450px] mx-auto"> {/* Added padding-top to account for fixed navbar */}
+    {/* <AdminPage/>   */}
       {/* Image Carousel */}
-      <div className="relative h-[500px] w-full overflow-hidden px-8 py-8 ">
+      <div className="relative h-[500px] w-full overflow-hidden px-8 py-8 mx-auto">
         {/* Left Arrow Button */}
         <button 
           onClick={() => setCurrentSlide(currentSlide === 0 ? slides.length - 1 : currentSlide - 1)}
-          className="absolute left-16 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
+          className="absolute left-24 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -68,7 +71,7 @@ const Home = () => {
         {/* Right Arrow Button */}
         <button 
           onClick={() => setCurrentSlide(currentSlide === slides.length - 1 ? 0 : currentSlide + 1)}
-          className="absolute right-16 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
+          className="absolute right-24 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -83,7 +86,7 @@ const Home = () => {
           {slides.map((slide, index) => (
             <div
               key={index}
-              className="min-w-full px-2" // Added px-2 for gap between slides
+              className="min-w-full px-8" // Added px-2 for gap between slides
             >
               <img
                 src={slide}
@@ -110,21 +113,42 @@ const Home = () => {
 
       <Categories />  
 
-      {/* Products Section */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <h2 className="text-3xl font-bold text-gray-800 mb-8">Featured Products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((product, index) => (
-            <ProductCard
-              key={index}
-              title={product.title}
-              description={product.description}
-              price={product.price}
-              image={product.image}
-            />
-          ))}
-        </div>
-      </div>
+      {/* Products Sections */}
+      <ProductSection 
+        title="General Products" 
+        path="/products/general"
+        bgColor="bg-blue-50"
+      />
+      <ProductSection 
+        title="Restoratives" 
+        path="/products/restoratives"
+        bgColor="bg-purple-50"
+      />
+      <ProductSection 
+        title="Equipment" 
+        path="/products/equipment"
+        bgColor="bg-cyan-50"
+      />
+      <ProductSection 
+        title="Instruments" 
+        path="/products/instruments"
+        bgColor="bg-indigo-50"
+      />
+      <ProductSection 
+        title="Endodontics" 
+        path="/products/endodontics"
+        bgColor="bg-green-50"
+      />
+      <ProductSection 
+        title="Disposables" 
+        path="/products/disposables"
+        bgColor="bg-rose-50"
+      />
+      <ProductSection 
+        title="Sterilization" 
+        path="/products/sterilization"
+        bgColor="bg-sky-50"
+      />
     </div>
   );
 };

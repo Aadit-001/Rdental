@@ -18,7 +18,7 @@ const Categories = () => {
         {
           id: 3,
           name: 'Equipment',
-          image: 'https://images.unsplash.com/photo-1516973442404-e9e31360db15?q=80&w=200',
+          image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=200',
           path: '/products/equipment'
         },
         {
@@ -42,7 +42,7 @@ const Categories = () => {
         {
           id: 7,
           name: 'Disposables',
-          image: 'https://images.unsplash.com/photo-1570612861542-284f4c12e75f?q=80&w=200',
+          image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=200',
           path: '/products/disposables'
         }
       ];
