@@ -10,6 +10,7 @@ const Home = () => {
   const slides = [
     'https://images.unsplash.com/photo-1441986300917-64674bd600d8',
     'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04',
+
     'https://images.unsplash.com/photo-1441986300917-64674bd600d8',
     'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04',
     'https://images.unsplash.com/photo-1441986300917-64674bd600d8',
@@ -22,7 +23,7 @@ const Home = () => {
       setCurrentSlide((prevSlide) =>
         prevSlide === slides.length - 1 ? 0 : prevSlide + 1
       );
-    }, 5000);
+    }, 6000);
 
     return () => clearInterval(timer);
   }, []);
@@ -31,6 +32,7 @@ const Home = () => {
   //ye bhi database se uthana hoga ******************************************************************************************************************
   const categories = [
     {
+
       id: 1,
       name: 'General',
       image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=200',
