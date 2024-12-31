@@ -1,6 +1,9 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Logo from '../assets/logo.png';
+import name from '../assets/name.png';
+
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -10,9 +13,10 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold text-gray-800">
-              R-Dental
+          <div className="flex-shrink-0 flex items-center h-70">
+            <Link to="/" className="flex items-center">
+              <img src={Logo} alt="R-Dental" className="w-30 h-30" />
+              <img src={name} alt="R-Dental" className="w-30 h-30" />
             </Link>
           </div>
 
