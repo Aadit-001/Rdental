@@ -12,6 +12,7 @@ import SpecificCatagoryPage from './Pages/specificCatagoryPage.jsx'
 import ProductDetailPage from './Pages/ProductDetailPage.jsx'
 import Cart from './Pages/Cart.jsx'
 import WishList from './Pages/WishList.jsx'
+import ContactUs from './Components/contactUs.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/products/:category/:id" element={<ProductDetailPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<WishList />} />
+          <Route path="/contactUs" element={<ContactUs />} />
         </Route>
       </Routes>
     </BrowserRouter>
