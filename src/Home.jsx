@@ -8,13 +8,12 @@ const Home = () => {
 
   //ye bhi database se uthana hoga ******************************************************************************************************************
   const slides = [
-    'https://images.unsplash.com/photo-1441986300917-64674bd600d8',
-    'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04',
-
-    'https://images.unsplash.com/photo-1441986300917-64674bd600d8',
-    'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04',
-    'https://images.unsplash.com/photo-1441986300917-64674bd600d8',
-    'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04'
+    'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80', // Dental office
+    'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80', // Dental equipment
+    'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80', // Dental tools
+    'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80', // Dental chair
+    'https://images.unsplash.com/photo-1585647347483-22b66260dfff?q=80', // Replacing broken dental hygiene image
+    'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80'  // Dental examination
   ];
   //**************************************************************************************************************************************************** */
 
@@ -23,7 +22,7 @@ const Home = () => {
       setCurrentSlide((prevSlide) =>
         prevSlide === slides.length - 1 ? 0 : prevSlide + 1
       );
-    }, 6000);
+    }, 3000);
 
     return () => clearInterval(timer);
   }, []);
