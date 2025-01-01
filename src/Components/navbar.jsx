@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../assets/logo.png';
+import Logoo from '../assets/logoo.png';
 import name from '../assets/name.png';
 
 
@@ -10,18 +9,18 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md fixed w-full top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 flex items-center h-70">
-            <Link to="/" className="flex items-center">
-              <img src={Logo} alt="R-Dental" className="w-30 h-30" />
-              <img src={name} alt="R-Dental" className="w-30 h-30" />
+          <div className="flex-shrink-0 flex items-center">
+            <Link to="/" className="flex items-center space-x-0 pl-3">
+              <img src={Logoo} alt="R-Dental" className="h-14 w-14" />
+              <img src={name} alt="R-Dental" className="h-10 w-auto" />
             </Link>
           </div>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-lg mx-8">
+          <div className="flex-1 max-w-4xl mx-8">
             <div className="relative">
               <input
                 type="text"
@@ -49,7 +48,7 @@ const Navbar = () => {
           </div>
 
           {/* Navigation Items */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 pr-3">
             <Link to="/wishlist" className="text-gray-600 hover:text-gray-800">
               <div className="relative">
                 <svg
