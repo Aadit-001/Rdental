@@ -21,7 +21,7 @@ const Footer = () => {
               <li><Link to="/" className="text-gray-400 hover:text-white">Home</Link></li>
               <li><Link to="/products" className="text-gray-400 hover:text-white">Products</Link></li>
               <li><Link to="/aboutUs" className="text-gray-400 hover:text-white">About Us</Link></li>
-              <li><Link to="/contact" className="text-gray-400 hover:text-white">Contact</Link></li>
+              <li><Link to="/contactUs" className="text-gray-400 hover:text-white">Contact Us</Link></li>
             </ul>
           </div>
 
@@ -29,7 +29,7 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Product Categories</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white">Dental Instruments</a></li>
+              <li><a href="" className="text-gray-400 hover:text-white">Dental Instruments</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white">Orthodontic Supplies</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white">Dental Materials</a></li>
               <li><a href="#" className="text-gray-400 hover:text-white">Infection Control</a></li>

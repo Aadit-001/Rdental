@@ -176,7 +176,8 @@ const AboutUs = () => {
 
       {/* Services Section */}
       <div className="relative max-w-6xl mx-auto py-16 mb-16">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(134,239,172,0.3),transparent_70%)]"></div>
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
           <h2 className="text-3xl font-bold text-center mb-12">Our Comprehensive Services</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {[
@@ -202,7 +203,7 @@ const AboutUs = () => {
               >
                 <div className="relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                   {/* Front */}
-                  <div className="absolute inset-0 [backface-visibility:hidden]">
+                  <div className="absolute inset-0 [backface-visibility:hidden] border-2 border-gray-100">
                     <div className="h-full w-full bg-white rounded-xl border-2 border-gray-100 shadow-md
                                   flex items-center justify-center p-4 text-center">
                       <span className="text-sm font-medium text-gray-700">{title}</span>
