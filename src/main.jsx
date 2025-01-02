@@ -11,6 +11,7 @@ import ProductDetailPage from './Pages/ProductDetailPage.jsx'
 import Cart from './Pages/Cart.jsx'
 import WishList from './Pages/WishList.jsx'
 import ContactUs from './Components/contactUs.jsx'
+import Profile from './Pages/profile.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<WishList />} />
           <Route path="/contactUs" element={<ContactUs />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>
