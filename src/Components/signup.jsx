@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Logoo from '../assets/logoo.png';
 import { motion } from 'framer-motion';
 
-const Signup = () => {
+const Signup = ({setShowSignUp , setShowSignIn}) => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -24,16 +24,29 @@ const Signup = () => {
     console.log(formData);
   };
 
+  const handleClose = () => {
+    setShowSignUp(false);
+  };
+
   return (
     <div className='z-50 fixed top-0 min-h-screen flex justify-center items-center bg-black/50 h-screen w-screen backdrop-blur-sm'>
-
-    <div className="flex absolute justify-center items-center min-h-screen z-50">
+    <div className="flex justify-center items-center min-h-screen relative">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-gradient-to-br from-white via-white to-green-50 rounded-lg shadow-lg overflow-hidden w-[400px] max-w-full hover:shadow-xl transition-shadow duration-300"
+        className="bg-gradient-to-br from-white via-white to-green-50 rounded-lg shadow-lg overflow-hidden w-[400px] max-w-full hover:shadow-xl transition-shadow duration-300 relative"
       >
+        {/* Close Button */}
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
         <div className="p-10">
           <motion.form 
             onSubmit={handleSubmit} 
@@ -114,6 +127,18 @@ const Signup = () => {
               <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
               Sign up with Google
             </motion.button>
+
+            {/* Already have an account Link */}
+            <div className="text-center mt-4">
+              <span className="text-gray-600">Already have an account? </span>
+              <motion.a
+                onClick={() => {setShowSignIn(true); setShowSignUp(false)}}
+                className="text-green-600 hover:text-green-700 font-medium cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+              >
+                Sign In
+              </motion.a>
+            </div>
           </motion.form>
         </div>
       </motion.div>
