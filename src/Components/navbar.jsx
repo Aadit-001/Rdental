@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Logoo from '../assets/logoo.png';
 import name from '../assets/name.png';
 
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const location = useLocation();
 
   return (
     <nav className="bg-white shadow-md fixed w-full top-0 z-50">
@@ -52,8 +53,8 @@ const Navbar = () => {
             <Link to="/wishlist" className="text-gray-600 hover:text-gray-800">
               <div className="relative">
                 <svg
-                  className="h-6 w-6"
-                  fill="none"
+                  className={`h-6 w-6 ${location.pathname === '/wishlist' ? 'text-green-500 fill-current' : ''}`}
+                  fill={location.pathname === '/wishlist' ? 'currentColor' : 'none'}
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -108,4 +109,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
