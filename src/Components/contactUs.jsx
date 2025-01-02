@@ -22,14 +22,14 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-16 px-4 sm:px-6 lg:px-8 pt-24">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)] py-16 px-4 sm:px-6 lg:px-8 pt-24">
       <div className="max-w-7xl mx-auto">
         {/* Hero Section with floating elements */}
         <div className="relative text-center mb-16">
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-72 h-72 bg-blue-100 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
+            <div className="w-72 h-72 bg-green-100 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
           </div>
-          <h1 className="relative text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+          <h1 className="relative text-5xl font-bold bg-gradient-to-r from-green-600 to-purple-600 bg-clip-text text-transparent mb-4">
             Let's Connect
           </h1>
           <p className="relative text-xl text-gray-600 max-w-2xl mx-auto">
@@ -42,9 +42,9 @@ const ContactUs = () => {
           {/* Contact Info Cards */}
           <div className="lg:col-span-5 space-y-6">
             {/* Phone Card */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:border-blue-200">
+            <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-200">
               <div className="flex items-center space-x-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:from-purple-500 group-hover:to-blue-500 transition-all duration-300">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-emerald-400 transition-all duration-300">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 
                     0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -52,15 +52,15 @@ const ContactUs = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">Give us a call</h3>
-                  <p className="text-gray-600 hover:text-blue-600 transition-colors">+1 (555) 123-4567</p>
+                  <p className="text-gray-600 hover:text-green-600 transition-colors">+1 (555) 123-4567</p>
                 </div>
               </div>
             </div>
 
             {/* Location Card */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:border-blue-200">
+            <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-200">
               <div className="flex items-center space-x-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:from-purple-500 group-hover:to-blue-500 transition-all duration-300">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-emerald-400 transition-all duration-300">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -68,15 +68,15 @@ const ContactUs = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">Visit us</h3>
-                  <p className="text-gray-600">Shop no.16, 1st floor, Veer Hanuman Nagar Rd, opp.Rbi quarter, Kandarpada, Dahisar West, Mumbai, Maharashtra 400068</p>
+                  <p className="text-gray-600">Shop no.16, 1st floor, Veer Hanuman Nagar Rd, opp.RBI quarter, Kandarpada, Dahisar West, Mumbai, Maharashtra 400068</p>
                 </div>
               </div>
             </div>
 
             {/* Business Hours Card */}
-            <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:border-blue-200">
+            <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-200">
               <div className="flex items-center space-x-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:from-purple-500 group-hover:to-blue-500 transition-all duration-300">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-emerald-400 transition-all duration-300">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -103,15 +103,15 @@ const ContactUs = () => {
                       value={formData.name}
                       onChange={handleChange}
                       className="peer w-full border-b-2 border-gray-300 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-gray-700
-                       outline outline-0 transition-all focus:border-blue-500 focus:outline-0"
+                       outline outline-0 transition-all focus:border-green-500 focus:outline-0"
                       placeholder=" "
                       required
                     />
                     <label className="after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-sm
                      font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 
-                     after:border-b-2 after:border-blue-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm 
-                     peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-blue-500
-                      peer-focus:after:scale-x-100 peer-focus:after:border-blue-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-gray-500">
+                     after:border-b-2 after:border-green-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm 
+                     peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-green-500
+                      peer-focus:after:scale-x-100 peer-focus:after:border-green-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-gray-500">
                       Name
                     </label>
                   </div>
@@ -124,15 +124,15 @@ const ContactUs = () => {
                       value={formData.email}
                       onChange={handleChange}
                       className="peer w-full border-b-2 border-gray-300 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal 
-                      text-gray-700 outline outline-0 transition-all focus:border-blue-500 focus:outline-0"
+                      text-gray-700 outline outline-0 transition-all focus:border-green-500 focus:outline-0"
                       placeholder=" "
                       required
                     />
                     <label className="after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none
                      text-sm font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full 
-                     after:scale-x-0 after:border-b-2 after:border-blue-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm 
+                     after:scale-x-0 after:border-b-2 after:border-green-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm 
                      peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-
-                     blue-500 peer-focus:after:scale-x-100 peer-focus:after:border-blue-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-gray-500">
+                     green-500 peer-focus:after:scale-x-100 peer-focus:after:border-green-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-gray-500">
                       Email
                     </label>
                   </div>
@@ -146,7 +146,7 @@ const ContactUs = () => {
                     value={formData.message}
                     onChange={handleChange}
                     className="peer w-full border-2 border-gray-300 rounded-lg bg-transparent p-4 font-sans text-sm font-normal 
-                    text-gray-700 outline outline-0 transition-all focus:border-blue-500 focus:outline-0"
+                    text-gray-700 outline outline-0 transition-all focus:border-green-500 focus:outline-0"
                     placeholder="Your message..."
                     required
                   />
@@ -154,8 +154,8 @@ const ContactUs = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-600 hover:to-blue-600 text-white rounded-xl py-4 font-medium text-sm 
-                  hover:opacity-90 transform hover:scale-[1.02] transition-all duration-500 hover:shadow-[0_0_15px_rgba(59,130,246,0.5)] hover:shadow-blue-400/50"
+                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-teal-600 hover:to-emerald-500 text-white rounded-xl py-4 font-medium text-sm 
+                  hover:opacity-90 transform hover:scale-[1.02] transition-all duration-500 hover:shadow-[0_0_15px_rgba(16,185,129,0.5)] hover:shadow-emerald-400/50"
                 >
                   Send Message
                 </button>
