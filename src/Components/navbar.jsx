@@ -1,11 +1,17 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Logoo from '../assets/logoo.png';
 import name from '../assets/name.png';
 
 
-const Navbar = () => {
+const Navbar = ({setShowSignIn}) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const location = useLocation();
+  // const [showSignIn, setShowSignIn] = useState(false);
+
+  const handleSignInClick = () => {
+    setShowSignIn(true);
+  };
 
   return (
     <nav className="bg-white shadow-md fixed w-full top-0 z-50">
@@ -20,7 +26,7 @@ const Navbar = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-4xl mx-8">
+          <div className="flex-1 max-w-3xl mx-8">
             <div className="relative">
               <input
                 type="text"
@@ -47,13 +53,23 @@ const Navbar = () => {
             </div>
           </div>
 
+          {/* Sign In Button */}
+          {/* <Link to="/login"> */}
+            <button className="px-6 py-2  font-medium text-green-600 border-2 border-green-500 rounded-lg 
+              bg-gradient-to-r from-transparent to-transparent hover:from-green-500 hover:to-green-600 
+              hover:text-white transition-all duration-300 ease-in-out
+              bg-[length:200%_100%] bg-right hover:bg-left" onClick={handleSignInClick}>
+              Sign In
+            </button>
+          {/* </Link> */}
+
           {/* Navigation Items */}
           <div className="flex items-center space-x-4 pr-3">
             <Link to="/wishlist" className="text-gray-600 hover:text-gray-800">
               <div className="relative">
                 <svg
-                  className="h-6 w-6"
-                  fill="none"
+                  className={`h-6 w-6 ${location.pathname === '/wishlist' ? 'text-green-500 fill-current' : ''}`}
+                  fill={location.pathname === '/wishlist' ? 'currentColor' : 'none'}
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -108,4 +124,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
