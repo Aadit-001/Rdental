@@ -1,18 +1,67 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Login from '../Components/login';
-import Signup from '../Components/signup';
-
+import WishlistProductCard from '../Components/WishlistProductCard';
+import ProductDetailPage from './ProductDetailPage';
 function WishList() {
-  const [wishlistItems, setWishlistItems] = useState(() => {
-    const savedItems = localStorage.getItem('wishlistItems');
-    return savedItems ? JSON.parse(savedItems) : [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem('wishlistItems', JSON.stringify(wishlistItems));
-  }, [wishlistItems]);
+  const [wishlistItems, setWishlistItems] = useState([
+    {
+      id: 1,
+      title: "Boat Earbudssssss",
+      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
+      price: 99.99,
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+    },
+    {
+      id: 2,
+      title: "Boat Earbudssssss",
+      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
+      price: 99.99,
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+    },
+    {
+      id: 3,
+      title: "Boat Earbudssssss",
+      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
+      price: 99.99,
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+    },
+    {
+      id: 4,
+      title: "Boat Earbudssssss",
+      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
+      price: 99.99,
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+    },
+    {
+      id: 5,
+      title: "Boat Earbudssssss",
+      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
+      price: 99.99,
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+    },
+    {
+      id: 6,
+      title: "Boat Earbudssssss",
+      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
+      price: 99.99,
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+    },
+    {
+      id: 7,
+      title: "Boat Earbudssssss",
+      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
+      price: 99.99,
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+    },
+    {
+      id: 8,
+      title: "Boat Earbudssssss",
+      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
+      price: 99.99,
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+    },
+  ]);
 
   // Function to remove item from wishlist
   const removeFromWishlist = (productId) => {
@@ -20,8 +69,14 @@ function WishList() {
     setWishlistItems(updatedWishlist);
   };
 
+  const handleRemove = (productId) => {
+    removeFromWishlist(productId);
+  };
+
+
   return (
     <>
+    <ProductDetailPage />
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -69,50 +124,19 @@ function WishList() {
             </Link>
           </motion.div>
         ) : (
-          <motion.div 
-            layout
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
+          <div>
             {wishlistItems.map((item) => (
-              <motion.div
+              <WishlistProductCard
                 key={item.id}
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className="relative">
-                  <img 
-                    src={item.image} 
-                    alt={item.title}
-                    className="w-full h-48 object-cover rounded-md"
-                  />
-                  <button 
-                    className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-red-50 transition-colors duration-300"
-                    onClick={() => removeFromWishlist(item.id)}
-                  >
-                    <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </button>
-                </div>
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold">{item.title}</h3>
-                  <p className="text-gray-600 mt-1">{item.description}</p>
-                  <div className="flex justify-between items-center mt-4">
-                    <span className="text-xl font-bold">${item.price}</span>
-                    <button 
-                      className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-                      onClick={() => handleAddToCart(item)}
-                    >
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
+                title={item.title}
+                description={item.description}
+                price={item.price}
+                image={item.image}
+                onRemove={() => handleRemove(item.id)}
+                
+              />
             ))}
-          </motion.div>
+          </div>
         )}
       </div>
     </motion.div>
