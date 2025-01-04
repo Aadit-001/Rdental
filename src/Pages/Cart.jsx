@@ -2,8 +2,35 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import EmptyCart from "../Components/emptyCart";
 import HorizontalProductCard from "../Components/horizontalProductCard";
+import { toast,ToastContainer } from 'react-toastify';
 
 const Cart = () => {
+  const itemRemoved = () => {
+    toast.success(' Item removed Successfully!', {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+  };
+
+  const quantityUpdated = () => {
+    toast.success(' Quantity updated Successfully!', {
+      position: "bottom-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+  };
+
   // Sample cart data - replace with actual cart state management
   const [cartItems, setCartItems] = useState([
     {
@@ -41,10 +68,12 @@ const Cart = () => {
         item.id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
       )
     );
+    quantityUpdated();
   };
 
   const removeItem = (id) => {
     setCartItems(cartItems.filter((item) => item.id !== id));
+    itemRemoved();
   };
 
   const subtotal = cartItems.reduce(
@@ -56,6 +85,7 @@ const Cart = () => {
   const total = subtotal + shipping + tax;
 
   return (
+    <>
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)] py-16 px-4 sm:px-6 lg:px-8 pt-24">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
@@ -183,6 +213,8 @@ const Cart = () => {
         )}
       </div>
     </div>
+    <ToastContainer />
+    </>
   );
 };
 

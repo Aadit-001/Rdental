@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import Logoo from '../assets/logoo.png';
 import { motion } from 'framer-motion';
 
-const Signup = ({setShowSignUp , setShowSignIn}) => {
+const Signup = ({ setShowSignUp, setShowSignIn }) => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',

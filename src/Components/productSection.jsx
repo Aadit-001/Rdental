@@ -41,6 +41,7 @@ const ProductSection = ({ title, path, products }) => {
                             description={product.description}
                             price={product.price}
                             image={product.image}
+                            catagory={title}
                         />
                     </div>
                 ))}
