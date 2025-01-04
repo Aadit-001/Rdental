@@ -13,13 +13,26 @@ const Navbar = ({setShowSignIn}) => {
     setShowSignIn(true);
   };
 
+  const handleLogoClick = () => {
+    if (location.pathname !== '/') {
+      // If we're not on the home page, navigate to it first
+      window.location.href = '/';
+    } else {
+      // If we're already on the home page, just scroll to top
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <nav className="bg-white shadow-md fixed w-full top-0 z-50">
       <div className="w-full px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="flex items-center space-x-0 pl-3">
+            <Link to="/" className="flex items-center space-x-0 pl-3" onClick={handleLogoClick}>
               <img src={Logoo} alt="R-Dental" className="h-14 w-14" />
               <img src={name} alt="R-Dental" className="h-10 w-auto" />
             </Link>

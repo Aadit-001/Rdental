@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const EmptyCart = () => {
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)] flex items-center justify-center px-4 py-24">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100/80 to-gray-200/70 flex items-center justify-center px-4 py-24">
       <div className="text-center">
         <motion.div
           initial={{ scale: 0 }}
@@ -12,7 +12,7 @@ const EmptyCart = () => {
           className="mb-8"
         >
           <svg 
-            className="w-40 h-40 mx-auto text-gray-400"
+            className="w-40 h-40 mx-auto relative"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -20,13 +20,60 @@ const EmptyCart = () => {
             <motion.path
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
+              transition={{ 
+                duration: 3,
+                ease: "easeInOut",
+                repeat: Infinity,
+              }}
               d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="1"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="text-gray-400"
             />
+            <motion.path
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ 
+                duration: 3,
+                ease: "easeInOut",
+                repeat: Infinity,
+              }}
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+              stroke="url(#gradient)"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="absolute inset-0"
+              style={{ filter: 'blur(0.5px)' }}
+            />
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <motion.stop
+                  offset="0%"
+                  animate={{
+                    stopColor: ["#14B8A6", "#10B981", "#14B8A6"],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                />
+                <motion.stop
+                  offset="100%"
+                  animate={{
+                    stopColor: ["#10B981", "#14B8A6", "#10B981"],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }}
+                />
+              </linearGradient>
+            </defs>
           </svg>
         </motion.div>
 
@@ -34,7 +81,7 @@ const EmptyCart = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-3xl font-bold text-gray-900 mb-4"
+          className="text-3xl font-bold text-blue-900 mb-4"
         >
           Your Cart is Empty
         </motion.h2>
