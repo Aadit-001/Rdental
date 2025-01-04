@@ -175,49 +175,43 @@ const AboutUs = () => {
       </div>
 
       {/* Services Section */}
-      <div className="relative max-w-6xl mx-auto py-16 mb-16">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(134,239,172,0.3),transparent_70%)]"></div>
-        <div className="max-w-6xl mx-auto px-6 relative z-10">
+      /*
+      <div className="relative max-w-6xl mx-auto h-auto bg-gray-50 py-16 mb-16">
+        <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12">Our Comprehensive Services</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              "Prime Dental Products",
-              "GC",
-              "Ivoclar - Vivadent",
-              "Shofu",
-              "GDC",
-              "Mani - Japan",
-              "Dentsply",
-              "SS White Products",
-              "Prevest Denpro",
-              "ORO Products",
-              "Oracraft",
-              "3M",
-              "MAARC",
-              "API Instruments",
-              "Waldent",
-            ].map((title, index) => (
+              { title: "Prime Dental Products" },
+              { title: "GC", desc: "Innovating braces and orthodontic accessories for confident smiles." },
+              { title: "Ivoclar - Vivadent", desc: "Pioneering diagnostic tools for superior dental care." },
+              { title: "Shofu", desc: "Delivering premium materials for dental prosthetics and restorations." },
+              { title: "GDC", desc: "Crafting high-precision tools for efficient dental procedures." },
+              { title: "Mani - Japan", desc: "Leading in root canal treatment technologies and solutions." },
+              { title: "Dentsply", desc: "Trusted for cements, composites, and reliable filling materials." },
+              { title: "SS White Products", desc: "Redefining comfort with ergonomic dental chairs." },
+              { title: "Prevest Denpro", desc: "Illuminating clinics with cutting-edge operatory lighting." },
+              { title: "ORO Products", desc: "Ensuring hygiene with effective sterilization solutions." },
+              { title: "Oracraft", desc: "Specialized in fluoride treatments and dental sealants." },
+              { title: "3M", desc: "Offering durable crown and bridge restorative materials." },
+              { title: "MAARC", desc: "Revolutionizing dentistry with laser tools and accessories." },
+              { title: "API Instruments", desc: "Supplying essential lab equipment for dental excellence." },
+              { title: "Waldent", desc: "Enhancing smiles with cosmetic dentistry essentials." },
+            ].map((service, index) => (
               <div 
                 key={index}
-                className="group [perspective:1000px] h-32"
+                className="bg-white rounded-lg overflow-hidden shadow-md group hover:shadow-xl transition-all duration-300"
               >
-                <div className="relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
-                  {/* Front */}
-                  <div className="absolute inset-0 [backface-visibility:hidden] border-2 border-gray-100">
-                    <div className="h-full w-full bg-white rounded-xl border-2 border-gray-100 shadow-md
-                                  flex items-center justify-center p-4 text-center">
-                      <span className="text-sm font-medium text-gray-700">{title}</span>
-                    </div>
+                <div className="h-2 bg-gradient-to-r from-green-400 to-blue-500"></div>
+                <div className="p-6">
+                  <div className="relative">
+                    <h3 className="text-xl font-semibold mb-3 text-gray-800 group-hover:text-green-500 transition-colors duration-300">
+                      {service.title}
+                    </h3>
+                    <div className="absolute -bottom-2 left-0 w-12 h-0.5 bg-green-500 group-hover:w-full transition-all duration-300"></div>
                   </div>
-                  
-                  {/* Back */}
-                  <div className="absolute inset-0 [transform:rotateY(180deg)] [backface-visibility:hidden]">
-                    <div className="h-full w-full bg-gradient-to-br from-green-400 to-blue-500 rounded-xl
-                                  flex items-center justify-center p-4 text-center">
-                      <span className="text-sm font-medium text-white">{title}</span>
-                    </div>
-                  </div>
+                  <p className="text-gray-600 mt-4">{service.desc}</p>
                 </div>
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
               </div>
             ))}
           </div>

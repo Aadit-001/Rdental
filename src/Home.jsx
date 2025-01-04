@@ -480,6 +480,7 @@ const Home = () => {
         </div>
       </div>
 
+
       {/* Products Sections */}
       <div className="flex flex-col gap-4 bg-green-100 ml-10 mb-10 mr-10 rounded-3xl">
         {
