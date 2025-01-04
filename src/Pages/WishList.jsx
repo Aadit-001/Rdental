@@ -1,9 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import WishlistProductCard from '../Components/WishlistProductCard';
-import ProductDetailPage from './ProductDetailPage';
+import { toast,ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+
 function WishList() {
+
+  const notify = () => {
+    toast.success(' Item removed Successfully!', {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+  };
+
   const [wishlistItems, setWishlistItems] = useState([
     {
       id: 1,
@@ -67,6 +83,7 @@ function WishList() {
   const removeFromWishlist = (productId) => {
     const updatedWishlist = wishlistItems.filter(item => item.id !== productId);
     setWishlistItems(updatedWishlist);
+    notify();
   };
 
   const handleRemove = (productId) => {
@@ -76,7 +93,6 @@ function WishList() {
 
   return (
     <>
-    <ProductDetailPage />
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -140,6 +156,7 @@ function WishList() {
         )}
       </div>
     </motion.div>
+    <ToastContainer />
     </>
   );
 }

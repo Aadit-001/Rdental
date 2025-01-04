@@ -1,11 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ProductCard = ({ title, description, price, image }) => {
+const ProductCard = ({ title, description, price, image , catagory}) => {
   const [isLiked, setIsLiked] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <div className="w-64 h-96 rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 bg-white">
+    <div className="w-64 h-96 rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 bg-white
+    hover:cursor-pointer hover:shadow-xl hover:shadow-green-500 hover:border-2 hover:border-green-500"
+      onClick={() => navigate(`/products/${catagory}/${title}`)}
+    >
       <div className="relative h-48">
         <img 
           src={image} 
