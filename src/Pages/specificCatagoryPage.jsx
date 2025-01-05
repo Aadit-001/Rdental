@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../Components/ProductCard';
 import endodentics from '../assets/Endodentics.jpg';
+import equipment from '../assets/equipments.jpg';
 
 
 const SpecificCategoryPage = () => {
@@ -353,7 +354,7 @@ const SpecificCategoryPage = () => {
           {/* Right Content - 80% */}
           <div className="w-4/5">
             {/* Products Grid - Height matched with left poster */}
-            <div className="h-[calc(100vh-40px)] overflow-y-auto">
+            <div className="h-[calc(120vh)] overflow-y-auto">
               {/* Products Count */}
               <div className="mb-6 flex justify-between items-center bg-gray-50 py-4">
                 <h2 className="text-2xl font-semibold text-gray-800">
