@@ -341,7 +341,7 @@ const SpecificCategoryPage = () => {
                 alt="Category promotion"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70 flex items-end">
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/10 flex items-end ">
                 <div className="p-4 text-white">
                   <h3 className="font-bold text-lg">Special Offer</h3>
                   <p className="text-sm">Up to 20% off on selected items</p>
@@ -352,8 +352,8 @@ const SpecificCategoryPage = () => {
 
           {/* Right Content - 80% */}
           <div className="w-4/5">
-            {/* Products Grid - Height matched with left poster */}
-            <div className="h-[calc(100vh-40px)] overflow-y-auto">
+            {/* Products Grid - Fixed heights for different screen sizes */}
+            <div className="h-[calc(120vh)] overflow-y-auto">
               {/* Products Count */}
               <div className="mb-6 flex justify-between items-center bg-gray-50 py-4">
                 <h2 className="text-2xl font-semibold text-gray-800">
