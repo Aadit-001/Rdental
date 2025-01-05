@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -11,13 +11,13 @@ const Profile = () => {
   });
 
   return (
-    <div className="min-h-screen pt-1 h-screen w-screen bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)]">
+    <div className=" pt-1 mr-6  w-[20vw] bg-black/1 fixed top-0 right-0 z-40 ">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="p-32 mx-auto"
+        className="pt-20 mx-auto"
       >
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden h-[100%] w-[99%]">
+        <div className="bg-gray-100 rounded-2xl shadow-xl overflow-hidden h-[100%] w-[99%]">
           <div className="bg-gradient-to-r from-green-600 to-green-700 p-6">
             <div className="flex items-center space-x-6">
               <motion.img
@@ -83,4 +83,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
