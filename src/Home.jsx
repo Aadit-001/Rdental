@@ -5,17 +5,25 @@ import ProductCard from './Components/ProductCard';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [restorativeSlide, setRestorativeSlide] = useState(0);
 
   //ye bhi database se uthana hoga ******************************************************************************************************************
   const slides = [
     'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80', // Dental office
-    'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80', // Dental equipment
+    'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80', // Dental equipment
     'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80', // Dental tools
     'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80', // Dental chair
-    'https://images.unsplash.com/photo-1585647347483-22b66260dfff?q=80', // Replacing broken dental hygiene image
+    'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80', // Replacing broken dental hygiene image
     'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80'  // Dental examination
   ];
   //**************************************************************************************************************************************************** */
+
+  const restorativeImages = [
+    'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80', // Dental equipment
+    'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80', // Dental office
+    'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80',  // Dental examination
+    'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?q=80', // Dental tools
+  ];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -27,11 +35,19 @@ const Home = () => {
     return () => clearInterval(timer);
   });
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRestorativeSlide((prevSlide) =>
+        prevSlide === restorativeImages.length - 1 ? 0 : prevSlide + 1
+      );
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   //ye bhi database se uthana hoga ******************************************************************************************************************
   const categories = [
     {
-
       id: 1,
       name: 'General',
       image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=200',
@@ -371,35 +387,14 @@ const Home = () => {
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    {
-      id: 6,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-      price: 99.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    {
-      id: 7,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-      price: 99.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    {
-      id: 8,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-      price: 99.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
     }
-  ]
+]
   //**************************************************************************************************************************************************** */
 
   return (
-    <div className="pt-20 max-w-[1480px] mx-auto"> {/* Added padding-top to account for fixed navbar */}
-      {/* Image Carousel */}
-      <div className="relative h-[500px] w-full overflow-hidden px-2 py-2 mx-auto ">
+    <div className="pt-20 max-w-[1480px] mx-auto ">
+      {/* Image Carousel Section (existing) */}
+      <div className="relative h-[500px] w-full overflow-hidden px-2 py-2 mx-auto">
         {/* Left Arrow Button */}
         <button
           onClick={() => setCurrentSlide(currentSlide === 0 ? slides.length - 1 : currentSlide - 1)}
@@ -452,50 +447,315 @@ const Home = () => {
         </div>
       </div>
 
+      
 
-      {/* Categories Section */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-3xl font-bold mb-6 text-gray-900 flex justify-center">Categories</div>
-        <div className="flex flex-row justify-between gap-4 overflow-x-auto">
-          {categories.map((category) => (
-            <Categories key={category.id} path={category.path} image={category.image} name={category.name} />
-          ))}
-        </div>
-      </div>
+          
+      
 
       {/*Best Seller Section */}
-      <div className="flex flex-col gap-4 bg-gray-100 ml-10 mb-10 mr-10 mt-10 rounded-3xl p-10">
+      <div className="flex flex-col gap-4 bg-gray-100 mx-4 sm:mx-10 mt-10 mb-10 rounded-3xl p-4 sm:p-10">
         <div className="text-3xl font-bold mb-6 text-gray-900">Best Sellers</div>
-        <div className="flex overflow-x-auto space-x-8 pb-4 pt-6 scrollbar-hide">
-              {bestSellers.map((product) => (
-                <div key={product.id} className="flex-shrink-0 w-[250px]">
-                   <ProductCard
-                    title={product.title}
-                    description={product.description}
-                    price={product.price}
-                    image={product.image}
-                  />
-                </div>
-              ))}
+        <div className="relative w-full">
+          <div className="flex overflow-x-auto space-x-4 pb-6 pt-4 pl-4 pr-4 scrollbar-hide">
+            {bestSellers.map((product) => (
+              <div key={product.id} className="flex-shrink-0 w-[250px]">
+                <ProductCard
+                  title={product.title}
+                  description={product.description}
+                  price={product.price}
+                  image={product.image}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
+{/* Featured Categories Grid - Thinner Layout */}
+<div className="px-4 py-8">
+  <h2 className="text-2xl font-bold mb-6 text-gray-900">Shop By Category</h2>
+  
+  {/* Main Grid */}
+  <div className="grid grid-cols-12 gap-4">
+    {/* Large Left Panel - Reduced height from 400px to 300px */}
+    <div className="col-span-4 grid gap-4">
+      {/* Top Tile - General */}
+      <div className="relative group h-[300px] overflow-hidden rounded-2xl">
+        <img 
+          src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99" 
+          alt="General Dentistry"
+          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+          <div className="absolute bottom-6 left-6 text-white">
+            <span className="text-sm font-medium bg-blue-500 px-3 py-1 rounded-full">Most Popular</span>
+            <h3 className="text-2xl font-bold mt-2">General Dentistry</h3>
+            <p className="text-sm mt-1 mb-3 text-gray-200">Essential equipment & supplies</p>
+            <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors">
+              Shop Collection
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Tile - Disposables - Reduced height from 200px to 150px */}
+      <div className="relative group h-[150px] overflow-hidden rounded-2xl">
+        <img 
+          src="https://images.unsplash.com/photo-1583947581924-860bda6a26df" 
+          alt="Disposables"
+          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+          <div className="absolute bottom-6 left-6 text-white">
+            <h3 className="text-xl font-bold">Disposables</h3>
+            <p className="text-sm mt-1">Essential daily supplies</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Center Stack */}
+    <div className="col-span-5 grid gap-4">
+      {/* Top Row - Reduced height from 290px to 220px */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* Equipment */}
+        <div className="relative group h-[220px] overflow-hidden rounded-2xl">
+          <img 
+            src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5" 
+            alt="Equipment"
+            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+            <div className="absolute bottom-6 left-6 text-white">
+              <h3 className="text-lg font-bold">Equipment</h3>
+              <p className="text-sm mt-1">Modern tech</p>
+            </div>
+          </div>
+        </div>
+        {/* Restoratives */}
+        <div className="relative group h-[220px] overflow-hidden rounded-2xl">
+          <img 
+            src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe" 
+            alt="Restoratives"
+            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+            <div className="absolute bottom-6 left-6 text-white">
+              <h3 className="text-lg font-bold">Restoratives</h3>
+              <p className="text-sm mt-1">Quality materials</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom - Wide Endodontics - Reduced height from 310px to 230px */}
+      <div className="relative group h-[230px] overflow-hidden rounded-2xl">
+        <img 
+          src="https://images.unsplash.com/photo-1628177142898-93e36e4e3a50" 
+          alt="Endodontics"
+          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+          <div className="absolute bottom-6 left-6 text-white">
+            <span className="text-sm font-medium bg-green-500 px-3 py-1 rounded-full">New Arrivals</span>
+            <h3 className="text-2xl font-bold mt-2">Endodontics</h3>
+            <p className="text-sm mt-1 mb-3">Specialized tools & materials</p>
+            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+              Explore →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Right Stack */}
+    <div className="col-span-3 grid gap-4">
+      {/* Instruments - Reduced height from 190px to 150px */}
+      <div className="relative group h-[150px] overflow-hidden rounded-2xl">
+        <img 
+          src="https://images.unsplash.com/photo-1571772996211-2f02c9727629" 
+          alt="Instruments"
+          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+          <div className="absolute bottom-6 left-6 text-white">
+            <h3 className="text-lg font-bold">Instruments</h3>
+            <p className="text-sm mt-1">Precision tools</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Sterilization - Reduced height from 410px to 300px */}
+      <div className="relative group h-[300px] overflow-hidden rounded-2xl">
+        <img 
+          src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95" 
+          alt="Sterilization"
+          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+          <div className="absolute bottom-6 left-6 text-white">
+            <span className="text-sm font-medium bg-purple-500 px-3 py-1 rounded-full">Featured</span>
+            <h3 className="text-xl font-bold mt-2">Sterilization</h3>
+            <p className="text-sm mt-1 mb-3">Safety first</p>
+            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+              View All →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
       {/* Products Sections */}
-      <div className="flex flex-col gap-4 bg-green-100 ml-10 mb-10 mr-10 rounded-3xl">
-        {
-          categories.map((category) => (
-            <ProductSection
-              key={category.id}
-              title={category.name}
-              path={category.path}
-              products={category.products}
-            />
-          ))
-        }
-      </div>
+      {categories.map((category) => (
+        <div 
+          key={category.id} 
+          className="flex flex-col gap-4 mx-4 sm:mx-10 mb-10 rounded-3xl"
+        >
+          <ProductSection
+            title={category.name}
+            path={category.path}
+            products={category.products}
+            buttonStyle="View all >>"
+          />
+          
+          {/* Add Carousel after Restoratives category */}
+          {category.name === 'Restoratives' && (
+            <div className="relative h-[200px] w-full overflow-hidden mt-8">
+              {/* Left Arrow */}
+              <button
+                onClick={() => setRestorativeSlide(restorativeSlide === 0 ? restorativeImages.length - 1 : restorativeSlide - 1)}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+              </button>
+
+              {/* Right Arrow */}
+              <button
+                onClick={() => setRestorativeSlide(restorativeSlide === restorativeImages.length - 1 ? 0 : restorativeSlide + 1)}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+
+              {/* Carousel Container */}
+              <div
+                className="flex transition-transform duration-1000 h-full"
+                style={{ transform: `translateX(-${restorativeSlide * 100}%)` }}
+              >
+                {restorativeImages.map((image, index) => (
+                  <div
+                    key={index}
+                    className="min-w-full px-2"
+                  >
+                    <img
+                      src={image}
+                      alt={`Restorative Slide ${index + 1}`}
+                      className="w-full h-full object-cover rounded-xl"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Navigation Dots */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                {restorativeImages.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`w-2 h-2 rounded-full ${index === restorativeSlide ? 'bg-green-500' : 'bg-white/50'}`}
+                    onClick={() => setRestorativeSlide(index)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Add Poster Section after Instruments category */}
+          {category.name === 'Instruments' && (
+            <div className="grid grid-cols-2 gap-6 mt-12 mb-12">
+              {/* Left Side - Two Posters */}
+              <div className="flex flex-col gap-6">
+                {/* Top Poster - reduced from h-[200px] to h-[180px] */}
+                <div className="relative h-[180px] group overflow-hidden rounded-2xl">
+                  <img 
+                    src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80" 
+                    alt="Special Offer"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
+                    <div className="absolute bottom-6 left-6 text-white">
+                      <h3 className="text-2xl font-bold mb-2">Special Offer</h3>
+                      <p className="text-sm mb-4">Get 20% off on all instruments</p>
+                      <button className="px-4 py-2 bg-white text-black rounded-lg text-sm hover:bg-opacity-90">
+                        Shop Now
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Poster - reduced from h-[200px] to h-[180px] */}
+                <div className="relative h-[180px] group overflow-hidden rounded-2xl">
+                  <img 
+                    src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80" 
+                    alt="New Arrivals"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
+                    <div className="absolute bottom-6 left-6 text-white">
+                      <h3 className="text-2xl font-bold mb-2">New Arrivals</h3>
+                      <p className="text-sm mb-4">Check out our latest collection</p>
+                      <button className="px-4 py-2 bg-white text-black rounded-lg text-sm hover:bg-opacity-90">
+                        Explore
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Side - Single Tall Poster - reduced from h-[420px] to h-[380px] */}
+              <div className="relative h-[380px] group overflow-hidden rounded-2xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80" 
+                  alt="Premium Equipment"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
+                  <div className="absolute bottom-6 left-6 text-white">
+                    <h3 className="text-3xl font-bold mb-2">Premium Equipment</h3>
+                    <p className="text-lg mb-4">Discover our high-end dental solutions</p>
+                    <button className="px-6 py-3 bg-white text-black rounded-lg text-base hover:bg-opacity-90">
+                      Learn More
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
 
 export default Home;
+
+
+
+
+{/* Featured Categories Grid */}
+/*
+<div className="container mx-auto px-4 py-8">
+<div className="text-3xl font-bold mb-6 text-gray-900 flex justify-center">Categories</div>
+<div className="flex flex-row justify-between gap-4 overflow-x-auto">
+  {categories.map((category) => (
+    <Categories key={category.id} path={category.path} image={category.image} name={category.name} />
+  ))}
+</div>
+</div>
+
+*/
