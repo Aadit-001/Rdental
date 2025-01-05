@@ -74,7 +74,7 @@ function WishList() {
     >
       <div className="container mx-auto px-4 pt-28 flex-grow relative">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-blue-500 text-center">My Wishlist</h1>
+          <h1 className="text-4xl font-bold text-blue-900 text-center">My Wishlist</h1>
         </div>
         
         {wishlistItems.length === 0 ? (
