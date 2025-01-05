@@ -4,31 +4,39 @@ import ProductCard from './ProductCard';
 // eslint-disable-next-line react/prop-types
 const ProductSection = ({ title, path, products }) => {
 
-    // const product = useState(products);
-
     return (
         <div className="max-w-[1350px] mx-auto px-4 py-8">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
-                    {title}
-                </h2>
+            <div className="flex justify-between items-center mb-6 bg-gradient-to-r from-white to-gray-50 p-4 rounded-xl border-l-4 border-green-500 transition-all duration-300 w-[98%] mx-auto">
+                <div className="flex items-center gap-4">
+                    <h2 className="text-2xl md:text-3xl font-bold text-gray-800 relative">
+                        {title}
+                        <span className="absolute -bottom-2 left-0 w-1/2 h-1 bg-gradient-to-r from-green-500/50 to-transparent rounded-full"></span>
+                    </h2>
+                    <div className="hidden md:flex items-center gap-2 ml-4">
+                        <span className="px-3 py-1 text-sm bg-green-100 text-green-700 rounded-full font-medium">
+                            {products.length} Products
+                        </span>
+                    </div>
+                </div>
+                
                 <Link 
                     to={path} 
-                    className="text-green-600 hover:text-green-700 font-semibold flex items-center gap-2 text-lg transition-all duration-300 hover:gap-3"
+                    className="group flex items-center gap-0 px-4 py-2 rounded-lg transition-all duration-300"
                 >
-                    View all 
+                    <span className="text-green-700 font-semibold">View all</span>
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 
-                        className="h-5 w-5" 
-                        viewBox="0 0 24 24" 
+                        className="h-6 w-6 text-green-600 group-hover:translate-x-1 transition-transform duration-300" 
                         fill="none" 
-                        stroke="currentColor" 
-                        strokeWidth="2.5" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round"
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
                     >
-                        <path d="M13 17l5-5-5-5"/>
-                        <path d="M6 17l5-5-5-5"/>
+                        <path 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            strokeWidth={2} 
+                            d="M13 5l7 7-7 7M13 5l7 7-7 7"
+                        />
                     </svg>
                 </Link>
             </div>
