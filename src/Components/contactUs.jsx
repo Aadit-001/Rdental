@@ -44,7 +44,7 @@ const ContactUs = () => {
             {/* Phone Card */}
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-200">
               <div className="flex items-center space-x-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-emerald-400 transition-all duration-300">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-green-600 to-emerald-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-green-500 transition-all duration-300">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 
                     0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -61,7 +61,7 @@ const ContactUs = () => {
             {/* Location Card */}
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-200">
               <div className="flex items-center space-x-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-emerald-400 transition-all duration-300">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-green-600 to-emerald-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-green-500 transition-all duration-300">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -77,7 +77,7 @@ const ContactUs = () => {
             {/* Business Hours Card */}
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-200">
               <div className="flex items-center space-x-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-emerald-400 transition-all duration-300">
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-green-600 to-emerald-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-green-500 transition-all duration-300">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -155,10 +155,27 @@ const ContactUs = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-teal-600 hover:to-emerald-500 text-white rounded-xl py-4 font-medium text-sm 
-                  hover:opacity-90 transform hover:scale-[1.02] transition-all duration-500 hover:shadow-[0_0_15px_rgba(16,185,129,0.5)] hover:shadow-emerald-400/50"
+                  className="w-full mt-6 relative px-6 py-3 rounded-lg shadow-md 
+                  before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
+                  before:transition-all before:duration-500 hover:before:opacity-0
+                  after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
+                  after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
+                  transform hover:scale-105 transition-all duration-300 ease-in-out
+                  hover:shadow-lg hover:shadow-green-200 overflow-hidden"
                 >
-                  Send Message
+                  <span className="relative z-10 flex items-center justify-center gap-2 text-white font-semibold tracking-wide">
+                    Send Message
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                  </span>
                 </button>
               </form>
             </div>

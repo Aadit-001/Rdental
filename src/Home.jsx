@@ -393,8 +393,8 @@ const Home = () => {
 
   return (
     <div className="pt-20 max-w-[1480px] mx-auto ">
-      {/* Image Carousel Section (existing) */}
-      <div className="relative h-[500px] w-full overflow-hidden px-2 py-2 mx-auto">
+      {/* Image Carousel Section */}
+      <div className="relative h-[500px] w-full overflow-hidden px-2 py-1 mb-0 mx-auto">
         {/* Left Arrow Button */}
         <button
           onClick={() => setCurrentSlide(currentSlide === 0 ? slides.length - 1 : currentSlide - 1)}
@@ -447,10 +447,68 @@ const Home = () => {
         </div>
       </div>
 
-      
+      {/* Info Strip */}
+      <div className="bg-gradient-to-r from-green-50 to-green-100/20 py-2 mt-1 max-w-[1400px] mx-auto rounded-2xl shadow-sm relative overflow-hidden
+        before:absolute before:inset-0 before:border-2 before:border-green-300/50 before:rounded-2xl
+        before:animate-[border-dance_4s_linear_infinite]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            
+            {/* Products Count */}
+            <div className="flex items-center justify-center gap-3">
+              <div className="p-3 bg-white rounded-full shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-lg font-semibold text-gray-900">150+ Products</p>
+                <p className="text-sm text-gray-600">Extensive Collection</p>
+              </div>
+            </div>
 
-          
-      
+            {/* Authenticity */}
+            <div className="flex items-center justify-center gap-3">
+              <div className="p-3 bg-white rounded-full shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-lg font-semibold text-gray-900">100% Original</p>
+                <p className="text-sm text-gray-600">Genuine Products</p>
+              </div>
+            </div>
+
+            {/* Best Prices */}
+            <div className="flex items-center justify-center gap-3">
+              <div className="p-3 bg-white rounded-full shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-lg font-semibold text-gray-900">Best Prices</p>
+                <p className="text-sm text-gray-600">Guaranteed Savings</p>
+              </div>
+            </div>
+
+            {/* Expert Support */}
+            <div className="flex items-center justify-center gap-3">
+              <div className="p-3 bg-white rounded-full shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-lg font-semibold text-gray-900">Expert Support</p>
+                <p className="text-sm text-gray-600">24/7 Assistance</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
 
       {/*Best Seller Section */}
       <div className="flex flex-col gap-4 bg-gray-100 mx-4 sm:mx-10 mt-10 mb-10 rounded-3xl p-4 sm:p-10">
@@ -622,7 +680,7 @@ const Home = () => {
           
           {/* Add Carousel after Restoratives category */}
           {category.name === 'Restoratives' && (
-            <div className="relative h-[200px] w-full overflow-hidden mt-8">
+            <div className="relative h-[260px] w-[90%] mx-auto overflow-hidden mt-8">
               {/* Left Arrow */}
               <button
                 onClick={() => setRestorativeSlide(restorativeSlide === 0 ? restorativeImages.length - 1 : restorativeSlide - 1)}
@@ -677,7 +735,7 @@ const Home = () => {
 
           {/* Add Poster Section after Instruments category */}
           {category.name === 'Instruments' && (
-            <div className="grid grid-cols-2 gap-6 mt-12 mb-12">
+            <div className="grid grid-cols-2 gap-6 mt-12 mb-12 w-[90%] mx-auto">
               {/* Left Side - Two Posters */}
               <div className="flex flex-col gap-6">
                 {/* Top Poster - reduced from h-[200px] to h-[180px] */}

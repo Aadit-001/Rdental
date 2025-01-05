@@ -65,19 +65,16 @@ const Navbar = ({setShowSignIn}) => {
               </div>
             </div>
           </div>
-
-          {/* Sign In Button */}
-          {/* <Link to="/login"> */}
-            <button className="px-6 py-2  font-medium text-green-600 border-2 border-green-500 rounded-lg 
+          
+          {/* Navigation Items */}
+          <div className="flex items-center space-x-4 pr-3">
+            {/* Sign In Button */}
+            <button className="px-6 py-2 font-medium text-green-600 border-2 border-green-500 rounded-lg 
               bg-gradient-to-r from-transparent to-transparent hover:from-green-500 hover:to-green-600 
               hover:text-white transition-all duration-300 ease-in-out
               bg-[length:200%_100%] bg-right hover:bg-left" onClick={handleSignInClick}>
               Sign In
             </button>
-          {/* </Link> */}
-
-          {/* Navigation Items */}
-          <div className="flex items-center space-x-4 pr-3">
             <Link 
               to="/wishlist" 
               className="text-gray-600 hover:text-gray-800"
@@ -134,6 +131,8 @@ const Navbar = ({setShowSignIn}) => {
                 </svg>
               </div>
             </Link>
+
+            
           </div>
         </div>
       </div>
