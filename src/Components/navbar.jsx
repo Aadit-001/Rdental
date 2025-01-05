@@ -77,10 +77,10 @@ const Navbar = ({setShowSignIn}) => {
             </button>
             <Link 
               to="/wishlist" 
-              className="text-gray-600 hover:text-gray-800"
+              className="text-gray-600 hover:text-gray-800 group"
               onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
             >
-              <div className="relative">
+              <div className="relative transform transition-transform duration-300 group-hover:scale-110">
                 <svg
                   className={`h-6 w-6 ${location.pathname === '/wishlist' ? 'text-green-500 fill-current' : ''}`}
                   fill={location.pathname === '/wishlist' ? 'currentColor' : 'none'}
@@ -96,12 +96,11 @@ const Navbar = ({setShowSignIn}) => {
                 </svg>
               </div>
             </Link>
-            <Link to="/cart" className="text-gray-600 hover:text-gray-800 ">
-              <div className="relative" >
+            <Link to="/cart" className="text-gray-600 hover:text-gray-800 group">
+              <div className="relative transform transition-transform duration-300 group-hover:scale-110">
                 <svg
-                
-                  className="h-6 w-6"
-                  fill="none"
+                  className={`h-6 w-6 ${location.pathname === '/cart' ? 'text-green-500 fill-current' : ''}`}
+                  fill={location.pathname === '/cart' ? 'currentColor' : 'none'}
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -114,11 +113,11 @@ const Navbar = ({setShowSignIn}) => {
                 </svg>
               </div>
             </Link>
-            <Link to="/profile" className="text-gray-600 hover:text-gray-800">
-              <div className="relative">
+            <Link to="/profile" className="text-gray-600 hover:text-gray-800 group">
+              <div className="relative transform transition-transform duration-300 group-hover:scale-110">
                 <svg
-                  className="h-6 w-6"
-                  fill="none"
+                  className={`h-6 w-6 ${location.pathname === '/profile' ? 'text-green-500 fill-current' : ''}`}
+                  fill={location.pathname === '/profile' ? 'currentColor' : 'none'}
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import ProductSection from './Components/productSection';
 import ProductCard from './Components/ProductCard';
 import { useNavigate } from 'react-router-dom';
+import demoImage from './assets/demo.png';
+import Endodontics from './assets/Endodentics.jpg';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -60,7 +62,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 2,
@@ -68,7 +70,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 3,
@@ -76,7 +78,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 4,
@@ -84,7 +86,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 5,
@@ -92,7 +94,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
       ]
     },
@@ -108,7 +110,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 2,
@@ -116,7 +118,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 3,
@@ -124,7 +126,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 4,
@@ -132,7 +134,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 5,
@@ -140,7 +142,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
       ]
     },
@@ -156,7 +158,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 2,
@@ -164,7 +166,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 3,
@@ -172,7 +174,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 4,
@@ -180,7 +182,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 5,
@@ -188,7 +190,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
       ]
     },
@@ -204,7 +206,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 2,
@@ -212,7 +214,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 3,
@@ -220,7 +222,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 4,
@@ -228,7 +230,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 5,
@@ -236,7 +238,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
       ]
     },
@@ -252,7 +254,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 2,
@@ -260,7 +262,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 3,
@@ -268,7 +270,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 4,
@@ -276,7 +278,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 5,
@@ -284,7 +286,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
       ]
     },
@@ -300,7 +302,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 2,
@@ -308,7 +310,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 3,
@@ -316,7 +318,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 4,
@@ -324,7 +326,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 5,
@@ -332,7 +334,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
       ]
     },
@@ -348,7 +350,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 2,
@@ -356,7 +358,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 3,
@@ -364,7 +366,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 4,
@@ -372,7 +374,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
         {
           id: 5,
@@ -380,7 +382,7 @@ const Home = () => {
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
           mrp: 149.99,
-          image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+          image: demoImage
         },
       ]
     }
@@ -395,7 +397,7 @@ const Home = () => {
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
       mrp: 149.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+      image: demoImage
     },
     {
       id: 2,
@@ -403,7 +405,7 @@ const Home = () => {
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
       mrp: 149.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+      image: demoImage
     },
     {
       id: 3,
@@ -411,7 +413,7 @@ const Home = () => {
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
       mrp: 149.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+      image: demoImage
     },
     {
       id: 4,
@@ -419,7 +421,7 @@ const Home = () => {
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
       mrp: 149.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+      image: demoImage
     },
     {
       id: 5,
@@ -427,7 +429,7 @@ const Home = () => {
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
       mrp: 149.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+      image: demoImage
     }
 ]
   //**************************************************************************************************************************************************** */
@@ -548,6 +550,18 @@ const Home = () => {
             </div>
 
           </div>
+        </div>
+      </div>
+
+      {/* New Welcome Section */}
+      <div className="max-w-[1400px] mx-auto mt-16 mb-12 px-4">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to Dental Supplies</h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Discover our comprehensive range of high-quality dental supplies and equipment. 
+            We're committed to supporting dental professionals with the best products in the industry.
+          </p>
+          
         </div>
       </div>
 
@@ -702,7 +716,7 @@ const Home = () => {
       {/* Bottom - Wide Endodontics - Reduced height from 310px to 230px */}
       <div className="relative group h-[230px] overflow-hidden rounded-2xl">
         <img 
-          src="https://images.unsplash.com/photo-1628177142898-93e36e4e3a50" 
+          src={Endodontics}
           alt="Endodontics"
           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
         />
