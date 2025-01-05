@@ -4,12 +4,24 @@ import { useNavigate } from 'react-router-dom';
 const ProductCard = ({ title, description, price, image , catagory}) => {
   const [isLiked, setIsLiked] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   const navigate = useNavigate();
 
+  const handleClick = () => {
+    setIsClicked(true);
+    setTimeout(() => {
+      setIsClicked(false);
+      navigate(`/products/${catagory}/${title}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 300); // Duration matches the animation
+  };
+
   return (
-    <div className="w-64 h-96 rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 bg-white
-    hover:cursor-pointer hover:shadow-xl hover:shadow-green-500 hover:border-2 hover:border-green-500"
-      onClick={() => navigate(`/products/${catagory}/${title}`)}
+    <div 
+      className={`w-56 h-96 rounded-lg shadow-lg overflow-hidden bg-white
+      hover:cursor-pointer hover:scale-105
+      transition-all duration-300 ${isClicked ? 'scale-95 border-4 border-green-600' : ''}`}
+      onClick={handleClick}
     >
       <div className="relative h-48">
         <img 
@@ -18,7 +30,10 @@ const ProductCard = ({ title, description, price, image , catagory}) => {
           className="w-full h-full object-cover"
         />
         <button
-          onClick={() => setIsLiked(!isLiked)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsLiked(!isLiked);
+          }}
           className={`absolute top-4 right-4 p-2 rounded-full ${
             isLiked ? 'bg-green-500' : 'bg-gray-200'
           } transition-colors duration-300`}
@@ -46,7 +61,10 @@ const ProductCard = ({ title, description, price, image , catagory}) => {
         </h2>
         <div className="relative">
           <p 
-            onClick={() => setShowFullDescription(!showFullDescription)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowFullDescription(!showFullDescription);
+            }}
             className={`text-gray-600 text-sm mb-4 cursor-pointer ${!showFullDescription ? 'line-clamp-2' : 'whitespace-pre-wrap'}`}
           >
             {description}
@@ -54,7 +72,13 @@ const ProductCard = ({ title, description, price, image , catagory}) => {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-lg font-semibold text-green-600">${price}</span>
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300">
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              // Add to cart logic here
+            }}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300"
+          >
             Add to Cart
           </button>
         </div>
@@ -64,6 +88,3 @@ const ProductCard = ({ title, description, price, image , catagory}) => {
 };
 
 export default ProductCard;
-
-
-

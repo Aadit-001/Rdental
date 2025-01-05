@@ -3,7 +3,19 @@ import { motion } from 'framer-motion';
 
 const EmptyCart = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100/80 to-gray-200/70 flex items-center justify-center px-4 py-24">
+    <motion.div 
+      initial={{ borderWidth: 0 }}
+      animate={{ 
+        borderWidth: 2,
+        transition: {
+          duration: 1.5,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }
+      }}
+      className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100/80 to-gray-200/70 flex items-center justify-center px-4 py-24 border-teal-500"
+    >
       <div className="text-center">
         <motion.div
           initial={{ scale: 0 }}
@@ -46,7 +58,7 @@ const EmptyCart = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
               className="absolute inset-0"
-              style={{ filter: 'blur(0.5px)' }}
+              style={{ filter: 'blur(1px)' }}
             />
             <defs>
               <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -144,7 +156,7 @@ const EmptyCart = () => {
           </a>
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

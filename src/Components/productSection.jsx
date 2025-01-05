@@ -12,30 +12,30 @@ const ProductSection = ({ title, path, products }) => {
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
                     {title}
                 </h2>
-                <Link
-                    to={path}
-                    className="group flex items-center justify-center w-10 h-10 hover:bg-green-50 rounded-full transition-colors"
+                <Link 
+                    to={path} 
+                    className="text-green-600 hover:text-green-700 font-semibold flex items-center gap-2 text-lg transition-all duration-300 hover:gap-3"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="w-6 h-6 text-green-500 transform transition-transform group-hover:translate-x-1"
+                    View all 
+                    <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-5 w-5" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2.5" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                        />
+                        <path d="M13 17l5-5-5-5"/>
+                        <path d="M6 17l5-5-5-5"/>
                     </svg>
                 </Link>
             </div>
 
-            <div className="flex overflow-x-auto space-x-8 pb-4 pt-6 scrollbar-hide">
+            <div className="flex overflow-x-auto space-x-4 pb-6 pt-6 pl-4 scrollbar-hide">
                 {products.map((product) => (
-                    <div key={product.id} className="flex-shrink-0 w-[250px]">
+                    <div key={product.id} className="flex-shrink-0 w-[250px] hover:scale-104 ">
                         <ProductCard
                             title={product.title}
                             description={product.description}

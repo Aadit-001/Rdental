@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import WishlistProductCard from '../Components/WishlistProductCard';
 import { toast,ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 function WishList() {
 
@@ -37,41 +37,6 @@ function WishList() {
     },
     {
       id: 3,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
-      price: 99.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    {
-      id: 4,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
-      price: 99.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    {
-      id: 5,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
-      price: 99.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    {
-      id: 6,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
-      price: 99.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    {
-      id: 7,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
-      price: 99.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    {
-      id: 8,
       title: "Boat Earbudssssss",
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
       price: 99.99,

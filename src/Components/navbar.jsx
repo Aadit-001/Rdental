@@ -78,7 +78,11 @@ const Navbar = ({setShowSignIn}) => {
 
           {/* Navigation Items */}
           <div className="flex items-center space-x-4 pr-3">
-            <Link to="/wishlist" className="text-gray-600 hover:text-gray-800">
+            <Link 
+              to="/wishlist" 
+              className="text-gray-600 hover:text-gray-800"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
+            >
               <div className="relative">
                 <svg
                   className={`h-6 w-6 ${location.pathname === '/wishlist' ? 'text-green-500 fill-current' : ''}`}
@@ -95,9 +99,10 @@ const Navbar = ({setShowSignIn}) => {
                 </svg>
               </div>
             </Link>
-            <Link to="/cart" className="text-gray-600 hover:text-gray-800">
-              <div className="relative">
+            <Link to="/cart" className="text-gray-600 hover:text-gray-800 ">
+              <div className="relative" >
                 <svg
+                
                   className="h-6 w-6"
                   fill="none"
                   stroke="currentColor"
