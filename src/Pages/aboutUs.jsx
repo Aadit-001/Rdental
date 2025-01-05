@@ -175,7 +175,7 @@ const AboutUs = () => {
       </div>
 
       {/* Services Section */}
-      /*
+      
       <div className="relative max-w-6xl mx-auto h-auto bg-gray-50 py-16 mb-16">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12">Our Comprehensive Services</h2>

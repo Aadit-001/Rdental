@@ -552,12 +552,42 @@ const Home = () => {
       </div>
 
       {/*Best Seller Section */}
-      <div className="flex flex-col gap-4 bg-gray-100 mx-4 sm:mx-10 mt-10 mb-10 rounded-3xl p-4 sm:p-10">
-        <div className="text-3xl font-bold mb-6 text-gray-900">Best Sellers</div>
+      <div className="flex flex-col gap-4 bg-gradient-to-br from-gray-50 to-gray-100 mx-4 sm:mx-10 mt-10 mb-10 rounded-3xl p-4 sm:p-10 shadow-lg">
+        {/* Header Section with Title and View All Button */}
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col">
+            <h2 className="text-3xl font-bold text-gray-900">Best Sellers</h2>
+            <p className="text-gray-600 text-sm mt-1">Our most popular dental products</p>
+          </div>
+          <button 
+            onClick={() => navigate('/products/best-sellers')}
+            className="px-6 py-2 bg-white text-gray-800 rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
+          >
+            View All
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-200" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Products Carousel */}
         <div className="relative w-full">
-          <div className="flex overflow-x-auto space-x-4 pb-6 pt-4 pl-4 pr-4 scrollbar-hide">
+          {/* Optional: Add Left-Right Scroll Buttons */}
+          <button className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-200 -ml-4 hidden md:block">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <div className="flex overflow-x-auto space-x-4 pb-6 pt-4 px-4 scrollbar-hide">
             {bestSellers.map((product) => (
-              <div key={product.id} className="flex-shrink-0 w-[250px]">
+              <div key={product.id} className="flex-shrink-0 w-[280px] transform hover:scale-105 transition-transform duration-300">
                 <ProductCard
                   title={product.title}
                   description={product.description}
@@ -568,6 +598,12 @@ const Home = () => {
               </div>
             ))}
           </div>
+
+          <button className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-200 -mr-4 hidden md:block">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
       </div>
 

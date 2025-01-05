@@ -22,7 +22,7 @@ const ProductDetailPage = () => {
     brochure: "dental-kit-brochure.pdf",
     features: [
       "Professional Grade Tools",
-      "Sterilized Equipment",
+      "Sterilized Equipment", 
       "Premium Quality Materials",
       "Ergonomic Design",
       "Complete Kit"
@@ -35,7 +35,7 @@ const ProductDetailPage = () => {
       content: "Detailed technical specifications of the product..."
     },
     {
-      title: "Usage Instructions",
+      title: "Usage Instructions", 
       content: "Step by step guide on how to use the product..."
     },
     {
@@ -77,8 +77,8 @@ const ProductDetailPage = () => {
   const handleMouseMove = (e) => {
     if (imageRef.current) {
       const { left, top, width, height } = imageRef.current.getBoundingClientRect();
-      const x = ((e.clientX - left) / width) * 100;
-      const y = ((e.clientY - top) / height) * 100;
+      const x = ((e.pageX - left) / width) * 100;
+      const y = ((e.pageY - top) / height) * 100;
       setMousePosition({ x, y });
     }
   };
@@ -118,9 +118,10 @@ const ProductDetailPage = () => {
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="absolute w-[200%] h-[200%]"
+                        className="absolute w-[200%] h-[200%] object-cover"
                         style={{
-                          transform: `translate(-${mousePosition.x}%, -${mousePosition.y}%)`
+                          transform: 'scale(2)',
+                          transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`
                         }}
                       />
                     </div>
