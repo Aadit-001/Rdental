@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import Categories from './Components/Categories';
-import ProductSection from './Components/ProductSection';
+import ProductSection from './Components/productSection';
 import ProductCard from './Components/ProductCard';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [restorativeSlide, setRestorativeSlide] = useState(0);
+  const navigate = useNavigate();
 
   //ye bhi database se uthana hoga ******************************************************************************************************************
   const slides = [
@@ -58,6 +59,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -65,6 +67,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -72,6 +75,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -79,6 +83,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -86,6 +91,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
       ]
@@ -101,6 +107,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -108,6 +115,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -115,6 +123,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -122,6 +131,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -129,6 +139,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
       ]
@@ -144,6 +155,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -151,6 +163,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -158,6 +171,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -165,6 +179,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -172,6 +187,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
       ]
@@ -187,6 +203,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -194,6 +211,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -201,6 +219,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -208,6 +227,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -215,6 +235,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
       ]
@@ -230,6 +251,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -237,6 +259,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -244,6 +267,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -251,6 +275,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -258,6 +283,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
       ]
@@ -273,6 +299,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -280,6 +307,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -287,6 +315,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -294,6 +323,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -301,6 +331,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
       ]
@@ -316,6 +347,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -323,6 +355,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -330,6 +363,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -337,6 +371,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
         {
@@ -344,6 +379,7 @@ const Home = () => {
           title: "Boat Earbudssssss",
           description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
           price: 99.99,
+          mrp: 149.99,
           image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
         },
       ]
@@ -358,6 +394,7 @@ const Home = () => {
       title: "Boat Earbudssssss",
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
+      mrp: 149.99,
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
     },
     {
@@ -365,6 +402,7 @@ const Home = () => {
       title: "Boat Earbudssssss",
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
+      mrp: 149.99,
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
     },
     {
@@ -372,6 +410,7 @@ const Home = () => {
       title: "Boat Earbudssssss",
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
+      mrp: 149.99,
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
     },
     {
@@ -379,6 +418,7 @@ const Home = () => {
       title: "Boat Earbudssssss",
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
+      mrp: 149.99,
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
     },
     {
@@ -386,6 +426,7 @@ const Home = () => {
       title: "Boat Earbudssssss",
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
       price: 99.99,
+      mrp: 149.99,
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
     }
 ]
@@ -464,12 +505,15 @@ const Home = () => {
                   description={product.description}
                   price={product.price}
                   image={product.image}
+                  mrp={product.mrp}
                 />
               </div>
             ))}
           </div>
         </div>
       </div>
+
+
 
 {/* Featured Categories Grid - Thinner Layout */}
 <div className="px-4 py-8">
@@ -491,7 +535,8 @@ const Home = () => {
             <span className="text-sm font-medium bg-blue-500 px-3 py-1 rounded-full">Most Popular</span>
             <h3 className="text-2xl font-bold mt-2">General Dentistry</h3>
             <p className="text-sm mt-1 mb-3 text-gray-200">Essential equipment & supplies</p>
-            <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors">
+            <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
+            onClick={() => navigate('/products/general-dentistry')}>
               Shop Collection
             </button>
           </div>
@@ -509,6 +554,10 @@ const Home = () => {
           <div className="absolute bottom-6 left-6 text-white">
             <h3 className="text-xl font-bold">Disposables</h3>
             <p className="text-sm mt-1">Essential daily supplies</p>
+            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+            onClick={() => navigate('/products/disposables')}>
+              Explore →
+            </button>
           </div>
         </div>
       </div>
@@ -529,6 +578,10 @@ const Home = () => {
             <div className="absolute bottom-6 left-6 text-white">
               <h3 className="text-lg font-bold">Equipment</h3>
               <p className="text-sm mt-1">Modern tech</p>
+              <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+              onClick={() => navigate('/products/equipment')}>
+              Explore →
+            </button>
             </div>
           </div>
         </div>
@@ -543,6 +596,10 @@ const Home = () => {
             <div className="absolute bottom-6 left-6 text-white">
               <h3 className="text-lg font-bold">Restoratives</h3>
               <p className="text-sm mt-1">Quality materials</p>
+              <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+              onClick={() => navigate('/products/restoratives')}>
+              Explore →
+            </button>
             </div>
           </div>
         </div>
@@ -560,7 +617,8 @@ const Home = () => {
             <span className="text-sm font-medium bg-green-500 px-3 py-1 rounded-full">New Arrivals</span>
             <h3 className="text-2xl font-bold mt-2">Endodontics</h3>
             <p className="text-sm mt-1 mb-3">Specialized tools & materials</p>
-            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+            onClick={() => navigate('/products/endodontics')}>
               Explore →
             </button>
           </div>
@@ -581,6 +639,10 @@ const Home = () => {
           <div className="absolute bottom-6 left-6 text-white">
             <h3 className="text-lg font-bold">Instruments</h3>
             <p className="text-sm mt-1">Precision tools</p>
+            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+            onClick={() => navigate('/products/instruments')}>
+              Explore →
+            </button>
           </div>
         </div>
       </div>
@@ -597,7 +659,8 @@ const Home = () => {
             <span className="text-sm font-medium bg-purple-500 px-3 py-1 rounded-full">Featured</span>
             <h3 className="text-xl font-bold mt-2">Sterilization</h3>
             <p className="text-sm mt-1 mb-3">Safety first</p>
-            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+            onClick={() => navigate('/products/sterilization')}>
               View All →
             </button>
           </div>

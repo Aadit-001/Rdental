@@ -32,6 +32,7 @@ const Cart = () => {
   };
 
   // Sample cart data - replace with actual cart state management
+  
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -40,15 +41,21 @@ const Cart = () => {
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
       name: "Product 1",
       price: 100,
+      catagory: "Electronics",
+      rating: 4.5,
+      mrp: 100,
       quantity: 1,
     },
     {
       id: 2,
       originalPrice: 150,
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
+      description: "High quality wireless earbuds with noise ", 
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
       name: "Product 2",
       price: 150,
+      catagory: "Electronics",
+      rating: 4.5,
+      mrp: 100,
       quantity: 2,
     },
     {
@@ -58,6 +65,9 @@ const Cart = () => {
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
       name: "Product 3",
       price: 200,
+      catagory: "Electronics",
+      rating: 4.5,
+      mrp: 100,
       quantity: 3,
     },
   ]);
@@ -103,6 +113,7 @@ const Cart = () => {
                     product={item}
                     onDelete={() => removeItem(item.id)}
                     onQuantityChange={(newQuantity) => updateQuantity(item.id, newQuantity)}
+
                   />
                 ))}
               </div>

@@ -1,11 +1,25 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const WishlistProductCard = ({ title, description, price, image, onRemove }) => {
-  const [isLiked, setIsLiked] = useState(false);
+const WishlistProductCard = ({ title, description, price, image, onRemove, catagory, mrp, rating = 0 }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const navigate = useNavigate();
+
+  const savings = Math.round(((mrp - price) / mrp) * 100);
+
+  const handleClick = () => {
+    setTimeout(() => {
+      navigate(`/products/${catagory}/${title}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 300);
+  };
 
   return (
-    <div className="w-full max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] bg-white mb-4">
+    <div 
+      className="w-full max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] bg-white mb-4"
+      onClick={handleClick}
+    >
       <div className="flex">
         <div className="relative w-48 h-48">
           <img 
@@ -17,11 +31,26 @@ const WishlistProductCard = ({ title, description, price, image, onRemove }) => 
 
         <div className="flex-1 p-6">
           <div className="flex justify-between items-start">
-            <h2 className="text-xl font-bold text-gray-800 mb-2" title={title}>
-              {title}
-            </h2>
+            <div>
+              <h2 className="text-xl font-bold text-gray-800 mb-2" title={title}>
+                {title}
+              </h2>
+              <div className="flex items-center mb-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    className={`text-sm ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+            </div>
             <button 
-              onClick={onRemove}
+              onClick={(e) => {
+                e.stopPropagation();
+                onRemove();
+              }}
               className="text-gray-400 hover:text-red-500 transition-colors"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -31,15 +60,29 @@ const WishlistProductCard = ({ title, description, price, image, onRemove }) => 
           </div>
           <div className="relative">
             <p 
-              onClick={() => setShowFullDescription(!showFullDescription)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowFullDescription(!showFullDescription);
+              }}
               className={`text-gray-600 text-sm mb-4 cursor-pointer ${!showFullDescription ? 'line-clamp-2' : 'whitespace-pre-wrap'}`}
             >
               {description}
             </p>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-lg font-semibold text-green-600">${price}</span>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold text-gray-900">${price}</span>
+              <span className="text-sm text-gray-400 line-through">${mrp}</span>
+              <span className="bg-green-100 text-green-800 text-xs px-1 py-0.5 rounded">
+                Save {savings}%
+              </span>
+            </div>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-300"
+            >
               Add to Cart
             </button>
           </div>
@@ -47,6 +90,17 @@ const WishlistProductCard = ({ title, description, price, image, onRemove }) => 
       </div>
     </div>
   );
+};
+
+WishlistProductCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  onRemove: PropTypes.func.isRequired,
+  catagory: PropTypes.string.isRequired,
+  mrp: PropTypes.number.isRequired,
+  rating: PropTypes.number
 };
 
 export default WishlistProductCard;
