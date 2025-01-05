@@ -33,17 +33,17 @@ const Home = () => {
       setCurrentSlide((prevSlide) =>
         prevSlide === slides.length - 1 ? 0 : prevSlide + 1
       );
-    }, 3000);
+    }, 1500);
 
     return () => clearInterval(timer);
-  });
+  }, []); // Added dependency array
 
   useEffect(() => {
     const timer = setInterval(() => {
       setRestorativeSlide((prevSlide) =>
         prevSlide === restorativeImages.length - 1 ? 0 : prevSlide + 1
       );
-    }, 3000);
+    }, 1500);
 
     return () => clearInterval(timer);
   }, []);
@@ -556,7 +556,7 @@ const Home = () => {
       {/* New Welcome Section */}
       <div className="max-w-[1400px] mx-auto mt-16 mb-12 px-4">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to Dental Supplies</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to <span className="text-green-500">R</span>-DENTAL Supplies</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Discover our comprehensive range of high-quality dental supplies and equipment. 
             We're committed to supporting dental professionals with the best products in the industry.
@@ -566,12 +566,12 @@ const Home = () => {
       </div>
 
       {/*Best Seller Section */}
-      <div className="flex flex-col gap-4 bg-gradient-to-br from-gray-50 to-gray-100 mx-4 sm:mx-10 mt-10 mb-10 rounded-3xl p-4 sm:p-10 shadow-lg">
+      <div className="flex flex-col gap-4 bg-gradient-to-br from-blue-50 to-blue-10 max-w-[1400px] mx-auto mt-10 mb-10 rounded-3xl p-4 sm:p-10 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm bg-opacity-90 relative overflow-hidden before:absolute before:inset-0 before:bg-blue-200/20 before:animate-pulse">
         {/* Header Section with Title and View All Button */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex flex-col">
-            <h2 className="text-3xl font-bold text-gray-900">Best Sellers</h2>
-            <p className="text-gray-600 text-sm mt-1">Our most popular dental products</p>
+            <h2 className="text-3xl font-bold relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-green-500 to-teal-500 animate-gradient-x drop-shadow-lg tracking-wide  animate-pulse">Best Sellers</h2>
+            <p className="text-black-900 text-sm mt-1">Our most popular dental products</p>
           </div>
           <button 
             onClick={() => navigate('/products/best-sellers')}
@@ -599,7 +599,7 @@ const Home = () => {
             </svg>
           </button>
           
-          <div className="flex overflow-x-auto space-x-4 pb-6 pt-4 px-4 scrollbar-hide">
+          <div className="flex overflow-x-auto space-x-[-16px] pb-2 pt-2 px-4 scrollbar-hide">
             {bestSellers.map((product) => (
               <div key={product.id} className="flex-shrink-0 w-[280px] transform hover:scale-105 transition-transform duration-300">
                 <ProductCard
@@ -624,8 +624,13 @@ const Home = () => {
 
 
 {/* Featured Categories Grid - Thinner Layout */}
-<div className="px-4 py-8">
-  <h2 className="text-2xl font-bold mb-6 text-gray-900">Shop By Category</h2>
+<div className="max-w-[1400px] mx-auto px-4 py-8">
+  <h2 className="text-2xl font-extrabold mb-6 text-gray-900 relative">
+    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-500 animate-pulse">
+      Shop By Category
+    </span>
+    <div className="absolute -bottom-2 left-0 w-20 h-1 bg-gradient-to-r from-blue-600 to-green-500 rounded-full animate-[pulse_2s_ease-in-out_infinite]"></div>
+  </h2>
   
   {/* Main Grid */}
   <div className="grid grid-cols-12 gap-4">
@@ -909,6 +914,21 @@ const Home = () => {
           )}
         </div>
       ))}
+
+      {/* Contact CTA Section */}
+      <div className="max-w-[1400px] mx-auto px-4 py-16 text-left ml-54">
+        <h2 className="text-5xl font-inconsolata text-blue-900/90 mb-3">
+          Didn't find what you were looking for?
+        </h2>
+        <p className="text-lg text-black-900 mb-8">Let us know</p>
+        <button 
+          onClick={() => navigate('/contactUs')}
+          className="px-8 py-3 bg-transparent border-2 border-green-500 text-green-500 font-medium rounded-full 
+                    hover:bg-green-500 hover:text-white transition-colors duration-300 shadow-lg hover:shadow-xl"
+        >
+          Contact Us
+        </button>
+      </div>
     </div>
   );
 };
