@@ -26,6 +26,9 @@ function WishList() {
       title: "Boat Earbudssssss",
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
       price: 99.99,
+      catagory: "Electronics",
+      rating: 4.5,
+      mrp: 100,
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
     },
     {
@@ -33,6 +36,9 @@ function WishList() {
       title: "Boat Earbudssssss",
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
       price: 99.99,
+      catagory: "Electronics",
+      rating: 4.5,
+      mrp: 100,
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
     },
     {
@@ -40,6 +46,9 @@ function WishList() {
       title: "Boat Earbudssssss",
       description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
       price: 99.99,
+      catagory: "Electronics",
+      rating: 4.5,
+      mrp: 100,
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
     },
   ]);
@@ -113,6 +122,9 @@ function WishList() {
                 description={item.description}
                 price={item.price}
                 image={item.image}
+                catagory={item.catagory}
+                rating={item.rating}
+                mrp={item.mrp}
                 onRemove={() => handleRemove(item.id)}
                 
               />
