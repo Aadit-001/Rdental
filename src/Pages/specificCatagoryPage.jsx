@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../Components/ProductCard';
 import endodentics from '../assets/Endodentics.jpg';
+import equipment from '../assets/equipments.jpg';
 
 
 const SpecificCategoryPage = () => {
