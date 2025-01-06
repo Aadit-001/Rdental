@@ -82,7 +82,8 @@ const Cart = () => {
   };
 
   const removeItem = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+    const updatedCart = cartItems.filter(item => item.id !== id);
+    setCartItems(updatedCart);
     itemRemoved();
   };
 
@@ -98,9 +99,9 @@ const Cart = () => {
     <>
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)] py-16 px-4 sm:px-6 lg:px-8 pt-24">
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-blue-900 mb-8 text-center animate-fade-in-down relative group">
+        <h1 className="text-4xl font-bold text-gray-600 mb-8 text-center animate-fade-in-down relative group">
           <span className="inline-block">Shopping Cart</span>
-          <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-900 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
+          <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-900 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
         </h1>
           
         {cartItems.length === 0 ? (
@@ -115,7 +116,6 @@ const Cart = () => {
                     product={item}
                     onDelete={() => removeItem(item.id)}
                     onQuantityChange={(newQuantity) => updateQuantity(item.id, newQuantity)}
-
                   />
                 ))}
               </div>

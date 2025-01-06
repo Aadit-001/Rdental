@@ -4,13 +4,23 @@ import Logoo from '../assets/logoo.png';
 import name from '../assets/name.png';
 
 
-const Navbar = ({setShowSignIn}) => {
+const Navbar = ({setShowSignIn, setShowProfile, showProfile}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   // const [showSignIn, setShowSignIn] = useState(false);
 
   const handleSignInClick = () => {
     setShowSignIn(true);
+  };
+
+  const handleProfileClick = () => {
+    setShowProfile(!showProfile);
+  };
+
+  const removeProfile = () => {
+    if(showProfile){
+      setShowProfile(false);
+    }
   };
 
   const handleLogoClick = () => {
@@ -27,7 +37,7 @@ const Navbar = ({setShowSignIn}) => {
   };
 
   return (
-    <nav className="bg-white shadow-md fixed w-full top-0 z-50">
+    <nav className="bg-white shadow-md fixed w-full top-0 z-50 " onClick={removeProfile}>
       <div className="w-full px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -113,11 +123,11 @@ const Navbar = ({setShowSignIn}) => {
                 </svg>
               </div>
             </Link>
-            <Link to="/profile" className="text-gray-600 hover:text-gray-800 group">
+            <Link className="text-gray-600 hover:text-gray-800 group" onClick={handleProfileClick}>
               <div className="relative transform transition-transform duration-300 group-hover:scale-110">
                 <svg
-                  className={`h-6 w-6 ${location.pathname === '/profile' ? 'text-green-500 fill-current' : ''}`}
-                  fill={location.pathname === '/profile' ? 'currentColor' : 'none'}
+                  className={`h-6 w-6 ${showProfile ? 'text-green-500 fill-current' : ''}`}
+                  fill={showProfile ? 'currentColor' : 'none'}
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >

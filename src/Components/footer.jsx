@@ -19,7 +19,7 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Home</Link></li>
-              <li><Link to="/products" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Products</Link></li>
+              {/* <li><Link to="/products" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Products</Link></li> */}
               <li><Link to="/aboutUs" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>About Us</Link></li>
               <li><Link to="/contactUs" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Contact Us</Link></li>
             </ul>
@@ -40,9 +40,9 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Account</h4>
             <ul className="space-y-2">
-              <li><Link to="/dashboard" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Dashboard</Link></li>
+              <li><Link to="/" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Dashboard</Link></li>
               <li><Link to="/my-orders" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>My Orders</Link></li>
-              <li><Link to="/account-details" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Account Details</Link></li>
+              {/* <li><Link to="/" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Account Details</Link></li> */}
               <li><Link to="/returns" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Returns</Link></li>
               <li><Link to="/wishlist" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Wishlist</Link></li>
             </ul>
@@ -54,9 +54,22 @@ const Footer = () => {
             <div className="space-y-2 text-gray-400">
               <p>Email: <a href="mailto:rdental96@gmail.com" className="hover:text-white">rdental96@gmail.com</a></p>
               <p>Phone: +91 961 965 3896</p>
-              <p className="pl-[45px]">+91 937 281 7043</p>
+              <p className="pl-[56px]"> +91 937 281 7043</p>
               <p>Address: Shop no.16, 1st floor, Veer Hanuman Nagar Rd, opp.RBI quarter, Kandarpada, Dahisar West, Mumbai, Maharashtra 400068</p>
             </div>
+          </div>
+        </div>
+
+        {/* Payment Methods */}
+        <div className="mt-1">
+          <h4 className="text-xl font-semibold mb-4">Payment Methods We Accept</h4>
+          <div className="flex items-center space-x-4">
+            <img src="https://cdn-icons-png.flaticon.com/128/349/349221.png" alt="Visa" className="h-12" />
+            <img src="https://cdn-icons-png.flaticon.com/128/349/349228.png" alt="Mastercard" className="h-12" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rupay-Logo.png/800px-Rupay-Logo.png" alt="RuPay" className="h-12" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1280px-UPI-Logo-vector.svg.png" alt="UPI" className="h-8" />
+            <img src="https://download.logo.wine/logo/Paytm/Paytm-Logo.wine.png" alt="Paytm" className="h-12" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Google_Pay_Logo_%282020%29.svg/2560px-Google_Pay_Logo_%282020%29.svg.png" alt="Google Pay" className="h-8" />
           </div>
         </div>
 

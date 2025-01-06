@@ -431,7 +431,7 @@ const Home = () => {
       mrp: 149.99,
       image: demoImage
     }
-]
+  ]
   //**************************************************************************************************************************************************** */
 
   return (
@@ -496,7 +496,7 @@ const Home = () => {
         before:animate-[border-dance_4s_linear_infinite]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            
+
             {/* Products Count */}
             <div className="flex items-center justify-center gap-3 group hover:-translate-y-1 transition-all duration-300">
               <div className="p-2 bg-white rounded-full shadow-sm group-hover:shadow-lg group-hover:rotate-12 transition-all duration-300">
@@ -558,10 +558,10 @@ const Home = () => {
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to <span className="text-green-500">R</span>-DENTAL Supplies</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover our comprehensive range of high-quality dental supplies and equipment. 
+            Discover our comprehensive range of high-quality dental supplies and equipment.
             We're committed to supporting dental professionals with the best products in the industry.
           </p>
-          
+
         </div>
       </div>
 
@@ -573,16 +573,16 @@ const Home = () => {
             <h2 className="text-3xl font-bold relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-green-500 to-teal-500 animate-gradient-x drop-shadow-lg tracking-wide  animate-pulse">Best Sellers</h2>
             <p className="text-black-900 text-sm mt-1">Our most popular dental products</p>
           </div>
-          <button 
+          <button
             onClick={() => navigate('/products/best-sellers')}
             className="px-6 py-2 bg-white text-gray-800 rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
           >
             View All
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-200" 
-              fill="none" 
-              viewBox="0 0 24 24" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-200"
+              fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -593,15 +593,15 @@ const Home = () => {
         {/* Products Carousel */}
         <div className="relative w-full">
           {/* Optional: Add Left-Right Scroll Buttons */}
-          <button className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-200 -ml-4 hidden md:block">
+          {/* <button className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-200 -ml-4 hidden md:block">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-          </button>
-          
-          <div className="flex overflow-x-auto space-x-[-16px] pb-2 pt-2 px-4 scrollbar-hide">
+          </button> */}
+
+          <div className="flex overflow-x-auto space-x-[-16px] pb-6 pt-6 px-4 scrollbar-hide">
             {bestSellers.map((product) => (
-              <div key={product.id} className="flex-shrink-0 w-[280px] transform hover:scale-105 transition-transform duration-300">
+              <div key={product.id} className="flex-shrink-0 w-[280px] transform hover:scale-10 transition-transform duration-300">
                 <ProductCard
                   title={product.title}
                   description={product.description}
@@ -613,180 +613,180 @@ const Home = () => {
             ))}
           </div>
 
-          <button className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-200 -mr-4 hidden md:block">
+          {/* <button className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-200 -mr-4 hidden md:block">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-          </button>
+          </button> */}
         </div>
       </div>
 
 
 
-{/* Featured Categories Grid - Thinner Layout */}
-<div className="max-w-[1400px] mx-auto px-4 py-8">
-  <h2 className="text-2xl font-extrabold mb-6 text-gray-900 relative">
-    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-500 animate-pulse">
-      Shop By Category
-    </span>
-    <div className="absolute -bottom-2 left-0 w-20 h-1 bg-gradient-to-r from-blue-600 to-green-500 rounded-full animate-[pulse_2s_ease-in-out_infinite]"></div>
-  </h2>
-  
-  {/* Main Grid */}
-  <div className="grid grid-cols-12 gap-4">
-    {/* Large Left Panel - Reduced height from 400px to 300px */}
-    <div className="col-span-4 grid gap-4">
-      {/* Top Tile - General */}
-      <div className="relative group h-[300px] overflow-hidden rounded-2xl">
-        <img 
-          src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99" 
-          alt="General Dentistry"
-          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
-          <div className="absolute bottom-6 left-6 text-white">
-            <span className="text-sm font-medium bg-blue-500 px-3 py-1 rounded-full">Most Popular</span>
-            <h3 className="text-2xl font-bold mt-2">General Dentistry</h3>
-            <p className="text-sm mt-1 mb-3 text-gray-200">Essential equipment & supplies</p>
-            <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
-            onClick={() => navigate('/products/general-dentistry')}>
-              Shop Collection
-            </button>
+      {/* Featured Categories Grid - Thinner Layout */}
+      <div className="max-w-[1400px] mx-auto px-4 py-8">
+        <h2 className="text-2xl font-extrabold mb-6 text-gray-900 relative">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-500 animate-pulse">
+            Shop By Category
+          </span>
+          <div className="absolute -bottom-2 left-0 w-20 h-1 bg-gradient-to-r from-blue-600 to-green-500 rounded-full animate-[pulse_2s_ease-in-out_infinite]"></div>
+        </h2>
+
+        {/* Main Grid */}
+        <div className="grid grid-cols-12 gap-4">
+          {/* Large Left Panel - Reduced height from 400px to 300px */}
+          <div className="col-span-4 grid gap-4">
+            {/* Top Tile - General */}
+            <div className="relative group h-[300px] overflow-hidden rounded-2xl">
+              <img
+                src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99"
+                alt="General Dentistry"
+                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                <div className="absolute bottom-6 left-6 text-white">
+                  <span className="text-sm font-medium bg-blue-500 px-3 py-1 rounded-full">Most Popular</span>
+                  <h3 className="text-2xl font-bold mt-2">General Dentistry</h3>
+                  <p className="text-sm mt-1 mb-3 text-gray-200">Essential equipment & supplies</p>
+                  <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
+                    onClick={() => { navigate('/products/general-dentistry'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                    Shop Collection
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Tile - Disposables - Reduced height from 200px to 150px */}
+            <div className="relative group h-[150px] overflow-hidden rounded-2xl">
+              <img
+                src="https://images.unsplash.com/photo-1583947581924-860bda6a26df"
+                alt="Disposables"
+                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+                <div className="absolute bottom-6 left-6 text-white">
+                  <h3 className="text-xl font-bold">Disposables</h3>
+                  <p className="text-sm mt-1">Essential daily supplies</p>
+                  <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+                    onClick={() => { navigate('/products/disposables'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                    Explore →
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Bottom Tile - Disposables - Reduced height from 200px to 150px */}
-      <div className="relative group h-[150px] overflow-hidden rounded-2xl">
-        <img 
-          src="https://images.unsplash.com/photo-1583947581924-860bda6a26df" 
-          alt="Disposables"
-          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-          <div className="absolute bottom-6 left-6 text-white">
-            <h3 className="text-xl font-bold">Disposables</h3>
-            <p className="text-sm mt-1">Essential daily supplies</p>
-            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
-            onClick={() => navigate('/products/disposables')}>
-              Explore →
-            </button>
+          {/* Center Stack */}
+          <div className="col-span-5 grid gap-4">
+            {/* Top Row - Reduced height from 290px to 220px */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Equipment */}
+              <div className="relative group h-[220px] overflow-hidden rounded-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
+                  alt="Equipment"
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+                  <div className="absolute bottom-6 left-6 text-white">
+                    <h3 className="text-lg font-bold">Equipment</h3>
+                    <p className="text-sm mt-1">Modern tech</p>
+                    <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+                      onClick={() => { navigate('/products/equipment'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                      Explore →
+                    </button>
+                  </div>
+                </div>
+              </div>
+              {/* Restoratives */}
+              <div className="relative group h-[220px] overflow-hidden rounded-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe"
+                  alt="Restoratives"
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+                  <div className="absolute bottom-6 left-6 text-white">
+                    <h3 className="text-lg font-bold">Restoratives</h3>
+                    <p className="text-sm mt-1">Quality materials</p>
+                    <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+                      onClick={() => { navigate('/products/restoratives'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                      Explore →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom - Wide Endodontics - Reduced height from 310px to 230px */}
+            <div className="relative group h-[230px] overflow-hidden rounded-2xl">
+              <img
+                src={Endodontics}
+                alt="Endodontics"
+                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                <div className="absolute bottom-6 left-6 text-white">
+                  <span className="text-sm font-medium bg-green-500 px-3 py-1 rounded-full">New Arrivals</span>
+                  <h3 className="text-2xl font-bold mt-2">Endodontics</h3>
+                  <p className="text-sm mt-1 mb-3">Specialized tools & materials</p>
+                  <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+                    onClick={() => { navigate('/products/endodontics'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                    Explore →
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    {/* Center Stack */}
-    <div className="col-span-5 grid gap-4">
-      {/* Top Row - Reduced height from 290px to 220px */}
-      <div className="grid grid-cols-2 gap-4">
-        {/* Equipment */}
-        <div className="relative group h-[220px] overflow-hidden rounded-2xl">
-          <img 
-            src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5" 
-            alt="Equipment"
-            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-            <div className="absolute bottom-6 left-6 text-white">
-              <h3 className="text-lg font-bold">Equipment</h3>
-              <p className="text-sm mt-1">Modern tech</p>
-              <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
-              onClick={() => navigate('/products/equipment')}>
-              Explore →
-            </button>
+          {/* Right Stack */}
+          <div className="col-span-3 grid gap-4">
+            {/* Instruments - Reduced height from 190px to 150px */}
+            <div className="relative group h-[150px] overflow-hidden rounded-2xl">
+              <img
+                src="https://images.unsplash.com/photo-1571772996211-2f02c9727629"
+                alt="Instruments"
+                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+                <div className="absolute bottom-6 left-6 text-white">
+                  <h3 className="text-lg font-bold">Instruments</h3>
+                  <p className="text-sm mt-1">Precision tools</p>
+                  <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+                    onClick={() => { navigate('/products/instruments'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                    Explore →
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Sterilization - Reduced height from 410px to 300px */}
+            <div className="relative group h-[300px] overflow-hidden rounded-2xl">
+              <img
+                src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95"
+                alt="Sterilization"
+                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                <div className="absolute bottom-6 left-6 text-white">
+                  <span className="text-sm font-medium bg-purple-500 px-3 py-1 rounded-full">Featured</span>
+                  <h3 className="text-xl font-bold mt-2">Sterilization</h3>
+                  <p className="text-sm mt-1 mb-3">Safety first</p>
+                  <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+                    onClick={() => { navigate('/products/sterilization'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                    View All →
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        {/* Restoratives */}
-        <div className="relative group h-[220px] overflow-hidden rounded-2xl">
-          <img 
-            src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe" 
-            alt="Restoratives"
-            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-            <div className="absolute bottom-6 left-6 text-white">
-              <h3 className="text-lg font-bold">Restoratives</h3>
-              <p className="text-sm mt-1">Quality materials</p>
-              <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
-              onClick={() => navigate('/products/restoratives')}>
-              Explore →
-            </button>
-            </div>
-          </div>
-        </div>
       </div>
-
-      {/* Bottom - Wide Endodontics - Reduced height from 310px to 230px */}
-      <div className="relative group h-[230px] overflow-hidden rounded-2xl">
-        <img 
-          src={Endodontics}
-          alt="Endodontics"
-          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
-          <div className="absolute bottom-6 left-6 text-white">
-            <span className="text-sm font-medium bg-green-500 px-3 py-1 rounded-full">New Arrivals</span>
-            <h3 className="text-2xl font-bold mt-2">Endodontics</h3>
-            <p className="text-sm mt-1 mb-3">Specialized tools & materials</p>
-            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
-            onClick={() => navigate('/products/endodontics')}>
-              Explore →
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {/* Right Stack */}
-    <div className="col-span-3 grid gap-4">
-      {/* Instruments - Reduced height from 190px to 150px */}
-      <div className="relative group h-[150px] overflow-hidden rounded-2xl">
-        <img 
-          src="https://images.unsplash.com/photo-1571772996211-2f02c9727629" 
-          alt="Instruments"
-          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-          <div className="absolute bottom-6 left-6 text-white">
-            <h3 className="text-lg font-bold">Instruments</h3>
-            <p className="text-sm mt-1">Precision tools</p>
-            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
-            onClick={() => navigate('/products/instruments')}>
-              Explore →
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Sterilization - Reduced height from 410px to 300px */}
-      <div className="relative group h-[300px] overflow-hidden rounded-2xl">
-        <img 
-          src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95" 
-          alt="Sterilization"
-          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
-          <div className="absolute bottom-6 left-6 text-white">
-            <span className="text-sm font-medium bg-purple-500 px-3 py-1 rounded-full">Featured</span>
-            <h3 className="text-xl font-bold mt-2">Sterilization</h3>
-            <p className="text-sm mt-1 mb-3">Safety first</p>
-            <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
-            onClick={() => navigate('/products/sterilization')}>
-              View All →
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
       {/* Products Sections */}
       {categories.map((category) => (
-        <div 
-          key={category.id} 
+        <div
+          key={category.id}
           className="flex flex-col gap-4 mx-4 sm:mx-10 mb-10 rounded-3xl"
         >
           <ProductSection
@@ -795,7 +795,7 @@ const Home = () => {
             products={category.products}
             buttonStyle="View all >>"
           />
-          
+
           {/* Add Carousel after Restoratives category */}
           {category.name === 'Restoratives' && (
             <>
@@ -923,8 +923,8 @@ const Home = () => {
               <div className="flex flex-col gap-6">
                 {/* Top Poster - reduced from h-[200px] to h-[180px] */}
                 <div className="relative h-[180px] group overflow-hidden rounded-2xl">
-                  <img 
-                    src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80" 
+                  <img
+                    src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80"
                     alt="Special Offer"
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
@@ -941,8 +941,8 @@ const Home = () => {
 
                 {/* Bottom Poster - reduced from h-[200px] to h-[180px] */}
                 <div className="relative h-[180px] group overflow-hidden rounded-2xl">
-                  <img 
-                    src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80" 
+                  <img
+                    src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80"
                     alt="New Arrivals"
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
@@ -960,8 +960,8 @@ const Home = () => {
 
               {/* Right Side - Single Tall Poster - reduced from h-[420px] to h-[380px] */}
               <div className="relative h-[380px] group overflow-hidden rounded-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80" 
+                <img
+                  src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80"
                   alt="Premium Equipment"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
@@ -986,7 +986,7 @@ const Home = () => {
           Didn't find what you were looking for?
         </h2>
         <p className="text-lg text-black-900 mb-8">Let us know</p>
-        <button 
+        <button
           onClick={() => navigate('/contactUs')}
           className="px-8 py-3 bg-transparent border-2 border-green-500 text-green-500 font-medium rounded-2xl 
                     hover:bg-green-500 hover:text-white transition-colors duration-300 shadow-lg hover:shadow-xl"
@@ -1003,7 +1003,7 @@ export default Home;
 
 
 
-{/* Featured Categories Grid */}
+{/* Featured Categories Grid */ }
 /*
 <div className="container mx-auto px-4 py-8">
 <div className="text-3xl font-bold mb-6 text-gray-900 flex justify-center">Categories</div>

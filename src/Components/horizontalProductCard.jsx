@@ -13,6 +13,10 @@ const HorizontalProductCard = ({ product, onDelete, onQuantityChange }) => {
     onQuantityChange?.(updatedQuantity);
   };
 
+  const handleRemove = () => {
+    onDelete?.(product.id);
+  };
+
   const savedAmount = product.mrp - product.price;
   const savingsPercentage = ((savedAmount) / product.mrp * 100).toFixed(0);
 
@@ -25,7 +29,7 @@ const HorizontalProductCard = ({ product, onDelete, onQuantityChange }) => {
 
   return (
     <div 
-      className="w-full max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] bg-white mb-4"
+      className="w-full cursor-pointer max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] bg-white mb-4"
       onClick={handleClick}
     >
       <div className="flex">
@@ -57,7 +61,7 @@ const HorizontalProductCard = ({ product, onDelete, onQuantityChange }) => {
             <button 
               onClick={(e) => {
                 e.stopPropagation();
-                onDelete(product.id); // Pass the product ID to onDelete
+                handleRemove();
               }}
               className="text-red-500 hover:text-red-700 transition-colors duration-200"
             >

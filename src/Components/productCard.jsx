@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 const ProductCard = ({ title, description, price, image, catagory, mrp, rating = 0 }) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [showFullDescription, setShowFullDescription] = useState(false);
   const navigate = useNavigate();
 
   const savings = Math.round(((mrp - price) / mrp) * 100);
@@ -71,13 +70,7 @@ const ProductCard = ({ title, description, price, image, catagory, mrp, rating =
             ))}
           </div>
           <div className="relative">
-            <p 
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowFullDescription(!showFullDescription);
-              }}
-              className={`text-gray-600 text-xs mb-2 cursor-pointer ${!showFullDescription ? 'line-clamp-2' : ''}`}
-            >
+            <p className="text-gray-600 text-xs mb-2 line-clamp-2">
               {description}
             </p>
           </div>

@@ -17,7 +17,7 @@ const WishlistProductCard = ({ title, description, price, image, onRemove, catag
 
   return (
     <div 
-      className="w-full max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] bg-white mb-4"
+      className="w-full cursor-pointer max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] bg-white mb-4"
       onClick={handleClick}
     >
       <div className="flex">
