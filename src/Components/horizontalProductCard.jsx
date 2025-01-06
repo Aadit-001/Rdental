@@ -57,7 +57,7 @@ const HorizontalProductCard = ({ product, onDelete, onQuantityChange }) => {
             <button 
               onClick={(e) => {
                 e.stopPropagation();
-                onRemove();
+                onDelete(product.id); // Pass the product ID to onDelete
               }}
               className="text-red-500 hover:text-red-700 transition-colors duration-200"
             >

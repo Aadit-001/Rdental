@@ -498,54 +498,54 @@ const Home = () => {
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             
             {/* Products Count */}
-            <div className="flex items-center justify-center gap-3">
-              <div className="p-3 bg-white rounded-full shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="flex items-center justify-center gap-3 group hover:-translate-y-1 transition-all duration-300">
+              <div className="p-2 bg-white rounded-full shadow-sm group-hover:shadow-lg group-hover:rotate-12 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600 animate-[pulse_2s_ease-in-out_infinite]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
               </div>
               <div>
-                <p className="text-lg font-semibold text-gray-900">150+ Products</p>
-                <p className="text-sm text-gray-600">Extensive Collection</p>
+                <p className="text-lg font-semibold text-gray-900 group-hover:translate-x-1 transition-transform">150+ Products</p>
+                <p className="text-sm text-gray-600 group-hover:translate-x-1 transition-transform">Extensive Collection</p>
               </div>
             </div>
 
             {/* Authenticity */}
-            <div className="flex items-center justify-center gap-3">
-              <div className="p-3 bg-white rounded-full shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="flex items-center justify-center gap-3 group hover:-translate-y-1 transition-all duration-300">
+              <div className="p-2 bg-white rounded-full shadow-sm group-hover:shadow-lg group-hover:rotate-12 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600 animate-[bounce_1.5s_ease-in-out_infinite]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
               <div>
-                <p className="text-lg font-semibold text-gray-900">100% Original</p>
-                <p className="text-sm text-gray-600">Genuine Products</p>
+                <p className="text-lg font-semibold text-gray-900 group-hover:translate-x-1 transition-transform">100% Original</p>
+                <p className="text-sm text-gray-600 group-hover:translate-x-1 transition-transform">Genuine Products</p>
               </div>
             </div>
 
             {/* Best Prices */}
-            <div className="flex items-center justify-center gap-3">
-              <div className="p-3 bg-white rounded-full shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="flex items-center justify-center gap-3 group hover:-translate-y-1 transition-all duration-300">
+              <div className="p-2 bg-white rounded-full shadow-sm group-hover:shadow-lg group-hover:rotate-12 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-600 animate-[spin_3s_linear_infinite]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div>
-                <p className="text-lg font-semibold text-gray-900">Best Prices</p>
-                <p className="text-sm text-gray-600">Guaranteed Savings</p>
+                <p className="text-lg font-semibold text-gray-900 group-hover:translate-x-1 transition-transform">Best Prices</p>
+                <p className="text-sm text-gray-600 group-hover:translate-x-1 transition-transform">Guaranteed Savings</p>
               </div>
             </div>
 
             {/* Expert Support */}
-            <div className="flex items-center justify-center gap-3">
-              <div className="p-3 bg-white rounded-full shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="flex items-center justify-center gap-3 group hover:-translate-y-1 transition-all duration-300">
+              <div className="p-2 bg-white rounded-full shadow-sm group-hover:shadow-lg group-hover:rotate-12 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600 animate-[ping_1s_cubic-bezier(0,0,0.2,1)_infinite]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
               <div>
-                <p className="text-lg font-semibold text-gray-900">Expert Support</p>
-                <p className="text-sm text-gray-600">24/7 Assistance</p>
+                <p className="text-lg font-semibold text-gray-900 group-hover:translate-x-1 transition-transform">Expert Support</p>
+                <p className="text-sm text-gray-600 group-hover:translate-x-1 transition-transform">24/7 Assistance</p>
               </div>
             </div>
 
@@ -798,57 +798,122 @@ const Home = () => {
           
           {/* Add Carousel after Restoratives category */}
           {category.name === 'Restoratives' && (
-            <div className="relative h-[260px] w-[90%] mx-auto overflow-hidden mt-8">
-              {/* Left Arrow */}
-              <button
-                onClick={() => setRestorativeSlide(restorativeSlide === 0 ? restorativeImages.length - 1 : restorativeSlide - 1)}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-              </button>
+            <>
+              <div className="relative h-[260px] w-[90%] mx-auto overflow-hidden mt-8 mb-5">
+                {/* Left Arrow */}
+                <button
+                  onClick={() => setRestorativeSlide(restorativeSlide === 0 ? restorativeImages.length - 1 : restorativeSlide - 1)}
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  </svg>
+                </button>
 
-              {/* Right Arrow */}
-              <button
-                onClick={() => setRestorativeSlide(restorativeSlide === restorativeImages.length - 1 ? 0 : restorativeSlide + 1)}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-              </button>
+                {/* Right Arrow */}
+                <button
+                  onClick={() => setRestorativeSlide(restorativeSlide === restorativeImages.length - 1 ? 0 : restorativeSlide + 1)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </button>
 
-              {/* Carousel Container */}
-              <div
-                className="flex transition-transform duration-1000 h-full"
-                style={{ transform: `translateX(-${restorativeSlide * 100}%)` }}
-              >
-                {restorativeImages.map((image, index) => (
-                  <div
-                    key={index}
-                    className="min-w-full px-2"
-                  >
-                    <img
-                      src={image}
-                      alt={`Restorative Slide ${index + 1}`}
-                      className="w-full h-full object-cover rounded-xl"
+                {/* Carousel Container */}
+                <div
+                  className="flex transition-transform duration-1000 h-full"
+                  style={{ transform: `translateX(-${restorativeSlide * 100}%)` }}
+                >
+                  {restorativeImages.map((image, index) => (
+                    <div
+                      key={index}
+                      className="min-w-full px-2"
+                    >
+                      <img
+                        src={image}
+                        alt={`Restorative Slide ${index + 1}`}
+                        className="w-full h-full object-cover rounded-[2rem]"
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Navigation Dots */}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                  {restorativeImages.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`w-2 h-2 rounded-full ${index === restorativeSlide ? 'bg-green-500' : 'bg-white/50'}`}
+                      onClick={() => setRestorativeSlide(index)}
                     />
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
-              {/* Navigation Dots */}
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                {restorativeImages.map((_, index) => (
-                  <button
-                    key={index}
-                    className={`w-2 h-2 rounded-full ${index === restorativeSlide ? 'bg-green-500' : 'bg-white/50'}`}
-                    onClick={() => setRestorativeSlide(index)}
-                  />
-                ))}
+              {/* Updated Info Strip */}
+              <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 py-2 mt-8 w-[90%] mx-auto rounded-2xl shadow-sm relative overflow-hidden
+        before:absolute before:inset-0 before:border-2 before:border-blue-300/30 before:rounded-2xl
+        before:animate-[border-dance_4s_linear_infinite] mt-[-1px]">
+                <div className="w-full px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+                    
+                    {/* Fast Shipping */}
+                    <div className="flex items-center justify-center gap-3 group">
+                      <div className="p-2 bg-white rounded-full shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:scale-110">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                      </div>
+                      <div className="transition-all duration-300 group-hover:translate-x-2">
+                        <p className="text-base font-semibold text-gray-900">Fast Shipping</p>
+                        <p className="text-xs text-gray-600">Quick Delivery</p>
+                      </div>
+                    </div>
+
+                    {/* Price Match */}
+                    <div className="flex items-center justify-center gap-3 group">
+                      <div className="p-2 bg-white rounded-full shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:scale-110">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <div className="transition-all duration-300 group-hover:translate-x-2">
+                        <p className="text-base font-semibold text-gray-900">Price Match</p>
+                        <p className="text-xs text-gray-600">Guaranteed Best Rates</p>
+                      </div>
+                    </div>
+
+                    {/* Bulk Orders */}
+                    <div className="flex items-center justify-center gap-3 group">
+                      <div className="p-2 bg-white rounded-full shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:scale-110">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                      </div>
+                      <div className="transition-all duration-300 group-hover:translate-x-2">
+                        <p className="text-base font-semibold text-gray-900">Bulk Orders</p>
+                        <p className="text-xs text-gray-600">Special Discounts</p>
+                      </div>
+                    </div>
+
+                    {/* Practice Setup */}
+                    <div className="flex items-center justify-center gap-3 group">
+                      <div className="p-2 bg-white rounded-full shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:scale-110">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                      </div>
+                      <div className="transition-all duration-300 group-hover:translate-x-2">
+                        <p className="text-base font-semibold text-gray-900">Practice Setup</p>
+                        <p className="text-xs text-gray-600">Complete Solutions</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
               </div>
-            </div>
+            </>
           )}
 
           {/* Add Poster Section after Instruments category */}
@@ -923,7 +988,7 @@ const Home = () => {
         <p className="text-lg text-black-900 mb-8">Let us know</p>
         <button 
           onClick={() => navigate('/contactUs')}
-          className="px-8 py-3 bg-transparent border-2 border-green-500 text-green-500 font-medium rounded-full 
+          className="px-8 py-3 bg-transparent border-2 border-green-500 text-green-500 font-medium rounded-2xl 
                     hover:bg-green-500 hover:text-white transition-colors duration-300 shadow-lg hover:shadow-xl"
         >
           Contact Us
