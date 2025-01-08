@@ -22,6 +22,7 @@ const Footer = () => {
               {/* <li><Link to="/products" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Products</Link></li> */}
               <li><Link to="/aboutUs" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>About Us</Link></li>
               <li><Link to="/contactUs" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Contact Us</Link></li>
+              <li><Link to="/Cart" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Shopping Cart</Link></li>
             </ul>
           </div>
 
@@ -65,7 +66,6 @@ const Footer = () => {
           <h4 className="text-xl font-semibold mb-4">Payment Methods We Accept</h4>
           <div className="flex items-center space-x-4">
             <img src="https://cdn-icons-png.flaticon.com/128/349/349221.png" alt="Visa" className="h-12" />
-            <img src="https://cdn-icons-png.flaticon.com/128/349/349228.png" alt="Mastercard" className="h-12" />
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rupay-Logo.png/800px-Rupay-Logo.png" alt="RuPay" className="h-12" />
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1280px-UPI-Logo-vector.svg.png" alt="UPI" className="h-8" />
             <img src="https://download.logo.wine/logo/Paytm/Paytm-Logo.wine.png" alt="Paytm" className="h-12" />

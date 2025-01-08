@@ -78,8 +78,6 @@ const ProductDetailPage = () => {
   const handleMouseMove = (e) => {
     if (imageRef.current) {
       const { left, top, width, height } = imageRef.current.getBoundingClientRect();
-      
-      // माउस की सटीक पोजीशन कैलकुलेट करें (0-100 के बीच)
       const x = Math.min(Math.max(((e.pageX - left) / width) * 100, 0), 100);
       const y = Math.min(Math.max(((e.pageY - top) / height) * 100, 0), 100);
       
@@ -139,8 +137,30 @@ const ProductDetailPage = () => {
               </AnimatePresence>
 
               {product.brochure && (
-                <button className="w-full mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
-                  View Brochure
+                <button className="w-full mt-6 relative px-6 py-2 rounded-lg shadow-md 
+                  before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
+                  before:transition-all before:duration-500 hover:before:opacity-0
+                  after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
+                  after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
+                  transform hover:scale-105 transition-all duration-300 ease-in-out
+                  hover:shadow-lg hover:shadow-green-200 overflow-hidden">
+                  <span className="relative z-10 flex items-center justify-center gap-2 text-white font-semibold tracking-wide">
+                    View Brochure
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </span>
                 </button>
               )}
 
@@ -178,24 +198,46 @@ const ProductDetailPage = () => {
               {!showQuantityControls ? (
                 <button
                   onClick={() => setShowQuantityControls(true)}
-                  className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition-colors"
+                  className="w-full mt-6 relative px-6 py-2 rounded-lg shadow-md 
+                  before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
+                  before:transition-all before:duration-500 hover:before:opacity-0
+                  after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
+                  after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
+                  transform hover:scale-105 transition-all duration-300 ease-in-out
+                  hover:shadow-lg hover:shadow-green-200 overflow-hidden"
                 >
-                  Add to Cart
+                  <span className="relative z-10 flex items-center justify-center gap-2 text-white font-semibold tracking-wide">
+                    Add to Cart
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </span>
                 </button>
               ) : (
                 <div className="flex items-center justify-center gap-4 bg-gray-100 p-2 rounded">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-3 py-1 bg-white rounded shadow"
+                    className="px-3 py-1 bg-white rounded shadow hover:bg-red-100 transition-colors duration-300"
                   >
-                    -
+                    <span className="text-red-500 font-bold animate-pulse">-</span>
                   </button>
-                  <span>{quantity}</span>
+                  <span className="text-lg font-semibold">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="px-3 py-1 bg-white rounded shadow"
+                    className="px-3 py-1 bg-white rounded shadow hover:bg-green-100 transition-colors duration-300"
                   >
-                    +
+                    <span className="text-green-500 font-bold animate-pulse">+</span>
                   </button>
                 </div>
               )}
@@ -280,7 +322,7 @@ const ProductDetailPage = () => {
               </div>
 
               {/* Checkout Button */}
-              <button className="w-full mt-6 relative px-6 py-3 rounded-lg shadow-md 
+              <button className="w-full mt-6 relative px-6 py-2 rounded-lg shadow-md 
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
                   before:transition-all before:duration-500 hover:before:opacity-0
                   after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
@@ -325,7 +367,7 @@ const ProductDetailPage = () => {
 
           {/* Company Features */}
           <div className="bg-white rounded-lg shadow-md p-6 mt-6">
-            <h2 className="text-xl font-semibold mb-4">Why Choose RDental?</h2>
+            <h2 className="text-xl font-semibold mb-4">Why Choose <span className="text-green-500">R</span>-DENTAL?</h2>
             <ul className="space-y-3">
               <li className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

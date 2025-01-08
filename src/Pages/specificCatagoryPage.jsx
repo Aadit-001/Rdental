@@ -6,11 +6,17 @@ import equipment from '../assets/equipments.jpg';
 import restoratives from '../assets/restoratives.jpg';
 import instruments from '../assets/instruments.webp';
 import sterilization from '../assets/sterilization.webp';
+import general from '../assets/general.jpg';
 
 const SpecificCategoryPage = () => {
   const { category } = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Add this useEffect for scroll restoration
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [category]); // Scroll to top whenever category changes
 
   // Get poster image based on category
   const getPosterImage = () => {
@@ -25,6 +31,8 @@ const SpecificCategoryPage = () => {
         return instruments;
       case 'sterilization':
         return sterilization;
+      case 'general Dentistry':
+        return general;
       default:
         return endodentics; // Default fallback image
     }
