@@ -3,12 +3,20 @@ import { useParams } from 'react-router-dom';
 import ProductCard from '../Components/ProductCard';
 import endodentics from '../assets/Endodentics.jpg';
 import equipment from '../assets/equipments.jpg';
-
+import restoratives from '../assets/restoratives.jpg';
+import instruments from '../assets/instruments.webp';
+import sterilization from '../assets/sterilization.webp';
+import general from '../assets/general.jpg';
 
 const SpecificCategoryPage = () => {
   const { category } = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Add this useEffect for scroll restoration
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [category]); // Scroll to top whenever category changes
 
   // Get poster image based on category
   const getPosterImage = () => {
@@ -23,6 +31,8 @@ const SpecificCategoryPage = () => {
         return instruments;
       case 'sterilization':
         return sterilization;
+      case 'general Dentistry':
+        return general;
       default:
         return endodentics; // Default fallback image
     }
@@ -314,22 +324,62 @@ const SpecificCategoryPage = () => {
           {/* Left Sidebar - 20% */}
           <div className="w-1/5 sticky top-24">
             {/* Sort Options */}
-            <div className="bg-white p-4 rounded-lg shadow-sm mb-6 transform transition duration-500 hover:scale-105">
-              <h3 className="font-semibold text-lg mb-4 text-green-600">Sort By</h3>
+            <div className="bg-white p-4 rounded-lg shadow-lg mb-6 transform transition duration-500 border-2 border-green-100 hover:border-green-500 backdrop-blur-sm bg-white/90">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="font-bold text-lg text-green-600 border-b-2 border-green-200 pb-2">Sort By</h3>
+                <button 
+                  onClick={() => {
+                    // Get all radio buttons
+                    const radioButtons = document.getElementsByName('sort');
+                    // Uncheck all radio buttons
+                    radioButtons.forEach(radio => {
+                      radio.checked = false;
+                    });
+                  }}
+                  className="text-sm px-2 py-1 text-green-600 hover:text-white border border-green-500 hover:bg-green-500 rounded transition-colors duration-300"
+                >
+                  Reset
+                </button>
+              </div>
               <div className="space-y-2">
                 {['Newest First', 'Price: Low to High', 'Price: High to Low', 'Most Popular'].map((option) => (
                   <label 
                     key={option} 
-                    className="flex items-center space-x-2 cursor-pointer p-2 rounded-md transition-all duration-300 hover:bg-green-50 group"
+                    className="flex items-center space-x-2 cursor-pointer p-2 rounded-md transition-all duration-300 hover:bg-green-50 group relative overflow-hidden"
                   >
                     <input 
                       type="radio" 
-                      name="sort" 
-                      className="text-green-500 focus:ring-green-500" 
+                      name="sort"
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          // Get all radio buttons in the group
+                          const radioButtons = document.getElementsByName('sort');
+                          // Uncheck all other radio buttons
+                          radioButtons.forEach(radio => {
+                            if (radio !== e.target) {
+                              radio.checked = false;
+                            }
+                          });
+                        }
+                      }}
+                      className="text-green-500 focus:ring-green-500 relative z-10"
                     />
-                    <span className="text-gray-700 group-hover:text-green-600 transition-colors duration-300">
+                    <span className={`
+                      text-gray-700 transition-colors duration-300 font-medium relative z-10
+                      group-hover:text-green-600
+                      [input:checked+&]:text-green-700
+                      [input:checked+&]:rounded-md
+                    `}>
                       {option}
                     </span>
+                    <div className={`
+                      absolute inset-0 bg-gradient-to-r from-green-50 to-transparent 
+                      opacity-0 group-hover:opacity-100 transition-opacity duration-300
+                      [input:checked~&]:opacity-100
+                      [input:checked~&]:bg-gradient-to-r 
+                      [input:checked~&]:from-green-200/50
+                      [input:checked~&]:to-transparent
+                    `}/>
                   </label>
                 ))}
               </div>
@@ -356,9 +406,9 @@ const SpecificCategoryPage = () => {
             {/* Products Grid - Fixed heights for different screen sizes */}
             <div className="h-[calc(120vh)] overflow-y-auto">
               {/* Products Count */}
-              <div className="mb-6 flex justify-between items-center bg-gray-50 py-4">
-                <h2 className="text-2xl font-semibold text-gray-800">
-                  {category.replace(/-/g, ' ')} Products
+              <div className="mb-6 flex justify-between items-center h-14 bg-slate-50 py-4 px-6 rounded-lg shadow-lg hover:shadow-xl border-2 border-green-400 transform  transition-all duration-300 animate-fadeIn">
+                <h2 className="text-[clamp(1rem,2vw,1.25rem)] ml-[-10px] py-0 font-bold text-emerald-600 drop-shadow-[0_8px_8px_rgba(0,0,0,0.2)] tracking-wider bg-gradient-to-r from-emerald-200/70 to-transparent p-2 rounded-lg animate-pulse transition-all duration-300">
+                  {category.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')} Products
                 </h2>
                 <span className="text-gray-600">
                   Showing {products.length} products

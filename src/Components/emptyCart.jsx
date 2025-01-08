@@ -111,13 +111,19 @@ const EmptyCart = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="space-y-4"
+          className="space-y-4 "
         >
           <Link
             to="/products"
-            className="inline-block bg-gradient-to-r from-teal-500 to-emerald-500 text-white px-8 py-3 rounded-full font-semibold hover:from-teal-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            className="inline-block relative px-6 py-3 rounded-lg shadow-md 
+                  before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
+                  before:transition-all before:duration-500 hover:before:opacity-0
+                  after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
+                  after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
+                  transform hover:scale-105 transition-all duration-300 ease-in-out
+                  hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white relative z-10"
           >
-            Browse Products
+            <span className="relative z-10 text-white">Browse Products</span>
           </Link>
 
           <div className="flex justify-center gap-4 mt-6">
@@ -127,7 +133,7 @@ const EmptyCart = () => {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-5 w-5 relative z-10"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
