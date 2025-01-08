@@ -81,31 +81,31 @@ function WishList() {
         animate={{ opacity: 1 }}
         className="min-h-screen flex flex-col relative bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)]"
       >
-        <div className="container mx-auto px-4 pt-28 flex-grow relative">
+        <div className="container mx-auto px-24 pt-28 flex-grow relative">
           <div className="flex">
             {/* Vertical Poster Section - 20% width */}
-            <div className="w-1/5 mr-8 mb-20">
-              <div className="relative top-16 bg-gradient-to-b from-green-400 to-green-600 rounded-lg p-6 text-white h-[80vh] flex flex-col justify-between shadow-xl">
+            <div className="w-1/5 mr-2 mb-20 mt-10 ">
+              <div className="relative top-8 bg-gradient-to-b from-green-400 to-green-500 rounded-lg p-6 text-white h-[80vh] flex flex-col justify-between shadow-xl">
                 <div>
-                  <h2 className="text-2xl font-bold mb-4">Special Offers</h2>
-                  <p className="mb-4">Save up to 50% on selected items in your wishlist!</p>
+                  <h2 className="text-2xl font-bold mb-4 animate-bounce hover:scale-105 transition-transform duration-300">Special Offers</h2>
+                  <p className="mb-4 hover:text-green-100 transition-colors duration-300 animate-pulse">Save up to 50% on selected items in your wishlist!</p>
                   <div className="border-t border-white/20 my-4"></div>
                   <ul className="space-y-2">
-                    <li className="flex items-center">
-                      <span className="mr-2">✨</span>
-                      Free Shipping
+                    <li className="flex items-center hover:translate-x-2 transition-transform duration-300">
+                      <span className="mr-2 animate-pulse">💎</span>
+                      <span className="hover:font-bold transition-all duration-300">Exclusive Deals</span>
                     </li>
-                    <li className="flex items-center">
-                      <span className="mr-2">🎁</span>
-                      Special Discounts
+                    <li className="flex items-center hover:translate-x-2 transition-transform duration-300">
+                      <span className="mr-2 animate-bounce">🎁</span>
+                      <span className="hover:font-bold transition-all duration-300">Special Discounts</span>
                     </li>
-                    <li className="flex items-center">
-                      <span className="mr-2">⚡</span>
-                      Flash Sales
+                    <li className="flex items-center hover:translate-x-2 transition-transform duration-300">
+                      <span className="mr-2 animate-pulse">⚡</span>
+                      <span className="hover:font-bold transition-all duration-300">Flash Sales</span>
                     </li>
                   </ul>
                 </div>
-                <Link to="/" className="bg-white text-green-600 py-2 px-4 rounded-lg text-center font-semibold hover:bg-green-50 transition-colors">
+                <Link to="/" className="bg-white text-green-600 py-2 px-4 rounded-lg text-center font-semibold hover:bg-green-50 transition-all duration-300 hover:scale-105" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                   Shop Now
                 </Link>
               </div>
@@ -113,8 +113,8 @@ function WishList() {
 
             {/* Main Content - 80% width */}
             <div className="w-4/5">
-              <h1 className="text-4xl font-bold text-gray-600 mb-8 text-center animate-fade-in-down relative group">
-                <span className="inline-block">My Wishlist</span>
+              <h1 className="text-4xl font-bold text-gray-600 mb-8 text-center mr-10 animate-fade-in-down relative group">
+                <span className="inline-block">My WishList</span>
                 <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-900 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
               </h1>
 
@@ -135,11 +135,17 @@ function WishList() {
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-green-500 rounded-lg hover:bg-green-600 focus:shadow-outline focus:outline-none"
+                      className="inline-flex items-center justify-center h-12 px-6 relative px-6 py-3 rounded-lg shadow-md 
+                  before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
+                  before:transition-all before:duration-500 hover:before:opacity-0
+                  after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
+                  after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
+                  transform hover:scale-105 transition-all duration-300 ease-in-out
+                  hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white"
                     >
-                      <span className="mr-2">Browse Items</span>
+                      <span className="mr-2 relative z-10">Browse Items</span>
                       <svg
-                        className="w-5 h-5"
+                        className="w-5 h-5 relative z-10"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -171,16 +177,22 @@ function WishList() {
                       />
                     ))}
                   </div>
-                  <div className="flex justify-center mt-10 mb-10">
+                  <div className="flex justify-center mt-10 mb-10 ">
                     <Link to="/">
                       <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white transition duration-200 bg-green-500 rounded-lg hover:bg-green-600 focus:shadow-outline focus:outline-none"
+                        className="inline-flex items-center justify-center h-12 px-6 relative px-6 py-3 rounded-lg shadow-md 
+                  before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
+                  before:transition-all before:duration-500 hover:before:opacity-0
+                  after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
+                  after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
+                  transform hover:scale-105 transition-all duration-300 ease-in-out
+                  hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                       >
-                        <span className="mr-2">Add more to wishlist</span>
+                        <span className="mr-2 relative z-10">Add more to wishlist</span>
                         <svg
-                          className="w-5 h-5"
+                          className="w-5 h-5 relative z-10"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"

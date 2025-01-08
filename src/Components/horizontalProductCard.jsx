@@ -106,9 +106,9 @@ const HorizontalProductCard = ({ product, onDelete, onQuantityChange }) => {
                   e.stopPropagation();
                   handleQuantityChange(quantity - 1);
                 }}
-                className="px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+                className="px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors duration-300"
               >
-                -
+                <span className="text-red-500 font-bold animate-pulse">-</span>
               </button>
               <span className="px-4">{quantity}</span>
               <button
@@ -116,9 +116,9 @@ const HorizontalProductCard = ({ product, onDelete, onQuantityChange }) => {
                   e.stopPropagation();
                   handleQuantityChange(quantity + 1);
                 }}
-                className="px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+                className="px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors duration-300"
               >
-                +
+                <span className="text-green-500 font-bold animate-pulse">+</span>
               </button>
             </div>
           </div>
