@@ -45,6 +45,10 @@ const Login = () => {
   };
 
   const handleClose = () => {
+    if(location.pathname !== '/'){
+      setShowSignIn(false);
+      navigate('/');
+    }
     setShowSignIn(false);
   };
 

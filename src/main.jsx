@@ -16,50 +16,48 @@ import WishList from './Pages/WishList.jsx'
 import ContactUs from './Components/contactUs.jsx'
 import Profile from './Pages/profile.jsx'
 import { ToastContainer } from 'react-toastify'
+import AdminDashboard from './admin/AdminDashboard.jsx'
+import { ProtectedRouteForUser, ProtectedRouteForAdmin } from './ProtectedRoute/ProtectedRoute.jsx'
+
+// Protected Route Components
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <MyState>  {/* state ke andar use kare */}
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<RootLayout />} >
-            <Route path="/" element={<Home />} />
-            <Route path="/aboutUs" element={<AboutUs />} />
-            <Route path="/products/:category" element={<SpecificCatagoryPage />} />
-            <Route path="/products/:category/:title" element={<ProductDetailPage />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/wishlist" element={<WishList />} />
-            <Route path="/contactUs" element={<ContactUs />} />
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </Provider>
-    <ToastContainer />
+    <MyState>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<RootLayout />} >
+              <Route path="/" element={<Home />} />
+              <Route path="/aboutUs" element={<AboutUs />} />
+              <Route path="/products/:category" element={<SpecificCatagoryPage />} />
+              <Route path="/products/:category/:title" element={<ProductDetailPage />} />
+              <Route path="/cart" element={
+                <ProtectedRouteForUser>
+                  <Cart />
+                </ProtectedRouteForUser>
+              }/>
+              <Route path="/wishlist" element={
+                <ProtectedRouteForUser>
+                  <WishList />
+                </ProtectedRouteForUser>
+              }/>
+              <Route path="/contactUs" element={<ContactUs />} />
+              <Route path="/profile" element={
+                <ProtectedRouteForUser>
+                  <Profile />
+                </ProtectedRouteForUser>
+              }/>
+              <Route path="/admin" element={
+                <ProtectedRouteForAdmin>
+                  <AdminDashboard />
+                </ProtectedRouteForAdmin>
+              }/>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+      <ToastContainer />
     </MyState>
   </StrictMode>,
 )
-
-
-//protected routes
-
-//user 
-export const ProtectedRouteForUser = ({ children }) => {
-  const user = localStorage.getItem('user');
-  if(user){
-    return children;
-  }else{
-    return 
-  }
-}
-
-export const ProtectedRouteForAdmin = ({ children }) => {
-  const admin = JSON.parse(localStorage.getItem('user'));   //string mai aate data ko object mai lene ke liye json.parse
-  if(admin && (admin.user.email === 'aaditjha8657@gmail.com')){  //keep this in env file
-    return children;
-  }else{
-    return 
-  }
-}
-
