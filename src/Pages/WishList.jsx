@@ -10,13 +10,13 @@ function WishList() {
   const notify = () => {
     toast.success(' Item removed Successfully!', {
       position: "bottom-right",
-      autoClose: 5000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: false,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "light",
+      theme: "colored",
     });
   };
 

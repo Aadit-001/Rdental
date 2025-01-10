@@ -10,9 +10,14 @@ import { addDoc } from 'firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 import myContext from '../context/data/myContext';
 import { useContext } from 'react';
+import Loader from './Loader';
+import { signInWithPopup } from 'firebase/auth';
+import {provider } from '../firebase/firebaseConfig';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-  const {setShowSignIn,setShowSignUp} = useContext(myContext);
+  const navigate = useNavigate();
+  const {setShowSignIn,setShowSignUp,isLoading, setIsLoading, setIsUserLoggedIn} = useContext(myContext);
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -20,6 +25,33 @@ const Signup = () => {
     confirmPassword: ''
   });
 
+  const handleGoogleSignUp = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      setShowSignUp(false);
+      toast.success('User Logged in successfully', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      // Set user details in local storage
+      localStorage.setItem('user', JSON.stringify(result.user));
+      // Redirect to dashboard or home page
+      navigate('/');
+      setIsUserLoggedIn(true);
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    }
+  };
+
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -30,19 +62,21 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Signup logic here
-    if(formData.password !== formData.confirmPassword){
-      toast.error("Password and Confirm Password do not match");
-      return;
-    }
+    setIsLoading(true);
+    try {
+      // Validation checks
+      if(formData.password !== formData.confirmPassword){
+        setIsLoading(false);
+        toast.error("Password and Confirm Password do not match");
+        return;
+      }
 
-    if(formData.email === "" || formData.password === "" || formData.confirmPassword === "" || formData.fullname === ""){
-      toast.error("All fields are required");
-      return;
-    }
-    
-    // Server side validation and signup logic her
-    try{
+      if(formData.email === "" || formData.password === "" || formData.confirmPassword === "" || formData.fullname === ""){
+        setIsLoading(false);
+        toast.error("All fields are required");
+        return;
+      }
+      
       const users = await createUserWithEmailAndPassword(auth,formData.email,formData.password);
 
       const user = {
@@ -54,10 +88,20 @@ const Signup = () => {
 
       const userRef = collection(fireDB,"users") //database mia ek collection banaya users ka (matlab table)
       await addDoc(userRef,user)   //uss collection mai ek value dala , ek user ka sara detail ke value hai
-
+      
+      setIsLoading(false);
       setShowSignUp(false); //after signup, we are showing login page again
       setShowSignIn(true);
-      toast.success("User registered successfully");
+      toast.success("User registered successfully", {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       
       // Reset form fields
       setFormData({
@@ -70,17 +114,12 @@ const Signup = () => {
       // Logged in user details in console
       console.log("User logged in successfully");
       console.log(users.user);
-      
-      // Redirect to dashboard after successful signup
-      // window.location.href = '/dashboard';
 
-      
-
-    }catch(error){
+    } catch(error) {
+      setIsLoading(false);
       toast.error("Something went wrong");
       console.log(error);
     }
-    
   };
 
   const handleClose = () => {
@@ -89,6 +128,7 @@ const Signup = () => {
 
   return (
     <div className='z-50 fixed top-0 min-h-screen flex justify-center items-center bg-black/50 h-screen w-screen backdrop-blur-sm'>
+      {isLoading && <Loader/>}
     <div className="flex justify-center items-center min-h-screen relative">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -177,9 +217,11 @@ const Signup = () => {
               <div className="border-t border-gray-300 w-full"></div>
             </div>
 
+            {/* Sign up with Google Button */}
             <motion.button
               type="button"
-              className="p-3 border border-gray-300 rounded-md flex items-center justify-center gap-2 hover:bg-gray-50 transition-all duration-300 shadow-sm"
+              className="p-3 border border-gray-300 rounded-md flex items-center justify-center gap-2 hover:bg-gray-50 transition-all duration-300 shadow-sm" 
+              onClick={handleGoogleSignUp}
               whileHover={{ scale: 1.02, backgroundColor: "#f8fafc" }}
               whileTap={{ scale: 0.98 }}
             >

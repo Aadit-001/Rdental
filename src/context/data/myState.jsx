@@ -7,6 +7,7 @@ const MyState = (props) => {
     const [showSignUp, setShowSignUp] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const user = localStorage.getItem('user');
@@ -14,6 +15,7 @@ const MyState = (props) => {
             setIsUserLoggedIn(true);
         }
     },[]);
+
 
     return (
         <myContext.Provider value={
@@ -26,6 +28,8 @@ const MyState = (props) => {
                 setShowProfile,
                 isUserLoggedIn,
                 setIsUserLoggedIn,
+                isLoading,
+                setIsLoading,
             }}>
             {props.children}
         </myContext.Provider>
