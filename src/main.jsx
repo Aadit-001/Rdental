@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Routes, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { store } from './Redux/Store.js'
+import MyState from './context/data/myState.jsx'
 import './index.css'
 import Home from './Home.jsx'
 import AboutUs from './Pages/aboutUs.jsx'
@@ -14,9 +15,11 @@ import Cart from './Pages/Cart.jsx'
 import WishList from './Pages/WishList.jsx'
 import ContactUs from './Components/contactUs.jsx'
 import Profile from './Pages/profile.jsx'
+import { ToastContainer } from 'react-toastify'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <MyState>  {/* state ke andar use kare */}
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
@@ -33,5 +36,30 @@ createRoot(document.getElementById('root')).render(
         </Routes>
       </BrowserRouter>
     </Provider>
+    <ToastContainer />
+    </MyState>
   </StrictMode>,
 )
+
+
+//protected routes
+
+//user 
+export const ProtectedRouteForUser = ({ children }) => {
+  const user = localStorage.getItem('user');
+  if(user){
+    return children;
+  }else{
+    return 
+  }
+}
+
+export const ProtectedRouteForAdmin = ({ children }) => {
+  const admin = JSON.parse(localStorage.getItem('user'));   //string mai aate data ko object mai lene ke liye json.parse
+  if(admin && (admin.user.email === 'aaditjha8657@gmail.com')){  //keep this in env file
+    return children;
+  }else{
+    return 
+  }
+}
+

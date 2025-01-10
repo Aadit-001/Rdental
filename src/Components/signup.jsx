@@ -1,10 +1,20 @@
 import  { useState } from 'react';
 import Logoo from '../assets/logoo.png';
 import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase/firebaseConfig';
+import { fireDB } from '../firebase/firebaseConfig';
+import { collection } from 'firebase/firestore';
+import { addDoc } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
+import myContext from '../context/data/myContext';
+import { useContext } from 'react';
 
-const Signup = ({ setShowSignUp, setShowSignIn }) => {
+const Signup = () => {
+  const {setShowSignIn,setShowSignUp} = useContext(myContext);
   const [formData, setFormData] = useState({
-    fullName: '',
+    fullname: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -18,10 +28,59 @@ const Signup = ({ setShowSignUp, setShowSignIn }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Signup logic here
-    console.log(formData);
+    if(formData.password !== formData.confirmPassword){
+      toast.error("Password and Confirm Password do not match");
+      return;
+    }
+
+    if(formData.email === "" || formData.password === "" || formData.confirmPassword === "" || formData.fullname === ""){
+      toast.error("All fields are required");
+      return;
+    }
+    
+    // Server side validation and signup logic her
+    try{
+      const users = await createUserWithEmailAndPassword(auth,formData.email,formData.password);
+
+      const user = {
+        uid: users.user.uid,
+        displayName: formData.fullname,
+        email: formData.email,
+        time : Timestamp.now() //this gives the current time
+      }
+
+      const userRef = collection(fireDB,"users") //database mia ek collection banaya users ka (matlab table)
+      await addDoc(userRef,user)   //uss collection mai ek value dala , ek user ka sara detail ke value hai
+
+      setShowSignUp(false); //after signup, we are showing login page again
+      setShowSignIn(true);
+      toast.success("User registered successfully");
+      
+      // Reset form fields
+      setFormData({
+        fullname: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      });
+      
+      // Logged in user details in console
+      console.log("User logged in successfully");
+      console.log(users.user);
+      
+      // Redirect to dashboard after successful signup
+      // window.location.href = '/dashboard';
+
+      
+
+    }catch(error){
+      toast.error("Something went wrong");
+      console.log(error);
+    }
+    
   };
 
   const handleClose = () => {
@@ -63,10 +122,10 @@ const Signup = ({ setShowSignUp, setShowSignIn }) => {
               <img src={Logoo} alt="RDental Logo" className="h-16" />
             </motion.div>
             <h2 className="text-green-700 text-center text-2xl font-bold mb-5 drop-shadow-sm">Sign Up</h2>
-            <motion.input 
+            <motion.input
               type="text"
-              name="fullName"
-              value={formData.fullName}
+              name="fullname"
+              value={formData.fullname}
               onChange={handleChange}
               placeholder="Full Name"
               required
@@ -142,7 +201,7 @@ const Signup = ({ setShowSignUp, setShowSignIn }) => {
           </motion.form>
         </div>
       </motion.div>
-    </div>
+    </div>  
     </div>
   );
 };

@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import Logoo from '../assets/logoo.png';
 import { motion } from 'framer-motion';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase/firebaseConfig';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
+import { useContext } from 'react';
+import myContext from '../context/data/myContext';
 
-const Login = ({ setShowSignIn , setShowSignUp}) => {
+const Login = () => {
+  const { setShowSignIn, setShowSignUp,setIsUserLoggedIn } = useContext(myContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -16,10 +24,24 @@ const Login = ({ setShowSignIn , setShowSignUp}) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Login logic here
-    console.log(formData);
+    try {
+      const user = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      setShowSignIn(false);
+      toast.success("User Logged in successfully");
+      // Set user details in local storage
+      localStorage.setItem('user', JSON.stringify(user));
+      // Redirect to dashboard or home page
+      navigate('/');
+      setIsUserLoggedIn(true);
+      
+      
+    } catch (error) {
+      console.log(error);
+      toast.error("Invalid email or password");
+    }
   };
 
   const handleClose = () => {

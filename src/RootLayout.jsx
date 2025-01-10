@@ -4,12 +4,11 @@ import Footer from './Components/footer.jsx'
 import Login from './Components/login.jsx'
 import Signup from './Components/signup.jsx'
 import Profile from './Pages/profile.jsx'
+import myContext from './context/data/myContext';
+import { useContext } from 'react'
 
-import { useState } from 'react';
 function RootLayout() {
-  const [showSignIn, setShowSignIn] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
+  const { showSignIn, showSignUp , setShowSignIn, setShowSignUp, showProfile, setShowProfile } = useContext(myContext);
 
 
   return (
