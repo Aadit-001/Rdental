@@ -7,14 +7,43 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 import { useContext } from 'react';
 import myContext from '../context/data/myContext';
+import Loader from './Loader';
+import { signInWithPopup } from 'firebase/auth';
+import { provider } from '../firebase/firebaseConfig';
 
 const Login = () => {
-  const { setShowSignIn, setShowSignUp,setIsUserLoggedIn } = useContext(myContext);
+  const { setShowSignIn, setShowSignUp,setIsUserLoggedIn,isLoading, setIsLoading } = useContext(myContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      setShowSignIn(false);
+      toast.success('User Logged in successfully', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      // Set user details in local storage
+      localStorage.setItem('user', JSON.stringify(result.user));
+      // Redirect to dashboard or home page
+      navigate('/');
+      setIsUserLoggedIn(true);
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,11 +55,21 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     // Login logic here
     try {
       const user = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       setShowSignIn(false);
-      toast.success("User Logged in successfully");
+      toast.success('User Logged in successfully', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       // Set user details in local storage
       localStorage.setItem('user', JSON.stringify(user));
       // Redirect to dashboard or home page
@@ -42,6 +81,7 @@ const Login = () => {
       console.log(error);
       toast.error("Invalid email or password");
     }
+    setIsLoading(false);
   };
 
   const handleClose = () => {
@@ -49,7 +89,8 @@ const Login = () => {
   };
 
   return (
-    <div className='z-50 fixed top-0 min-h-screen flex justify-center items-center bg-black/50 h-screen w-screen backdrop-blur-sm'>
+      <div className='z-50 fixed top-0 min-h-screen flex justify-center items-center bg-black/50 h-screen w-screen backdrop-blur-sm'>
+      {isLoading && <Loader/>}
     <div className="flex justify-center items-center min-h-screen relative">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -128,6 +169,12 @@ const Login = () => {
               className="p-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-md cursor-pointer text-base hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-md"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
+                });
+              }}
             >
               Login
             </motion.button>
@@ -138,9 +185,11 @@ const Login = () => {
               <div className="border-t border-gray-300 w-full"></div>
             </div>
 
+            {/* Login with Google Button */}
             <motion.button 
               type="button"
               className="p-3 border border-gray-300 rounded-md flex items-center justify-center gap-2 hover:bg-gray-50 transition-all duration-300 shadow-sm"
+              onClick={handleGoogleSignIn}
               whileHover={{ scale: 1.02, backgroundColor: "#f8fafc" }}
               whileTap={{ scale: 0.98 }}
             >
