@@ -1,7 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./Redux/Store.js";
 import MyState from "./context/data/myState.jsx";
@@ -15,61 +14,61 @@ import Cart from "./Pages/Cart.jsx";
 import WishList from "./Pages/WishList.jsx";
 import ContactUs from "./Components/contactUs.jsx";
 import Profile from "./Pages/profile.jsx";
-import { ToastContainer } from "react-toastify";
-import { Bounce } from "react-toastify";
+import { ToastContainer, Bounce } from "react-toastify";
 import PageNotFound from "./ErrorPage/PageNotFound.jsx";
+import AdminDashboard from "./admin/AdminDashboard.jsx";
+import { ProtectedRouteForUser, ProtectedRouteForAdmin } from "./ProtectedRoute/ProtectedRoute.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <MyState>
-      {" "}
-      {/* state ke andar use kare */}
       <Provider store={store}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<RootLayout />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/aboutUs" element={<AboutUs />} />
+              <Route index element={<Home />} />
+              <Route path="aboutUs" element={<AboutUs />} />
+              <Route path="products/:category" element={<SpecificCatagoryPage />} />
+              <Route path="products/:category/:title" element={<ProductDetailPage />} />
               <Route
-                path="/products/:category"
-                element={<SpecificCatagoryPage />}
+                path="cart"
+                element={
+                  <ProtectedRouteForUser>
+                    <Cart />
+                  </ProtectedRouteForUser>
+                }
               />
               <Route
-                path="/products/:category/:title"
-                element={<ProductDetailPage />}
+                path="wishlist"
+                element={
+                  <ProtectedRouteForUser>
+                    <WishList />
+                  </ProtectedRouteForUser>
+                }
               />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/wishlist" element={<WishList />} />
-              <Route path="/contactUs" element={<ContactUs />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/*" element={<PageNotFound />} />
+              <Route path="contactUs" element={<ContactUs />} />
+              <Route
+                path="profile"
+                element={
+                  <ProtectedRouteForUser>
+                    <Profile />
+                  </ProtectedRouteForUser>
+                }
+              />
+              <Route
+                path="admin"
+                element={
+                  <ProtectedRouteForAdmin>
+                    <AdminDashboard />
+                  </ProtectedRouteForAdmin>
+                }
+              />
+              <Route path="*" element={<PageNotFound />} />
             </Route>
           </Routes>
         </BrowserRouter>
       </Provider>
-      <ToastContainer />
+      <ToastContainer transition={Bounce} />
     </MyState>
   </StrictMode>
 );
-
-//protected routes
-
-//user
-export const ProtectedRouteForUser = ({ children }) => {
-  const user = localStorage.getItem("user");
-  if (user) {
-    return children;
-  } else {
-    return;
-  }
-};
-
-export const ProtectedRouteForAdmin = ({ children }) => {
-  const admin = JSON.parse(localStorage.getItem("user")); //string mai aate data ko object mai lene ke liye json.parse
-  if (admin && admin.user.email === "aaditjha8657@gmail.com") {
-    //keep this in env file
-    return children;
-  } else {
-    return;
-  }
-};
