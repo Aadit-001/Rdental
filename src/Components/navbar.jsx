@@ -2,9 +2,13 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Logoo from '../assets/logoo.png';
 import name from '../assets/name.png';
+import myContext from '../context/data/myContext';
+import { useContext } from 'react';
 
 
-const Navbar = ({setShowSignIn, setShowProfile, showProfile}) => {
+const Navbar = () => {
+  const { setShowSignIn, setShowProfile, showProfile, isUserLoggedIn } = useContext(myContext); // Destructure setShowSignIn from context
+
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   // const [showSignIn, setShowSignIn] = useState(false);
@@ -18,7 +22,7 @@ const Navbar = ({setShowSignIn, setShowProfile, showProfile}) => {
   };
 
   const removeProfile = () => {
-    if(showProfile){
+    if (showProfile) {
       setShowProfile(false);
     }
   };
@@ -75,18 +79,24 @@ const Navbar = ({setShowSignIn, setShowProfile, showProfile}) => {
               </div>
             </div>
           </div>
-          
+
           {/* Navigation Items */}
           <div className="flex items-center space-x-4 pr-3">
             {/* Sign In Button */}
-            <button className="px-6 py-2 font-medium text-green-600 border-2 border-green-500 rounded-lg 
-              bg-gradient-to-r from-transparent to-transparent hover:from-green-500 hover:to-green-600 
-              hover:text-white transition-all duration-300 ease-in-out
-              bg-[length:200%_100%] bg-right hover:bg-left" onClick={handleSignInClick}>
-              Sign In
-            </button>
-            <Link 
-              to="/wishlist" 
+            {
+              isUserLoggedIn ? null : 
+                <button className="px-6 py-2 font-medium text-green-600 border-2 border-green-500 rounded-lg 
+                bg-gradient-to-r from-transparent to-transparent hover:from-green-500 hover:to-green-600 
+               hover:text-white transition-all duration-300 ease-in-out
+                bg-[length:200%_100%] bg-right hover:bg-left" onClick={handleSignInClick}>
+                  Sign In
+                </button>
+              
+            }
+            
+            
+            <Link
+              to="/wishlist"
               className="text-gray-600 hover:text-gray-800 group"
               onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
             >
@@ -141,7 +151,7 @@ const Navbar = ({setShowSignIn, setShowProfile, showProfile}) => {
               </div>
             </Link>
 
-            
+
           </div>
         </div>
       </div>
