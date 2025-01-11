@@ -6,7 +6,7 @@ import { useContext } from 'react';
 import myContext from '../context/data/myContext';
 
 const Profile = () => {
-  const {setIsUserLoggedIn} = useContext(myContext);
+  const {setIsUserLoggedIn,setShowSignIn} = useContext(myContext);
 
   //isme changes karne hai
   const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -22,6 +22,9 @@ const Profile = () => {
   const Logout = () => {
     localStorage.clear();
     setIsUserLoggedIn(false);
+    if(location.pathname !== '/'){
+      setShowSignIn(true);
+    }
     toast.success('Logged out successfully', {
       position: "bottom-right",
       autoClose: 1000,

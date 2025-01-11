@@ -10,6 +10,9 @@ import myContext from '../context/data/myContext';
 import Loader from './Loader';
 import { signInWithPopup } from 'firebase/auth';
 import { provider } from '../firebase/firebaseConfig';
+import { Timestamp } from 'firebase/firestore';
+import {  doc, getDoc, setDoc } from 'firebase/firestore';
+import { fireDB } from '../firebase/firebaseConfig';
 
 const Login = () => {
   const { setShowSignIn, setShowSignUp,setIsUserLoggedIn,isLoading, setIsLoading } = useContext(myContext);
@@ -23,6 +26,28 @@ const Login = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       setShowSignIn(false);
+      
+      // Create user object
+      const user = {
+        uid: result.user.uid,
+        displayName: result.user.displayName,
+        email: result.user.email,
+        time : Timestamp.now()
+      }
+
+      // Check if user exists in Firestore
+      const userDoc = doc(fireDB, "users", user.uid);
+      const docSnap = await getDoc(userDoc);
+
+      // If user doesn't exist, create new document
+      if (!docSnap.exists()) {
+        await setDoc(userDoc, user);
+      }
+
+      // Set user details in local storage
+      localStorage.setItem('user', JSON.stringify(result.user));
+
+      // Show success message
       toast.success('User Logged in successfully', {
         position: "bottom-right",
         autoClose: 1000,
@@ -33,15 +58,14 @@ const Login = () => {
         progress: undefined,
         theme: "colored",
       });
-      // Set user details in local storage
-      localStorage.setItem('user', JSON.stringify(result.user));
-      // Redirect to dashboard or home page
+
+      // Update app state and redirect
       navigate('/');
       setIsUserLoggedIn(true);
-      console.log(result);
+
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong");
+      toast.error(error.message);
     }
   };
 
@@ -128,13 +152,6 @@ const Login = () => {
               <img src={Logoo} alt="RDental Logo" className="h-16" />
             </motion.div>
             <h2 className="text-green-700 text-center text-2xl font-bold mb-5 drop-shadow-sm">Login</h2>
-            
-            {/* Already Logged In Message */}
-            {false && (
-              <div className="bg-green-100 text-green-700 p-3 rounded-md mb-4">
-                You are already logged in as <span className="font-semibold">user@example.com</span>
-              </div>
-            )}
 
             <motion.input 
               type="email"
