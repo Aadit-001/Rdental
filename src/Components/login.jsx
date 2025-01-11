@@ -185,7 +185,7 @@ const Login = () => {
             {/* Forgot Password Link */}
             <div className="text-right">
               <motion.a
-                href="#"
+                href="/ForgetPassword"
                 className="text-green-600 hover:text-green-700 text-sm"
                 whileHover={{ scale: 1.05 }}
               >
