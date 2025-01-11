@@ -1,10 +1,14 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
+import { useContext } from 'react';
+import myContext from '../context/data/myContext';
 
 const Profile = () => {
-  const navigate = useNavigate();
+  const {setIsUserLoggedIn} = useContext(myContext);
+
+  //isme changes karne hai
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const [user] = useState(storedUser || {
     name: "Guest User",
@@ -14,9 +18,10 @@ const Profile = () => {
   });
 
 
-  // logout button click krne ke baad logout to ho rha h par redirect nhi ho rha login pe
+  // logout button 
   const Logout = () => {
     localStorage.clear();
+    setIsUserLoggedIn(false);
     toast.success('Logged out successfully', {
       position: "bottom-right",
       autoClose: 1000,
@@ -27,7 +32,6 @@ const Profile = () => {
       progress: undefined,
       theme: "colored",
     });
-    navigate('/login');
   };
 
   return (
@@ -122,7 +126,6 @@ const Profile = () => {
               </Link>
             </motion.div>
 
-            {localStorage.getItem('user') && (
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -144,7 +147,6 @@ const Profile = () => {
                 </svg>
                 Logout
               </motion.button>
-            )}
           </div>
         </div>
       </motion.div>
