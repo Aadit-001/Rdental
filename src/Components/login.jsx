@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { useContext } from 'react';
 import myContext from '../context/data/myContext';
 import Loader from './Loader';
@@ -17,6 +17,7 @@ import { fireDB } from '../firebase/firebaseConfig';
 const Login = () => {
   const { setShowSignIn, setShowSignUp,setIsUserLoggedIn,isLoading, setIsLoading } = useContext(myContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -25,7 +26,6 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      setShowSignIn(false);
       
       // Create user object
       const user = {
@@ -44,10 +44,13 @@ const Login = () => {
         await setDoc(userDoc, user);
       }
 
-      // Set user details in local storage
+      // First update local storage
       localStorage.setItem('user', JSON.stringify(result.user));
+      
+      // Then update app state
+      setIsUserLoggedIn(true);
+      setShowSignIn(false);
 
-      // Show success message
       toast.success('User Logged in successfully', {
         position: "bottom-right",
         autoClose: 1000,
@@ -59,9 +62,12 @@ const Login = () => {
         theme: "colored",
       });
 
-      // Update app state and redirect
+      // Finally navigate
+      if(location.pathname === '/') {
+        // If we're already on home page, no need to navigate
+        return;
+      }
       navigate('/');
-      setIsUserLoggedIn(true);
 
     } catch (error) {
       console.error(error);
@@ -80,10 +86,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // Login logic here
     try {
       const user = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      // First update local storage
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      // Then update app state
+      setIsUserLoggedIn(true);
       setShowSignIn(false);
+      
       toast.success('User Logged in successfully', {
         position: "bottom-right",
         autoClose: 1000,
@@ -94,12 +105,13 @@ const Login = () => {
         progress: undefined,
         theme: "colored",
       });
-      // Set user details in local storage
-      localStorage.setItem('user', JSON.stringify(user));
-      // Redirect to dashboard or home page
-      navigate('/');
-      setIsUserLoggedIn(true);
       
+      // Finally navigate
+      if(location.pathname === '/') {
+        // If we're already on home page, no need to navigate
+        return;
+      }
+      navigate('/');
       
     } catch (error) {
       console.log(error);
@@ -109,10 +121,6 @@ const Login = () => {
   };
 
   const handleClose = () => {
-    if(location.pathname !== '/'){
-      setShowSignIn(false);
-      navigate('/');
-    }
     setShowSignIn(false);
   };
 

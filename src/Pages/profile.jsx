@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import myContext from '../context/data/myContext';
 
 const Profile = () => {
-  const {setIsUserLoggedIn,setShowSignIn} = useContext(myContext);
+  const { setIsUserLoggedIn, setShowProfile,setIsLoading } = useContext(myContext);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   //isme changes karne hai
   const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -17,13 +19,18 @@ const Profile = () => {
     profilePhoto: "https://via.placeholder.com/150"
   });
 
-
   // logout button 
   const Logout = () => {
+    setIsLoading(true);
+    // Clear all auth-related states
     localStorage.clear();
     setIsUserLoggedIn(false);
-    if(location.pathname !== '/'){
-      setShowSignIn(true);
+    setShowProfile(false);
+    setIsLoading(false);
+
+    // Navigate to home if not already there
+    if (location.pathname !== '/') {
+      navigate('/');
     }
     toast.success('Logged out successfully', {
       position: "bottom-right",
@@ -129,27 +136,27 @@ const Profile = () => {
               </Link>
             </motion.div>
 
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full p-4 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center font-medium"
-                onClick={Logout}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full p-4 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center font-medium"
+              onClick={Logout}
+            >
+              <svg
+                className="w-6 h-6 mr-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  className="w-6 h-6 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                  />
-                </svg>
-                Logout
-              </motion.button>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
+              </svg>
+              Logout
+            </motion.button>
           </div>
         </div>
       </motion.div>
