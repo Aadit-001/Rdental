@@ -133,6 +133,8 @@ const Navbar = () => {
                 </svg>
               </div>
             </Link>
+
+            {isUserLoggedIn ? 
             <Link className="text-gray-600 hover:text-gray-800 group" onClick={handleProfileClick}>
               <div className="relative transform transition-transform duration-300 group-hover:scale-110">
                 <svg
@@ -149,8 +151,7 @@ const Navbar = () => {
                   />
                 </svg>
               </div>
-            </Link>
-
+            </Link>  : null }
 
           </div>
         </div>
