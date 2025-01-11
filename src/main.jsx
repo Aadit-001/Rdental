@@ -20,6 +20,7 @@ import PageNotFound from "./ErrorPage/PageNotFound.jsx";
 import { ProtectedRouteForUser, ProtectedRouteForAdmin } from "./ProtectedRoute/ProtectedRoute.jsx";
 import Admin from "./Pages/Admin.jsx";
 import adminPage from "./Pages/Admin.jsx";
+import ForgetPassword from "./Components/ForgetPassword.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -73,6 +74,7 @@ createRoot(document.getElementById("root")).render(
                   </ProtectedRouteForAdmin>
                 }
               />
+              <Route path="ForgetPassword" element={<ForgetPassword />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
           </Routes>
