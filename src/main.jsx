@@ -15,10 +15,7 @@ import WishList from "./Pages/WishList.jsx";
 import ContactUs from "./Components/contactUs.jsx";
 import { ToastContainer, Bounce } from "react-toastify";
 import PageNotFound from "./ErrorPage/PageNotFound.jsx";
-// import AdminDashboard from "./admin/AdminDashboard.jsx";
 import { ProtectedRouteForUser, ProtectedRouteForAdmin } from "./ProtectedRoute/ProtectedRoute.jsx";
-import Admin from "./Pages/Admin.jsx";
-import adminPage from "./Pages/Admin.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -48,22 +45,22 @@ createRoot(document.getElementById("root")).render(
                 }
               />
               <Route path="contactUs" element={<ContactUs />} />
-              <Route
+              {/* <Route
                 path="admin"
                 element={
                   // <ProtectedRouteForAdmin>
-                    <Admin />
+                    // <Admin />
                   // </ProtectedRouteForAdmin>
                 }
-              />
-              <Route
+              /> */}
+              {/* <Route
                 path="adminPage"
                 element={
                   <ProtectedRouteForAdmin>
                     <adminPage />
                   </ProtectedRouteForAdmin>
                 }
-              />
+              /> */}
               <Route path="*" element={<PageNotFound />} />
             </Route>
           </Routes>

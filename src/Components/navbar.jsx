@@ -151,8 +151,7 @@ const Navbar = () => {
                   />
                 </svg>
               </div>
-            </Link>  : null}
-
+            </Link>  : null }
 
           </div>
         </div>
