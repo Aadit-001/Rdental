@@ -8,7 +8,7 @@ import myContext from './context/data/myContext';
 import { useContext } from 'react'
 
 function RootLayout() {
-  const { showSignIn, showSignUp , setShowSignIn, setShowSignUp, showProfile, setShowProfile } = useContext(myContext);
+  const { showSignIn, showSignUp , setShowSignIn, setShowSignUp, showProfile, setShowProfile ,isUserLoggedIn} = useContext(myContext);
 
 
   return (
@@ -19,7 +19,7 @@ function RootLayout() {
       <Navbar setShowSignIn={setShowSignIn} setShowProfile={setShowProfile} showProfile={showProfile}/>
       {showSignIn && <Login setShowSignIn={setShowSignIn} setShowSignUp={setShowSignUp}/>}
       {showSignUp && <Signup setShowSignUp={setShowSignUp} setShowSignIn={setShowSignIn}/>}
-      {showProfile && <Profile/>}
+      {isUserLoggedIn && showProfile ? <Profile/> : null}
       <Outlet setShowProfile={setShowProfile} showProfile={showProfile}/>
       <Footer />
     </>

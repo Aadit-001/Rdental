@@ -13,7 +13,6 @@ import ProductDetailPage from "./Pages/ProductDetailPage.jsx";
 import Cart from "./Pages/Cart.jsx";
 import WishList from "./Pages/WishList.jsx";
 import ContactUs from "./Components/contactUs.jsx";
-import Profile from "./Pages/profile.jsx";
 import { ToastContainer, Bounce } from "react-toastify";
 import PageNotFound from "./ErrorPage/PageNotFound.jsx";
 import AdminDashboard from "./admin/AdminDashboard.jsx";
@@ -47,14 +46,6 @@ createRoot(document.getElementById("root")).render(
                 }
               />
               <Route path="contactUs" element={<ContactUs />} />
-              <Route
-                path="profile"
-                element={
-                  <ProtectedRouteForUser>
-                    <Profile />
-                  </ProtectedRouteForUser>
-                }
-              />
               <Route
                 path="admin"
                 element={
