@@ -2,53 +2,11 @@ import { useState, useEffect } from 'react';
 import myContext from './myContext';
 import PropTypes from 'prop-types';
 import { Timestamp } from 'firebase/firestore';
-import { collection, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
-import { getDoc, updateDoc, doc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, onSnapshot, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+// import { getDoc, setDoc } from 'firebase/firestore';
 import { fireDB as fireDb } from '../../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
 
-const demoProducts = [
-    {
-        id: 1,
-        title: "Digital X-Ray Sensor",
-        description: "High-resolution digital dental X-ray sensor with USB connectivity",
-        price: 24999,
-        mrp: 29999,
-        image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?q=80",
-        category: "Equipment",
-        rating: 4.5
-    },
-    {
-        id: 2,
-        title: "Dental Composite Kit",
-        description: "Professional light-cure composite restoration kit",
-        price: 3999,
-        mrp: 4999,
-        image: "https://images.unsplash.com/photo-1615916732335-95d99bcd5bd6?q=80",
-        category: "Restoratives",
-        rating: 4.8
-    },
-    {
-        id: 3,
-        title: "Autoclave Sterilizer",
-        description: "18L Class B autoclave sterilizer with LCD display",
-        price: 89999,
-        mrp: 99999,
-        image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80",
-        category: "Sterilization",
-        rating: 4.7
-    },
-    {
-        id: 4,
-        title: "Root Canal Files Set",
-        description: "Complete set of endodontic files for root canal treatment",
-        price: 1999,
-        mrp: 2499,
-        image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80",
-        category: "Endodontics",
-        rating: 4.6
-    }
-];
 
 const MyState = (props) => {
     const [showSignIn, setShowSignIn] = useState(false);
@@ -56,8 +14,33 @@ const MyState = (props) => {
     const [showProfile, setShowProfile] = useState(false);
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [mode, setMode] = useState('light');
-    const [product, setProduct] = useState(demoProducts);
+    const [products, setProducts] = useState([]);
+    const [product, setProduct] = useState({
+        title: null,
+        imageUrl: null,
+        description: null,
+        price: null,
+        mrp: null,
+        category: null,
+        rating: 0,
+        noOfRatings: 0,
+        quantitySold: 0,
+        inStock: true,
+        totalStock: 0,
+        time: Timestamp.now(),
+        date: new Date().toLocaleString("en-US", {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+        })
+    });
+
+    //future use
+    // const [cart, setCart] = useState([]);
+    // const [orders, setOrders] = useState([]);
+    // const [wishlist, setWishlist] = useState([]);
+    // const [bestSellers, setBestSellers] = useState([]);
+
 
     useEffect(() => {
         const user = localStorage.getItem('user');
@@ -65,100 +48,163 @@ const MyState = (props) => {
         setIsLoading(false);
     }, []);
 
-    const [products, setProducts] = useState({
-        title: null,
-        imageUrl: null,
-        description: null,
-        price: null,
-        mrp: null,
-        category: null,
-        rating: null,
-        time: Timestamp.now(),
-        date: new Date().toLocaleString("en-US", {
-            month: "short",
-            day: "2-digit",
-            year: "numeric",
-        }),
-    });
 
     const addProduct = async () => {
-        if (!products.title || !products.price || !products.mrp || !products.imageUrl || !products.category || !products.description) {
+        if (!product.title || !product.price || !product.mrp || !product.imageUrl || !product.category || !product.description) {
             return toast.error('Please fill all fields');
         }
-        const productRef = collection(fireDb, "products");
+        setIsLoading(true);
         try {
-            await addDoc(productRef, products);
+            //firestore mai ek collections banaya products ka
+            const productRef = collection(fireDb, "products");
+
+            //abb product ko add kiya useing addDoc
+            await addDoc(productRef, {
+                ...product,   // Spread the product object , matlab spread operator jo hai wo ye object ke andar ka sara kuch bass ...se le aata hai
+                time: Timestamp.now(),
+                date: new Date().toLocaleString("en-US", {
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+                })
+            });
+
             toast.success("Product added successfully");
+
+            //product ke fields ko empty kardia
+            setProduct({
+                title: null,
+                imageUrl: null,
+                description: null,
+                price: null,
+                mrp: null,
+                category: null,
+                rating: 0,
+                noOfRatings: 0,
+                quantitySold: 0,
+                inStock: true,
+                totalStock: 0,
+                time: Timestamp.now(),
+                date: new Date().toLocaleString("en-US", {
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+                })
+            });
+
         } catch (error) {
             console.error(error);
+            toast.error("Error adding product");
         }
-        setProducts("");
+        setIsLoading(false);
     };
 
-    const getProductData = async () => {
+    const deleteProduct = async (productId) => {
         try {
-            const q = query(collection(fireDb, "products"), orderBy("time"));
-            const data = onSnapshot(q, (QuerySnapshot) => {
-                const productsArray = [];
+            setIsLoading(true);
+
+            const productRef = doc(fireDb, "products", productId);
+            await deleteDoc(productRef);
+            toast.success("Product deleted successfully");
+            getProductData(); // Refresh the product list
+        } catch (error) {
+            console.error(error);
+            toast.error("Error deleting product");
+        }
+        setIsLoading(false);
+    };
+
+    const updateProduct = async (productId, updatedData) => {
+        try {
+            setIsLoading(true);
+
+            //firestore ke collections se wo id ka product liya
+            const productRef = doc(fireDb, "products", productId);
+
+            //jaise addDoc kiya tha waise hi update kiya
+            await updateDoc(productRef, {
+                ...updatedData,
+                time: Timestamp.now(),
+                date: new Date().toLocaleString("en-US", {
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+                })
+            });
+
+            toast.success("Product updated successfully");
+
+            //product ka data phir fetch kiya database se
+            getProductData(); // Refresh the product list
+        } catch (error) {
+            console.error(error);
+            toast.error("Error updating product");
+        }
+        setIsLoading(false);
+    };
+
+    const getProductData = () => {
+        setIsLoading(true);
+        try {
+            const q = query(
+                collection(fireDb, "products"),
+                orderBy("time")
+            );
+            const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+                let productsArray = [];
                 QuerySnapshot.forEach((doc) => {
                     productsArray.push({ ...doc.data(), id: doc.id });
                 });
-                setProduct(productsArray);
+                setProducts(productsArray);
+                setIsLoading(false);
+            }, (error) => {
+                console.error("Error fetching products:", error);
+                toast.error("Error fetching products");
+                setIsLoading(false);
             });
-            return () => data;
+
+            return unsubscribe;
         } catch (error) {
-            console.error(error);
+            console.error("Error setting up products listener:", error);
+            toast.error("Error setting up products listener");
+            setIsLoading(false);
+            return () => { }; // Return empty cleanup function if setup fails
         }
     };
 
     useEffect(() => {
-        getProductData();
+        let unsubscribe = () => { };
+        try {
+            unsubscribe = getProductData() || (() => { });
+        } catch (error) {
+            console.error("Error in useEffect:", error);
+        }
+        return () => {
+            try {
+                unsubscribe();
+            } catch (error) {
+                console.error("Error unsubscribing:", error);
+            }
+        };
     }, []);
 
-    const addToWishlist = async (productId) => {
-        if (!isUserLoggedIn) {
-            return toast.error('Please login to add to wishlist');
-        }
 
-        const wishlistRef = doc(fireDb, 'users', localStorage.getItem('user'));
-        const wishlistDoc = await getDoc(wishlistRef);
-        if (!wishlistDoc.exists()) {
-            await setDoc(wishlistRef, {
-                wishlist: [productId],
-            });
-        } else {
-            const wishlistArray = wishlistDoc.data().wishlist || [];
-            if (!wishlistArray.includes(productId)) {
-                await updateDoc(wishlistRef, {
-                    wishlist: [...wishlistArray, productId],
-                });
-            }
-        }
-    };
+
 
     return (
-        <myContext.Provider
-            value={{
-                showSignIn,
-                showSignUp,
-                setShowSignIn,
-                setShowSignUp,
-                showProfile,
-                setShowProfile,
-                isUserLoggedIn,
-                setIsUserLoggedIn,
-                isLoading,
-                setIsLoading,
-                mode,
-                setMode,
-                product,
-                setProduct,
-                products,
-                addProduct,
-                setProducts,
-                addToWishlist,
-            }}
-        >
+        <myContext.Provider value={{
+            showSignIn, setShowSignIn,
+            showSignUp, setShowSignUp,
+            showProfile, setShowProfile,
+            isUserLoggedIn, setIsUserLoggedIn,
+            isLoading,
+            products,
+            product, setProduct,
+            addProduct,
+            deleteProduct,
+            updateProduct,
+            getProductData
+        }}>
             {props.children}
         </myContext.Provider>
     );
