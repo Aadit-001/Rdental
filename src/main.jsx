@@ -17,6 +17,10 @@ import { ToastContainer, Bounce } from "react-toastify";
 import PageNotFound from "./ErrorPage/PageNotFound.jsx";
 import { ProtectedRouteForUser, ProtectedRouteForAdmin } from "./ProtectedRoute/ProtectedRoute.jsx";
 import ForgetPassword from "./Components/ForgetPassword.jsx";
+import Profile from "./Pages/profile.jsx";
+import Dashboard from "./Admin/Dashboard.jsx";
+
+
 
 
 
@@ -47,24 +51,16 @@ createRoot(document.getElementById("root")).render(
                   </ProtectedRouteForUser>
                 }
               />
-              <Route path="contactUs" element={<ContactUs />} />
-              { <Route
-                path="admin"
-                element={
-                  // <ProtectedRouteForAdmin>
-                     <Admin />
-                  // </ProtectedRouteForAdmin>
-                }
-              />}
+              <Route path="ForgetPassword" element={<ForgetPassword />} />
+              <Route path="contactus" element={<ContactUs />} />
               <Route
-                path="adminPage"
+                path="dashboard"
                 element={
-                  <ProtectedRouteForAdmin>
-                    <adminPage />
-                  </ProtectedRouteForAdmin>
+                 // <ProtectedRouteForAdmin>
+                    <Dashboard />
+                 // </ProtectedRouteForAdmin>
                 }
               />
-              <Route path="ForgetPassword" element={<ForgetPassword />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
           </Routes>

@@ -82,6 +82,28 @@ const Navbar = () => {
 
           {/* Navigation Items */}
           <div className="flex items-center space-x-4 pr-3">
+            {/* Admin Link */}
+            <Link
+              to="/dashboard"
+              className="text-gray-600 hover:text-gray-800 group"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
+            >
+              <div className="relative transform transition-transform duration-300 group-hover:scale-110">
+                <svg
+                  className={`h-8 w-8 ${location.pathname === '/dashboard' ? 'text-green-500 fill-current' : ''}`}
+                  fill={location.pathname === '/dashboard' ? 'currentColor' : 'none'}
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                  />
+                </svg>
+              </div>
+            </Link>
             {/* Sign In Button */}
             {
               isUserLoggedIn ? null : 
@@ -91,10 +113,7 @@ const Navbar = () => {
                 bg-[length:200%_100%] bg-right hover:bg-left" onClick={handleSignInClick}>
                   Sign In
                 </button>
-              
             }
-            
-            
             <Link
               to="/wishlist"
               className="text-gray-600 hover:text-gray-800 group"
