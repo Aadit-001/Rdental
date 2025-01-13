@@ -14,10 +14,12 @@ import ContactUs from "./Components/contactUs.jsx";
 import { ToastContainer, Bounce } from "react-toastify";
 import PageNotFound from "./ErrorPage/PageNotFound.jsx";
 import { ProtectedRouteForUser, ProtectedRouteForAdmin } from "./ProtectedRoute/ProtectedRoute.jsx";
-import Trial from "./admin/trial.jsx";
+import Trial from "./Admin/trial.jsx";
 import ForgetPassword from "./Components/ForgetPassword.jsx";
 import Profile from "./Pages/profile.jsx";
 import Dashboard from "./Admin/Dashboard.jsx";
+import AddProduct from "./Pages/Admin/addProduct.jsx";
+import UpdateProduct from "./Pages/Admin/updateProduct.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -46,13 +48,15 @@ createRoot(document.getElementById("root")).render(
               }
             />
             <Route path="contactUs" element={<ContactUs />} />
+            <Route path="AddProduct" element={<AddProduct />} />
+            <Route path="UpdateProduct" element={<UpdateProduct />} />
             <Route path="forgetPassword" element={<ForgetPassword />} />
             <Route
-              path="adminPage"
+              path="dashboard"
               element={
-                <ProtectedRouteForAdmin>
+               // <ProtectedRouteForAdmin>
                   <Dashboard />
-                </ProtectedRouteForAdmin>
+              //  </ProtectedRouteForAdmin>
               }
             />
             <Route path="*" element={<PageNotFound />} />

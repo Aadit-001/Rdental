@@ -20,7 +20,7 @@ function Dashboard() {
   };
 
   return (
-    <section className="text-gray-600 body-font mt-20 mb-10">
+    <section className="text-gray-600 body-font mt-28 mb-28">
       <div className="container px-5 mx-auto mb-10">
         <div className="flex flex-wrap -m-4 text-center">
           {dashboardCards.map((card, index) => (
