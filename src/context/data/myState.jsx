@@ -55,11 +55,11 @@ const MyState = (props) => {
     const [product, setProduct] = useState(demoProducts);
 
     useEffect(() => {
+        // Check localStorage and update state
         const user = localStorage.getItem('user');
-        if (user) {
-            setIsUserLoggedIn(true);
-        }
-    },[]);
+        setIsUserLoggedIn(!!user);
+        setIsLoading(false);
+    }, []); // Only run once on mount
 
     return (
         <myContext.Provider value={{

@@ -4,16 +4,20 @@ import { motion } from 'framer-motion';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { useContext } from 'react';
 import myContext from '../context/data/myContext';
 import Loader from './Loader';
 import { signInWithPopup } from 'firebase/auth';
 import { provider } from '../firebase/firebaseConfig';
+import { Timestamp } from 'firebase/firestore';
+import {  doc, getDoc, setDoc } from 'firebase/firestore';
+import { fireDB } from '../firebase/firebaseConfig';
 
 const Login = () => {
   const { setShowSignIn, setShowSignUp,setIsUserLoggedIn,isLoading, setIsLoading } = useContext(myContext);
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -22,7 +26,31 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
+      
+      // Create user object
+      const user = {
+        uid: result.user.uid,
+        displayName: result.user.displayName,
+        email: result.user.email,
+        time : Timestamp.now()
+      }
+
+      // Check if user exists in Firestore
+      const userDoc = doc(fireDB, "users", user.uid);
+      const docSnap = await getDoc(userDoc);
+
+      // If user doesn't exist, create new document
+      if (!docSnap.exists()) {
+        await setDoc(userDoc, user);
+      }
+
+      // First update local storage
+      localStorage.setItem('user', JSON.stringify(result.user));
+      
+      // Then update app state
+      setIsUserLoggedIn(true);
       setShowSignIn(false);
+
       toast.success('User Logged in successfully', {
         position: "bottom-right",
         autoClose: 1000,
@@ -33,15 +61,17 @@ const Login = () => {
         progress: undefined,
         theme: "colored",
       });
-      // Set user details in local storage
-      localStorage.setItem('user', JSON.stringify(result.user));
-      // Redirect to dashboard or home page
+
+      // Finally navigate
+      if(location.pathname === '/') {
+        // If we're already on home page, no need to navigate
+        return;
+      }
       navigate('/');
-      setIsUserLoggedIn(true);
-      console.log(result);
+
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong");
+      toast.error(error.message);
     }
   };
 
@@ -56,10 +86,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // Login logic here
     try {
       const user = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      // First update local storage
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      // Then update app state
+      setIsUserLoggedIn(true);
       setShowSignIn(false);
+      
       toast.success('User Logged in successfully', {
         position: "bottom-right",
         autoClose: 1000,
@@ -70,12 +105,13 @@ const Login = () => {
         progress: undefined,
         theme: "colored",
       });
-      // Set user details in local storage
-      localStorage.setItem('user', JSON.stringify(user));
-      // Redirect to dashboard or home page
-      navigate('/');
-      setIsUserLoggedIn(true);
       
+      // Finally navigate
+      if(location.pathname === '/') {
+        // If we're already on home page, no need to navigate
+        return;
+      }
+      navigate('/');
       
     } catch (error) {
       console.log(error);
@@ -85,10 +121,6 @@ const Login = () => {
   };
 
   const handleClose = () => {
-    if(location.pathname !== '/'){
-      setShowSignIn(false);
-      navigate('/');
-    }
     setShowSignIn(false);
   };
 
@@ -128,13 +160,6 @@ const Login = () => {
               <img src={Logoo} alt="RDental Logo" className="h-16" />
             </motion.div>
             <h2 className="text-green-700 text-center text-2xl font-bold mb-5 drop-shadow-sm">Login</h2>
-            
-            {/* Already Logged In Message */}
-            {false && (
-              <div className="bg-green-100 text-green-700 p-3 rounded-md mb-4">
-                You are already logged in as <span className="font-semibold">user@example.com</span>
-              </div>
-            )}
 
             <motion.input 
               type="email"

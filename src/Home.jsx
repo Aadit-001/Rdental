@@ -854,7 +854,7 @@ const Home = () => {
               {/* Updated Info Strip */}
               <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 py-2 mt-8 w-[90%] mx-auto rounded-2xl shadow-sm relative overflow-hidden
         before:absolute before:inset-0 before:border-2 before:border-blue-300/30 before:rounded-2xl
-        before:animate-[border-dance_4s_linear_infinite] mt-[-1px]">
+        before:animate-[border-dance_4s_linear_infinite] ">
                 <div className="w-full px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
                     

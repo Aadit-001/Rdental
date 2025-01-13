@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logoo from '../assets/logoo.png';
 import name from '../assets/name.png';
 import myContext from '../context/data/myContext';
@@ -8,6 +8,7 @@ import { useContext } from 'react';
 
 const Navbar = () => {
   const { setShowSignIn, setShowProfile, showProfile, isUserLoggedIn } = useContext(myContext); // Destructure setShowSignIn from context
+  const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
@@ -151,7 +152,7 @@ const Navbar = () => {
                   />
                 </svg>
               </div>
-            </Link>
+            </Link> */}
 
             {isUserLoggedIn ? 
             <Link className="text-gray-600 hover:text-gray-800 group" onClick={handleProfileClick}>
