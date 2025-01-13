@@ -34,7 +34,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="contactUs" element={<ContactUs />} />
             <Route path="admin" element={<Trial />} />
             <Route path="forgetPassword" element={<ForgetPassword />} />
-            <Route path="adminPage" element={<ProtectedRouteForAdmin><Trial /></ProtectedRouteForAdmin>} />
+            {/* <Route path="adminPage" element={< />} /> */}
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
