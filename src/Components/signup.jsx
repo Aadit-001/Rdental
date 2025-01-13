@@ -35,6 +35,9 @@ const Signup = () => {
         uid: result.user.uid,
         displayName: result.user.displayName,
         email: result.user.email,
+        wishlist: [],
+        orders: [],
+        carts: [],
         time: Timestamp.now()
       }
 
@@ -103,6 +106,9 @@ const Signup = () => {
         uid: users.user.uid,
         displayName: formData.fullname,
         email: formData.email,
+        wishlist: [],
+        orders: [],
+        carts: [],
         time: Timestamp.now()
       }
 

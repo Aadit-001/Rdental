@@ -4,8 +4,12 @@ import ProductCard from './Components/ProductCard';
 import { useNavigate } from 'react-router-dom';
 import demoImage from './assets/demo.png';
 import Endodontics from './assets/Endodentics.jpg';
+import myContext from './context/data/myContext';
+import { useContext } from 'react';
+
 
 const Home = () => {
+  const {products} = useContext(myContext);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [restorativeSlide, setRestorativeSlide] = useState(0);
   const navigate = useNavigate();
@@ -600,7 +604,7 @@ const Home = () => {
           </button> */}
 
           <div className="flex overflow-x-auto space-x-[-16px] pb-6 pt-6 px-4 scrollbar-hide">
-            {bestSellers.map((product) => (
+            {products.map((product) => (
               <div key={product.id} className="flex-shrink-0 w-[280px] transform hover:scale-10 transition-transform duration-300">
                 <ProductCard
                   title={product.title}
