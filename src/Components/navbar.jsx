@@ -83,6 +83,28 @@ const Navbar = () => {
 
           {/* Navigation Items */}
           <div className="flex items-center space-x-4 pr-3">
+            {/* Admin Link */}
+            <Link
+              to="/dashboard"
+              className="text-gray-600 hover:text-gray-800 group"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
+            >
+              <div className="relative transform transition-transform duration-300 group-hover:scale-110">
+                <svg
+                  className={`h-8 w-8 ${location.pathname === '/dashboard' ? 'text-green-500 fill-current' : ''}`}
+                  fill={location.pathname === '/dashboard' ? 'currentColor' : 'none'}
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                  />
+                </svg>
+              </div>
+            </Link>
             {/* Sign In Button */}
             {
               isUserLoggedIn ? null : 
@@ -92,67 +114,8 @@ const Navbar = () => {
                 bg-[length:200%_100%] bg-right hover:bg-left" onClick={handleSignInClick}>
                   Sign In
                 </button>
-              
             }
-            
-            {/* Wishlist Link with Protected Route Logic */}
-            <div
-              className="text-gray-600 hover:text-gray-800 group cursor-pointer"
-              onClick={() => {
-                if (!isUserLoggedIn) {
-                  setShowSignIn(true);
-                } else {
-                  navigate('/wishlist');
-                  window.scrollTo({ top: 0, behavior: 'instant' });
-                }
-              }}
-            >
-              <div className="relative transform transition-transform duration-300 group-hover:scale-110">
-                <svg
-                  className={`h-6 w-6 ${location.pathname === '/wishlist' ? 'text-green-500 fill-current' : ''}`}
-                  fill={location.pathname === '/wishlist' ? 'currentColor' : 'none'}
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Cart Link with Protected Route Logic */}
-            <div
-              className="text-gray-600 hover:text-gray-800 group cursor-pointer"
-              onClick={() => {
-                if (!isUserLoggedIn) {
-                  setShowSignIn(true);
-                } else {
-                  navigate('/cart');
-                  window.scrollTo({ top: 0, behavior: 'instant' });
-                }
-              }}
-            >
-              <div className="relative transform transition-transform duration-300 group-hover:scale-110">
-                <svg
-                  className={`h-6 w-6 ${location.pathname === '/cart' ? 'text-green-500 fill-current' : ''}`}
-                  fill={location.pathname === '/cart' ? 'currentColor' : 'none'}
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-            {/* <Link
+            <Link
               to="/wishlist"
               className="text-gray-600 hover:text-gray-800 group"
               onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
@@ -189,7 +152,7 @@ const Navbar = () => {
                   />
                 </svg>
               </div>
-            </Link> */}
+            </Link>
 
             {isUserLoggedIn ? 
             <Link className="text-gray-600 hover:text-gray-800 group" onClick={handleProfileClick}>
