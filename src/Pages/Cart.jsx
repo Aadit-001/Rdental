@@ -2,95 +2,52 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import EmptyCart from "../Components/emptyCart";
 import HorizontalProductCard from "../Components/horizontalProductCard";
-import { toast,ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import myContext from "../context/data/myContext";
+import { useContext, useEffect } from "react";
 
 const Cart = () => {
-  const itemRemoved = () => {
-    toast.success(' Item removed Successfully!', {
-      position: "bottom-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      });
-  };
 
-  const quantityUpdated = () => {
-    toast.success(' Quantity updated Successfully!', {
-      position: "bottom-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      });
-  };
+  const {getCart,cartItems,setCartItems,currentUserId} = useContext(myContext);
 
-  // Sample cart data - replace with actual cart state management
-  
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      originalPrice: 100,
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
-      name: "Product 1",
-      price: 100,
-      catagory: "Electronics",
-      rating: 4.5,
-      mrp: 100,
-      quantity: 1,
-    },
-    {
-      id: 2,
-      originalPrice: 150,
-      description: "High quality wireless earbuds with noise ", 
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
-      name: "Product 2",
-      price: 150,
-      catagory: "Electronics",
-      rating: 4.5,
-      mrp: 100,
-      quantity: 2,
-    },
-    {
-      id: 3,
-      originalPrice: 200,
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
-      name: "Product 3",
-      price: 200,
-      catagory: "Electronics",
-      rating: 4.5,
-      mrp: 100,
-      quantity: 3,
-    },
-  ]);
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const items = await getCart(currentUserId);
+        // Sort items by lastUpdated timestamp, most recent first
+        const sortedItems = items.sort((a, b) => (b.lastUpdated || 0) - (a.lastUpdated || 0));
+        setCartItems(sortedItems || []);
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+        toast.error("Failed to load cart");
+      }
+    };
+    
+    if (currentUserId) {
+      fetchCartItems();
+    }
+  }, [currentUserId, getCart]);
 
-  const updateQuantity = (id, newQuantity) => {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
-      )
-    );
-    quantityUpdated();
-  };
+  // const updateQuantity = (id, newQuantity) => {
+  //   setCartItems(
+  //     cartItems.map((item) =>
+  //       item.id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
+  //     )
+  //   );
+  //   quantityUpdated();
+  // };
 
-  const removeItem = (id) => {
-    const updatedCart = cartItems.filter(item => item.id !== id);
-    setCartItems(updatedCart);
-    itemRemoved();
-  };
+  // const removeItem = (id) => {
+  //   const updatedCart = cartItems.filter(item => item.id !== id);
+  //   setCartItems(updatedCart);
+  //   itemRemoved();
+  // };
 
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  // const subtotal = cartItems.reduce(
+  //   (sum, item) => sum + item.price * item.quantity,
+  //   0
+  // );
+  const subtotal = 30;
   const shipping = 15.0;
   const tax = subtotal * 0.1;
   const total = subtotal + shipping + tax;
@@ -112,10 +69,9 @@ const Cart = () => {
               <div className="space-y-4">
                 {cartItems.map((item) => (
                   <HorizontalProductCard
-                    key={item.id}
-                    product={item}
-                    onDelete={() => removeItem(item.id)}
-                    onQuantityChange={(newQuantity) => updateQuantity(item.id, newQuantity)}
+                    key={item.productId}
+                    id={item.productId}
+                    quantity={item.quantity}
                   />
                 ))}
               </div>
@@ -270,7 +226,6 @@ const Cart = () => {
         )}
       </div>
     </div>
-    <ToastContainer />
     </>
   );
 };
