@@ -152,7 +152,7 @@ const Navbar = () => {
                   />
                 </svg>
               </div>
-            </Link> */}
+            </Link>
 
             {isUserLoggedIn ? 
             <Link className="text-gray-600 hover:text-gray-800 group" onClick={handleProfileClick}>
