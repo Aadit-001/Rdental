@@ -46,8 +46,7 @@ const ContactUs = () => {
               <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-green-600 to-emerald-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-green-500 transition-all duration-300">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 
-                    0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                 </div>
                 <div>
@@ -103,16 +102,11 @@ const ContactUs = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="peer w-full border-b-2 border-gray-300 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-gray-700
-                       outline outline-0 transition-all focus:border-green-500 focus:outline-0"
+                      className="peer w-full border-b-2 border-gray-300 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-gray-700 outline outline-0 transition-all focus:border-green-500 focus:outline-0"
                       placeholder=" "
                       required
                     />
-                    <label className="after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-sm
-                     font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 
-                     after:border-b-2 after:border-green-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm 
-                     peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-green-500
-                      peer-focus:after:scale-x-100 peer-focus:after:border-green-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-gray-500">
+                    <label className="after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-sm font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-green-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-green-500 peer-focus:after:scale-x-100 peer-focus:after:border-green-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-gray-500">
                       Name
                     </label>
                   </div>
@@ -124,19 +118,30 @@ const ContactUs = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="peer w-full border-b-2 border-gray-300 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal 
-                      text-gray-700 outline outline-0 transition-all focus:border-green-500 focus:outline-0"
+                      className="peer w-full border-b-2 border-gray-300 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-gray-700 outline outline-0 transition-all focus:border-green-500 focus:outline-0"
                       placeholder=" "
                       required
                     />
-                    <label className="after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none
-                     text-sm font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full 
-                     after:scale-x-0 after:border-b-2 after:border-green-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm 
-                     peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-
-                     green-500 peer-focus:after:scale-x-100 peer-focus:after:border-green-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-gray-500">
+                    <label className="after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-sm font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-green-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-green-500 peer-focus:after:scale-x-100 peer-focus:after:border-green-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-gray-500">
                       Email
                     </label>
                   </div>
+                </div>
+
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    className="peer w-full border-b-2 border-gray-300 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-gray-700 outline outline-0 transition-all focus:border-green-500 focus:outline-0"
+                    placeholder=" "
+                    required
+                  />
+                  <label className="after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-sm font-normal leading-tight text-gray-500 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-green-500 after:transition-transform after:duration-300 peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.25] peer-placeholder-shown:text-gray-500 peer-focus:text-xs peer-focus:leading-tight peer-focus:text-green-500 peer-focus:after:scale-x-100 peer-focus:after:border-green-500 peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-gray-500">
+                    Subject
+                  </label>
                 </div>
 
                 <div className="relative">
@@ -146,8 +151,7 @@ const ContactUs = () => {
                     rows={4}
                     value={formData.message}
                     onChange={handleChange}
-                    className="peer w-full border-2 border-gray-300 rounded-lg bg-transparent p-4 font-sans text-sm font-normal 
-                    text-gray-700 outline outline-0 transition-all focus:border-green-500 focus:outline-0"
+                    className="peer w-full border-2 border-gray-300 rounded-lg bg-transparent p-4 font-sans text-sm font-normal text-gray-700 outline outline-0 transition-all focus:border-green-500 focus:outline-0"
                     placeholder="Your message..."
                     required
                   />
@@ -192,17 +196,15 @@ const ContactUs = () => {
             className="absolute inset-0 z-20 cursor-pointer"
           >
             <iframe
-              title="location"
-              className="w-full h-full"
-              src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3766.9625923520034!2d72.86038599999999!3d19.240462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTnCsDE0JzI1LjciTiA3MsKwNTEnMzcuNCJF!5e0!3m2!1sen!2sin!4v1735727449903!5m2!1sen!2sin&disableDefaultUI=1&zoomControl=0"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3766.5791233664824!2d72.85819731469864!3d19.240462087000725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDE0JzI1LjciTiA3MsKwNTEnMzcuNCJF!5e0!3m2!1sen!2sin!4v1629789876543!5e0!3m2!1sen!2sin!4v1629789876543"
+              width="100%"
+              height="100%"
               style={{ border: 0 }}
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              width="100%"
-              height="100%"
-              frameBorder="0"
-            />
+              title="R-Dental Location"
+            ></iframe>
           </a>
         </div>
       </div>

@@ -1,5 +1,5 @@
-import myContext from './myContext';
 import { useState, useEffect } from 'react';
+import myContext from './myContext';
 import PropTypes from 'prop-types';
 import { Timestamp } from 'firebase/firestore';
 import { collection, addDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
@@ -7,6 +7,48 @@ import { getDoc, updateDoc, doc, setDoc } from 'firebase/firestore';
 import { fireDB as fireDb } from '../../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
 
+const demoProducts = [
+    {
+        id: 1,
+        title: "Digital X-Ray Sensor",
+        description: "High-resolution digital dental X-ray sensor with USB connectivity",
+        price: 24999,
+        mrp: 29999,
+        image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?q=80",
+        category: "Equipment",
+        rating: 4.5
+    },
+    {
+        id: 2,
+        title: "Dental Composite Kit",
+        description: "Professional light-cure composite restoration kit",
+        price: 3999,
+        mrp: 4999,
+        image: "https://images.unsplash.com/photo-1615916732335-95d99bcd5bd6?q=80",
+        category: "Restoratives",
+        rating: 4.8
+    },
+    {
+        id: 3,
+        title: "Autoclave Sterilizer",
+        description: "18L Class B autoclave sterilizer with LCD display",
+        price: 89999,
+        mrp: 99999,
+        image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80",
+        category: "Sterilization",
+        rating: 4.7
+    },
+    {
+        id: 4,
+        title: "Root Canal Files Set",
+        description: "Complete set of endodontic files for root canal treatment",
+        price: 1999,
+        mrp: 2499,
+        image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80",
+        category: "Endodontics",
+        rating: 4.6
+    }
+];
 
 const MyState = (props) => {
     const [showSignIn, setShowSignIn] = useState(false);
@@ -14,15 +56,15 @@ const MyState = (props) => {
     const [showProfile, setShowProfile] = useState(false);
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [mode, setMode] = useState('light');
+    const [product, setProduct] = useState(demoProducts);
 
     useEffect(() => {
-        // Check localStorage and update state
         const user = localStorage.getItem('user');
         setIsUserLoggedIn(!!user);
         setIsLoading(false);
-    }, []); // Only run once on mount
+    }, []);
 
-    
     const [products, setProducts] = useState({
         title: null,
         imageUrl: null,
@@ -32,100 +74,74 @@ const MyState = (props) => {
         category: null,
         rating: null,
         time: Timestamp.now(),
-        date: new Date().toLocaleString(
-          "en-US",
-          {
+        date: new Date().toLocaleString("en-US", {
             month: "short",
             day: "2-digit",
             year: "numeric",
-          }
-        )
-      })
-    
-      // ********************** Add Product Section  **********************
-      const addProduct = async () => {
-        if (products.title == null || products.price == null || products.mrp == null || products.imageUrl == null || products.category == null || products.description == null) {
-          return toast.error('Please fill all fields')
+        }),
+    });
+
+    const addProduct = async () => {
+        if (!products.title || !products.price || !products.mrp || !products.imageUrl || !products.category || !products.description) {
+            return toast.error('Please fill all fields');
         }
-        const productRef = collection(fireDb, "products")
-        // setLoading(true)
+        const productRef = collection(fireDb, "products");
         try {
-          await addDoc(productRef, products)
-          toast.success("Product Add successfully")
-        //   getProductData()
-        //   closeModal()
-        //   setLoading(false)
+            await addDoc(productRef, products);
+            toast.success("Product added successfully");
         } catch (error) {
-          console.log(error)
-        //   setLoading(false)
+            console.error(error);
         }
-        setProducts("")
-      }
-    
-      const [product, setProduct] = useState([]);
-    
-      // ****** get product
-      const getProductData = async () => {
-        // setLoading(true)
+        setProducts("");
+    };
+
+    const getProductData = async () => {
         try {
-          const q = query(
-            collection(fireDb, "products"),
-            orderBy("time"),
-            // limit(5)
-          );
-          const data = onSnapshot(q, (QuerySnapshot) => {
-            let productsArray = [];
-            QuerySnapshot.forEach((doc) => {
-              productsArray.push({ ...doc.data(), id: doc.id });
+            const q = query(collection(fireDb, "products"), orderBy("time"));
+            const data = onSnapshot(q, (QuerySnapshot) => {
+                const productsArray = [];
+                QuerySnapshot.forEach((doc) => {
+                    productsArray.push({ ...doc.data(), id: doc.id });
+                });
+                setProduct(productsArray);
             });
-            setProduct(productsArray)
-            // setLoading(false);
-          });
-          return () => data;
+            return () => data;
         } catch (error) {
-          console.log(error)
-        //   setLoading(false)
+            console.error(error);
         }
-      }
-    
-      useEffect(() => {
+    };
+
+    useEffect(() => {
         getProductData();
-      }, []);
+    }, []);
 
-
-    //   **************************Add product to wishlist************************
     const addToWishlist = async (productId) => {
         if (!isUserLoggedIn) {
-            return toast.error('Please login to add to wishlist')
+            return toast.error('Please login to add to wishlist');
         }
 
         const wishlistRef = doc(fireDb, 'users', localStorage.getItem('user'));
         const wishlistDoc = await getDoc(wishlistRef);
         if (!wishlistDoc.exists()) {
             await setDoc(wishlistRef, {
-                wishlist: [productId]
+                wishlist: [productId],
             });
         } else {
             const wishlistArray = wishlistDoc.data().wishlist || [];
             if (!wishlistArray.includes(productId)) {
                 await updateDoc(wishlistRef, {
-                    wishlist: [...wishlistArray, productId]
+                    wishlist: [...wishlistArray, productId],
                 });
             }
         }
     };
 
-
-
-
-    
-
     return (
-        <myContext.Provider value={
-            {
+        <myContext.Provider
+            value={{
                 showSignIn,
-                showSignUp, 
-                setShowSignIn, 
+                showSignUp,
+                setShowSignIn,
                 setShowSignUp,
                 showProfile,
                 setShowProfile,
@@ -133,21 +149,23 @@ const MyState = (props) => {
                 setIsUserLoggedIn,
                 isLoading,
                 setIsLoading,
-                products,
-                addProduct,
+                mode,
+                setMode,
                 product,
                 setProduct,
+                products,
+                addProduct,
                 setProducts,
-                addToWishlist
-
-            }}>
+                addToWishlist,
+            }}
+        >
             {props.children}
         </myContext.Provider>
-    )
-}
+    );
+};
 
 MyState.propTypes = {
-    children: PropTypes.node.isRequired
-}
+    children: PropTypes.node.isRequired,
+};
 
 export default MyState;
