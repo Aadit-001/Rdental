@@ -6,17 +6,13 @@ import Signup from './Components/signup.jsx'
 import Profile from './Pages/profile.jsx'
 import myContext from './context/data/myContext';
 import { useContext } from 'react'
-import Loader  from './Components/Loader.jsx';
 
 function RootLayout() {
-  const { showSignIn, showSignUp , setShowSignIn, setShowSignUp, showProfile, setShowProfile ,isUserLoggedIn, isLoading} = useContext(myContext);
+  const { showSignIn, showSignUp , setShowSignIn, setShowSignUp, showProfile, setShowProfile ,isUserLoggedIn} = useContext(myContext);  
 
 
   return (
     <>
-    {isLoading && <div className='fixed top-0 left-0 w-full h-full bg-black/50 backdrop-blur-md flex items-center justify-center'>
-      <Loader />
-    </div>}
 
     {/* kabhi bhi agar koi bhi page ko like login page ko agar pure app mai show karna hai har ek screen pe toh usko 
     rootlayout mai rakhne ka aur uss chiz ke bahar wale div ko flex deke, bg-black/50 taki backgroung blak ho jaye
