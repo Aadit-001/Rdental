@@ -5,10 +5,15 @@ import Logoo from '../assets/logoo.png';
 import {sendPasswordResetEmail} from "firebase/auth";
 import Loader from "./Loader";
 import { auth } from "../firebase/firebaseConfig";
+import { useContext } from "react";
+import myContext from "../context/data/myContext";
+import { useNavigate } from "react-router-dom";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { setShowSignIn } = useContext(myContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -116,14 +121,19 @@ const ForgetPassword = () => {
             </motion.button>
           </div>
 
-          <div className="text-center mt-4">
-            <motion.a
-              href="/login"
+          <div className="text-center mt-4 cursor-pointer">
+            <motion.div
+              // href="/login"
+              onClick={() => {
+                navigate('/')
+                setShowSignIn(true)
+              }
+              } 
               className="text-sm text-green-600 hover:text-green-700 font-medium"
               whileHover={{ scale: 1.05 }}
             >
               ← Back to Login
-            </motion.a>
+            </motion.div>
           </div>
         </motion.form>
       </motion.div>
