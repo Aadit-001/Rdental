@@ -15,6 +15,9 @@ import { ToastContainer, Bounce } from "react-toastify";
 import PageNotFound from "./ErrorPage/PageNotFound.jsx";
 import { ProtectedRouteForUser, ProtectedRouteForAdmin } from "./ProtectedRoute/ProtectedRoute.jsx";
 import Trial from "./admin/trial.jsx";
+import ForgetPassword from "./Components/ForgetPassword.jsx";
+
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -30,6 +33,8 @@ createRoot(document.getElementById("root")).render(
             <Route path="wishlist" element={<ProtectedRouteForUser><WishList /></ProtectedRouteForUser>} />
             <Route path="contactUs" element={<ContactUs />} />
             <Route path="admin" element={<Trial />} />
+            <Route path="forgetPassword" element={<ForgetPassword />} />
+            <Route path="adminPage" element={<ProtectedRouteForAdmin><Trial /></ProtectedRouteForAdmin>} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
