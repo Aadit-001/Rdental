@@ -1,18 +1,55 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { doc, getDoc } from 'firebase/firestore';
+import { fireDB as fireDb } from '../firebase/firebaseConfig';
+import myContext from '../context/data/myContext';
+import { useContext } from 'react';
+import { toast } from 'react-toastify';
 
-const WishlistProductCard = ({ title, description, price, image, onRemove, catagory, mrp, rating = 0 }) => {
+const WishlistProductCard = ({ productId }) => {
+  const { removeFromWishlist, currentUserId ,setWishlistItems} = useContext(myContext);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [product, setProduct] = useState(null);
   const navigate = useNavigate();
 
-  const savings = Math.round(((mrp - price) / mrp) * 100);
+  useEffect(() => {
+    const getProduct = async() => {
+      try {
+        if (!productId) return;
+        const productDoc = await getDoc(doc(fireDb, "products", productId));
+        if (productDoc.exists()) {
+          setProduct({ id: productDoc.id, ...productDoc.data() });
+        } else {
+          console.error('Product not found:', productId);
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+    };
+    getProduct();
+  }, [productId]);
+
+  if (!product) return null; 
+
+  const savings = Math.round(((product.mrp - product.price) / product.mrp) * 100);
 
   const handleClick = () => {
     setTimeout(() => {
-      navigate(`/products/${catagory}/${title}`);
+      navigate(`/products/${product.catagory}/${product.title}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 300);
+  };
+
+  const handleRemove = async (productId) => {
+    try {
+      await removeFromWishlist(productId,currentUserId);
+      setWishlistItems((prevItems) => prevItems.filter((item) => item.id !== productId));
+      toast.success('Product removed from wishlist');
+    } catch (error) {
+      console.error('Error removing product from wishlist:', error);
+      toast.error('Error removing product from wishlist');
+    }
   };
 
   return (
@@ -23,8 +60,8 @@ const WishlistProductCard = ({ title, description, price, image, onRemove, catag
       <div className="flex">
         <div className="relative w-40 h-40">
           <img 
-            src={image} 
-            alt={title}
+            src={product.imageUrl} 
+            alt={product.title}
             className="w-full h-full object-cover"
           />
         </div>
@@ -32,14 +69,14 @@ const WishlistProductCard = ({ title, description, price, image, onRemove, catag
         <div className="flex-1 p-4">
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-lg font-bold text-gray-800 mb-1" title={title}>
-                {title}
+              <h2 className="text-lg font-bold text-gray-800 mb-1" title={product.title}>
+                {product.title}
               </h2>
               <div className="flex items-center mb-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
                     key={star}
-                    className={`text-sm ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                    className={`text-sm ${star <= product.rating ? 'text-yellow-400' : 'text-gray-300'}`}
                   >
                     ★
                   </span>
@@ -49,9 +86,9 @@ const WishlistProductCard = ({ title, description, price, image, onRemove, catag
             <button 
               onClick={(e) => {
                 e.stopPropagation();
-                onRemove();
+                handleRemove(product.id);
               }}
-              className="text-red-500 hover:text-red-700 transition-colors duration-200"
+              className="text-red-500 hover:text-red-700 transition-colors duration-200 hover:scale-110"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -77,13 +114,13 @@ const WishlistProductCard = ({ title, description, price, image, onRemove, catag
               }}
               className={`text-gray-600 text-xs mb-2 cursor-pointer ${!showFullDescription ? 'line-clamp-2' : 'whitespace-pre-wrap'}`}
             >
-              {description}
+              {product.description}
             </p>
           </div>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-gray-900">${price}</span>
-              <span className="text-xs text-gray-400 line-through">${mrp}</span>
+              <span className="text-base font-bold text-gray-900">${product.price}</span>
+              <span className="text-xs text-gray-400 line-through">${product.mrp}</span>
               <span className="bg-green-100 text-green-800 text-xs px-1 py-0.5 rounded">
                 Save {savings}%
               </span>
@@ -104,14 +141,7 @@ const WishlistProductCard = ({ title, description, price, image, onRemove, catag
 };
 
 WishlistProductCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  onRemove: PropTypes.func.isRequired,
-  catagory: PropTypes.string.isRequired,
-  mrp: PropTypes.number.isRequired,
-  rating: PropTypes.number
+  productId: PropTypes.string.isRequired
 };
 
 export default WishlistProductCard;

@@ -1,78 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import WishlistProductCard from '../Components/WishlistProductCard';
-import { toast, ToastContainer } from 'react-toastify';
+import myContext from '../context/data/myContext';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function WishList() {
 
-  const notify = () => {
-    toast.success(' Item removed Successfully!', {
-      position: "bottom-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-  };
+  // const [wishlistItems, setWishlistItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [wishlistItems, setWishlistItems] = useState([
-    {
-      id: 1,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-      price: 99.99,
-      catagory: "Electronics",
-      rating: 4.5,
-      mrp: 100,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    {
-      id: 2,
-      title: "Boat Earbudssssss", 
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-      price: 99.99,
-      catagory: "Electronics",
-      rating: 4.5,
-      mrp: 100,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    {
-      id: 3,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
-      price: 99.99,
-      catagory: "Electronics",
-      rating: 4.5,
-      mrp: 100,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    {
-      id: 4,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation", 
-      price: 99.99,
-      catagory: "Electronics",
-      rating: 4.5,
-      mrp: 100,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-  ]);
-
-  // Function to remove item from wishlist
-  const removeFromWishlist = (productId) => {
-    const updatedWishlist = wishlistItems.filter(item => item.id !== productId);
-    setWishlistItems(updatedWishlist);
-    notify();
-  };
-
-  const handleRemove = (productId) => {
-    removeFromWishlist(productId);
-  };
+  const { getWishlist, addToWishlist, removeFromWishlist, wishlistItems, setWishlistItems } = useContext(myContext);
+  
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+          setIsLoading(false);
+          return;
+        }
+        const items = await getWishlist(user.uid);
+        setWishlistItems(items || []);
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+        toast.error("Failed to load wishlist");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchWishlist();
+  }, [getWishlist, addToWishlist,removeFromWishlist]);
 
   return (
     <>
@@ -118,7 +78,11 @@ function WishList() {
                 <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-900 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
               </h1>
 
-              {wishlistItems.length === 0 ? (
+              {isLoading ? (
+                <div className="flex justify-center items-center h-40">
+                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
+                </div>
+              ) : wishlistItems.length === 0 ? (
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -136,12 +100,12 @@ function WishList() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className="inline-flex items-center justify-center h-12 px-6 relative px-6 py-3 rounded-lg shadow-md 
-                  before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
-                  before:transition-all before:duration-500 hover:before:opacity-0
-                  after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
-                  after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
-                  transform hover:scale-105 transition-all duration-300 ease-in-out
-                  hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white"
+                      before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
+                      before:transition-all before:duration-500 hover:before:opacity-0
+                      after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
+                      after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
+                      transform hover:scale-105 transition-all duration-300 ease-in-out
+                      hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white"
                     >
                       <span className="mr-2 relative z-10">Browse Items</span>
                       <svg
@@ -163,32 +127,26 @@ function WishList() {
               ) : (
                 <>
                   <div>
-                    {wishlistItems.map((item) => (
+                    {wishlistItems.map((productId) => (
                       <WishlistProductCard
-                        key={item.id}
-                        title={item.title}
-                        description={item.description}
-                        price={item.price}
-                        image={item.image}
-                        catagory={item.catagory}
-                        rating={item.rating}
-                        mrp={item.mrp}
-                        onRemove={() => handleRemove(item.id)}
+                        key={productId}
+                        productId={productId}
                       />
                     ))}
                   </div>
-                  <div className="flex justify-center mt-10 mb-10 ">
+                  <div className="flex justify-center mt-10 mb-10">
                     <Link to="/">
                       <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className="inline-flex items-center justify-center h-12 px-6 relative px-6 py-3 rounded-lg shadow-md 
-                  before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
-                  before:transition-all before:duration-500 hover:before:opacity-0
-                  after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
-                  after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
-                  transform hover:scale-105 transition-all duration-300 ease-in-out
-                  hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
+                        before:transition-all before:duration-500 hover:before:opacity-0
+                        after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
+                        after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
+                        transform hover:scale-105 transition-all duration-300 ease-in-out
+                        hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white" 
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                       >
                         <span className="mr-2 relative z-10">Add more to wishlist</span>
                         <svg
@@ -213,7 +171,6 @@ function WishList() {
           </div>
         </div>
       </motion.div>
-      <ToastContainer />
     </>
   );
 }

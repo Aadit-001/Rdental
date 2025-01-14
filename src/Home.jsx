@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react';
 import ProductSection from './Components/productSection';
 import ProductCard from './Components/ProductCard';
 import { useNavigate } from 'react-router-dom';
-import demoImage from './assets/demo.png';
 import Endodontics from './assets/Endodentics.jpg';
 import myContext from './context/data/myContext';
 import { useContext } from 'react';
 
 
 const Home = () => {
-  const {products} = useContext(myContext);
+  const {categories,bestSellers} = useContext(myContext);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [restorativeSlide, setRestorativeSlide] = useState(0);
   const navigate = useNavigate();
+
 
   //ye bhi database se uthana hoga ******************************************************************************************************************
   const slides = [
@@ -53,389 +53,389 @@ const Home = () => {
   }, []);
 
   //ye bhi database se uthana hoga ******************************************************************************************************************
-  const categories = [
-    {
-      id: 1,
-      name: 'General',
-      image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=200',
-      path: '/products/general',
-      products: [
-        {
-          id: 1,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 2,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 3,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 4,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 5,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-      ]
-    },
-    {
-      id: 2,
-      name: 'Restoratives',
-      image: 'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?q=80&w=200',
-      path: '/products/restoratives',
-      products: [
-        {
-          id: 1,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 2,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 3,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 4,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 5,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-      ]
-    },
-    {
-      id: 3,
-      name: 'Equipment',
-      image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=200',
-      path: '/products/equipment',
-      products: [
-        {
-          id: 1,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 2,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 3,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 4,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 5,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-      ]
-    },
-    {
-      id: 4,
-      name: 'Instruments',
-      image: 'https://images.unsplash.com/photo-1571772996211-2f02c9727629?q=80&w=200',
-      path: '/products/instruments',
-      products: [
-        {
-          id: 1,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 2,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 3,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 4,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 5,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-      ]
-    },
-    {
-      id: 5,
-      name: 'Endodontics',
-      image: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?q=80&w=200',
-      path: '/products/endodontics',
-      products: [
-        {
-          id: 1,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 2,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 3,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 4,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 5,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-      ]
-    },
-    {
-      id: 6,
-      name: 'Sterilization',
-      image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=200',
-      path: '/products/sterilization',
-      products: [
-        {
-          id: 1,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 2,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 3,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 4,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 5,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-      ]
-    },
-    {
-      id: 7,
-      name: 'Disposables',
-      image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=200',
-      path: '/products/disposables',
-      products: [
-        {
-          id: 1,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 2,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 3,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 4,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-        {
-          id: 5,
-          title: "Boat Earbudssssss",
-          description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-          price: 99.99,
-          mrp: 149.99,
-          image: demoImage
-        },
-      ]
-    }
-  ];
+  // const categories = [
+  //   {
+  //     id: 1,
+  //     name: 'General',
+  //     image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=200',
+  //     path: '/products/general',
+  //     products: [
+  //       {
+  //         id: 1,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 2,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 3,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 4,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 5,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //     ]
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Restoratives',
+  //     image: 'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?q=80&w=200',
+  //     path: '/products/restoratives',
+  //     products: [
+  //       {
+  //         id: 1,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 2,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 3,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 4,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 5,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //     ]
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Equipment',
+  //     image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=200',
+  //     path: '/products/equipment',
+  //     products: [
+  //       {
+  //         id: 1,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 2,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 3,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 4,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 5,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //     ]
+  //   },
+  //   {
+  //     id: 4,
+  //     name: 'Instruments',
+  //     image: 'https://images.unsplash.com/photo-1571772996211-2f02c9727629?q=80&w=200',
+  //     path: '/products/instruments',
+  //     products: [
+  //       {
+  //         id: 1,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 2,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 3,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 4,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 5,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //     ]
+  //   },
+  //   {
+  //     id: 5,
+  //     name: 'Endodontics',
+  //     image: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?q=80&w=200',
+  //     path: '/products/endodontics',
+  //     products: [
+  //       {
+  //         id: 1,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 2,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 3,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 4,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 5,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //     ]
+  //   },
+  //   {
+  //     id: 6,
+  //     name: 'Sterilization',
+  //     image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=200',
+  //     path: '/products/sterilization',
+  //     products: [
+  //       {
+  //         id: 1,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 2,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 3,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 4,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 5,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //     ]
+  //   },
+  //   {
+  //     id: 7,
+  //     name: 'Disposables',
+  //     image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=200',
+  //     path: '/products/disposables',
+  //     products: [
+  //       {
+  //         id: 1,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 2,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 3,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 4,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //       {
+  //         id: 5,
+  //         title: "Boat Earbudssssss",
+  //         description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //         price: 99.99,
+  //         mrp: 149.99,
+  //         image: demoImage
+  //       },
+  //     ]
+  //   }
+  // ];
   //**************************************************************************************************************************************************** */
 
   //ye bhi database se uthana hoga ******************************************************************************************************************
-  const bestSellers = [
-    {
-      id: 1,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-      price: 99.99,
-      mrp: 149.99,
-      image: demoImage
-    },
-    {
-      id: 2,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-      price: 99.99,
-      mrp: 149.99,
-      image: demoImage
-    },
-    {
-      id: 3,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-      price: 99.99,
-      mrp: 149.99,
-      image: demoImage
-    },
-    {
-      id: 4,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-      price: 99.99,
-      mrp: 149.99,
-      image: demoImage
-    },
-    {
-      id: 5,
-      title: "Boat Earbudssssss",
-      description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
-      price: 99.99,
-      mrp: 149.99,
-      image: demoImage
-    }
-  ]
+  // const bestSellers = [
+  //   {
+  //     id: 1,
+  //     title: "Boat Earbudssssss",
+  //     description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //     price: 99.99,
+  //     mrp: 149.99,
+  //     image: demoImage
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Boat Earbudssssss",
+  //     description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //     price: 99.99,
+  //     mrp: 149.99,
+  //     image: demoImage
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Boat Earbudssssss",
+  //     description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //     price: 99.99,
+  //     mrp: 149.99,
+  //     image: demoImage
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Boat Earbudssssss",
+  //     description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //     price: 99.99,
+  //     mrp: 149.99,
+  //     image: demoImage
+  //   },
+  //   {
+  //     id: 5,
+  //     title: "Boat Earbudssssss",
+  //     description: "High quality wireless earbuds with noise jgkjdfhkgjhdkfjhgkdhkfjghkjdhfgjhdkjfghkjdfhgkjhcancellation",
+  //     price: 99.99,
+  //     mrp: 149.99,
+  //     image: demoImage
+  //   }
+  // ]
   //**************************************************************************************************************************************************** */
 
   return (
@@ -604,14 +604,23 @@ const Home = () => {
           </button> */}
 
           <div className="flex overflow-x-auto space-x-[-16px] pb-6 pt-6 px-4 scrollbar-hide">
-            {products.map((product) => (
+            {bestSellers.map((product) => (
               <div key={product.id} className="flex-shrink-0 w-[280px] transform hover:scale-10 transition-transform duration-300">
                 <ProductCard
                   title={product.title}
                   description={product.description}
                   price={product.price}
-                  image={product.image}
+                  rating={product.rating}
+                  catagory={product.category}
+                  quantitySold={product.quantitySold}
+                  inStock={product.inStock}
+                  totalStock={product.totalStock}
+                  noOfRatings={product.noOfRatings}
+                  image={product.imageUrl}
                   mrp={product.mrp}
+                  id={product.id}
+                  noOfReviews={product.noOfReviews}
+                  reviews={product.reviews}
                 />
               </div>
             ))}
@@ -795,8 +804,8 @@ const Home = () => {
         >
           <ProductSection
             title={category.name}
-            path={category.path}
-            products={category.products}
+            // path={category.path}
+            // products={category.products}
             buttonStyle="View all >>"
           />
 

@@ -1,8 +1,17 @@
 import { Link } from 'react-router-dom';
 import ProductCard from './ProductCard';
+import { useContext } from 'react';
+// import { myContext } from '../context/data/myState';
+// import { myContext } from '../context/data/myState';
+import  myContext  from '../context/data/myContext';
 
 // eslint-disable-next-line react/prop-types
-const ProductSection = ({ title, path, products }) => {
+const ProductSection = ({ title}) => {
+
+    const {getCategoryProducts} = useContext(myContext);
+    const products = getCategoryProducts(title);
+    let path = "/products/" + title;
+
 
     return (
         <div className="max-w-[1350px] mx-auto px-4 py-8">
@@ -48,7 +57,13 @@ const ProductSection = ({ title, path, products }) => {
                             title={product.title}
                             description={product.description}
                             price={product.price}
-                            image={product.image}
+                            mrp={product.mrp}
+                            rating={product.rating}
+                            noOfRatings={product.noOfRatings}
+                            quantitySold={product.quantitySold}
+                            inStock={product.inStock}
+                            totalStock={product.totalStock}
+                            image={product.imageUrl}
                             catagory={title}
                         />
                     </div>
