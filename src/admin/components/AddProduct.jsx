@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import myContext from '../../context/data/myContext';
 
 const AddProduct = () => {
-    const { product, setProduct, addProduct } = useContext(myContext);
+    const { product, setProduct, addProduct, categories } = useContext(myContext);
     const [loading, setLoading] = useState(false);
 
     const handleInputChange = (e) => {
@@ -18,15 +18,6 @@ const AddProduct = () => {
         try {
             setLoading(true);
             await addProduct();
-            setProduct({
-                title: '',
-                price: '',
-                mrp: '',
-                imageUrl: '',
-                category: '',
-                description: '',
-                time: new Date().toLocaleString()
-            });
         } catch (error) {
             console.log(error);
         } finally {
@@ -71,10 +62,11 @@ const AddProduct = () => {
                             required
                         >
                             <option value="">Select Category</option>
-                            <option value="Equipment">Equipment</option>
-                            <option value="Restoratives">Restoratives</option>
-                            <option value="Sterilization">Sterilization</option>
-                            <option value="Endodontics">Endodontics</option>
+                            {
+                                categories.map((category) => (
+                                    <option key={category.id} value={category.name}>{category.name}</option>
+                                ))
+                            }
                         </select>
                     </div>
                     <div>
