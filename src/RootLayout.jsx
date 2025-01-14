@@ -3,7 +3,7 @@ import Navbar from './Components/navbar.jsx'
 import Footer from './Components/footer.jsx'
 import Login from './Components/login.jsx'
 import Signup from './Components/signup.jsx'
-import Profile from './Pages/profile.jsx'
+import Profile from './User/profile.jsx'
 import myContext from './context/data/myContext';
 import { useContext } from 'react'
 

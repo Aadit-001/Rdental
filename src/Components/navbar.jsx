@@ -5,7 +5,6 @@ import name from '../assets/name.png';
 import myContext from '../context/data/myContext';
 import { useContext } from 'react';
 
-
 const Navbar = () => {
   const { setShowSignIn, setShowProfile, showProfile, isUserLoggedIn } = useContext(myContext); // Destructure setShowSignIn from context
   const navigate = useNavigate();
@@ -85,14 +84,14 @@ const Navbar = () => {
           <div className="flex items-center space-x-4 pr-3">
             {/* Admin Link */}
             <Link
-              to="/dashboard"
+              to="/adminPage"
               className="text-gray-600 hover:text-gray-800 group"
               onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
             >
               <div className="relative transform transition-transform duration-300 group-hover:scale-110">
                 <svg
-                  className={`h-8 w-8 ${location.pathname === '/dashboard' ? 'text-green-500 fill-current' : ''}`}
-                  fill={location.pathname === '/dashboard' ? 'currentColor' : 'none'}
+                  className={`h-8 w-8 ${location.pathname === '/AdminDashboard' ? 'text-green-500 fill-current' : ''}`}
+                  fill={location.pathname === '/AdminDashboard' ? 'currentColor' : 'none'}
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >

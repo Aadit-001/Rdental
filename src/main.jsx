@@ -15,7 +15,14 @@ import { ToastContainer, Bounce } from "react-toastify";
 import PageNotFound from "./ErrorPage/PageNotFound.jsx";
 import { ProtectedRouteForUser, ProtectedRouteForAdmin } from "./ProtectedRoute/ProtectedRoute.jsx";
 import ForgetPassword from "./Components/ForgetPassword.jsx";
-import AdminDashboard from "./admin/AdminDashboard.jsx";
+import AdminDashboard from "./Admin/AdminDashboard.jsx";
+import DashboardOverview from "./Admin/components/DashboardOverview.jsx";
+import Orders from "./Admin/components/Orders.jsx";
+import Users from "./Admin/components/Users.jsx";
+import ManageProducts from "./Admin/components/ManageProducts.jsx";
+import AdminLayout from "./Admin/components/AdminLayout.jsx";
+import AddProduct from "./Admin/components/AddProduct.jsx";
+import MyOrders from "./User/myOrders.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -36,6 +43,14 @@ createRoot(document.getElementById("root")).render(
               }
             />
             <Route
+              path="myOrders"
+              element={
+                <ProtectedRouteForUser>
+                  <MyOrders />
+                </ProtectedRouteForUser>
+              }
+            />
+            <Route
               path="wishlist"
               element={
                 <ProtectedRouteForUser>
@@ -49,10 +64,18 @@ createRoot(document.getElementById("root")).render(
               path="adminPage"
               element={
                 // <ProtectedRouteForAdmin>
+                <AdminLayout>
                   <AdminDashboard />
-                // {/* </ProtectedRouteForAdmin> */}
+                </AdminLayout>
+                // </ProtectedRouteForAdmin>
               }
-            />
+            >
+              <Route index element={<DashboardOverview />} />
+              <Route path="add-product" element={<AddProduct />} />
+              <Route path="products" element={<ManageProducts />} />
+              <Route path="orders" element={<Orders />} />
+              <Route path="users" element={<Users />} />
+            </Route>
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
