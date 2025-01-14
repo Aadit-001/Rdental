@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import myContext from '../context/data/myContext';
 
+
 const Profile = () => {
   const { setIsUserLoggedIn, setShowProfile,setIsLoading } = useContext(myContext);
   const navigate = useNavigate();
@@ -94,7 +95,7 @@ const Profile = () => {
               whileHover={{ scale: 1.02 }}
               className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
             >
-              <Link to="/orders" className="flex items-center w-full">
+              <Link to="/myOrders" className="flex items-center w-full">
                 <svg
                   className="w-6 h-6 text-green-600 mr-3"
                   fill="none"

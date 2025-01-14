@@ -22,6 +22,7 @@ import Users from "./Admin/components/Users.jsx";
 import ManageProducts from "./Admin/components/ManageProducts.jsx";
 import AdminLayout from "./Admin/components/AdminLayout.jsx";
 import AddProduct from "./Admin/components/AddProduct.jsx";
+import MyOrders from "./User/myOrders.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -38,6 +39,14 @@ createRoot(document.getElementById("root")).render(
               element={
                 <ProtectedRouteForUser>
                   <Cart />
+                </ProtectedRouteForUser>
+              }
+            />
+            <Route
+              path="myOrders"
+              element={
+                <ProtectedRouteForUser>
+                  <MyOrders />
                 </ProtectedRouteForUser>
               }
             />

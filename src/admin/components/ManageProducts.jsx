@@ -52,10 +52,10 @@ const ManageProducts = () => {
             </div>
 
             {/* Products Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8">
                 {filteredProducts?.map((product) => (
-                    <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg">
-                        <div className="relative pb-[60%]">
+                    <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg w-56 h-96">
+                        <div className="relative h-48">
                             <img 
                                 src={product.imageUrl} 
                                 alt={product.title} 
@@ -64,15 +64,10 @@ const ManageProducts = () => {
                         </div>
                         <div className="p-4">
                             <h3 className="text-lg font-semibold text-gray-800 mb-2">{product.title}</h3>
-                            <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.description}</p>
                             <div className="space-y-1">
                                 <p className="text-gray-800">
                                     <span className="font-medium">Price:</span>{' '}
                                     <span className="text-green-600 font-semibold">₹{product.price}</span>
-                                </p>
-                                <p className="text-gray-800">
-                                    <span className="font-medium">MRP:</span>{' '}
-                                    <span className="text-gray-500 line-through">₹{product.mrp}</span>
                                 </p>
                                 <p className="text-gray-800">
                                     <span className="font-medium">Category:</span>{' '}
