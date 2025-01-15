@@ -169,6 +169,21 @@ const AddProduct = () => {
                             required
                         />
                     </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Rating (0-5)</label>
+                        <input
+                            type="number"
+                            name="rating"
+                            min="0"
+                            max="5"
+                            step="0.1"
+                            value={product.rating || ''}
+                            onChange={handleInputChange}
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            required
+                        />
+                        <p className="mt-1 text-sm text-gray-500">Enter a rating between 0 and 5 stars</p>
+                    </div>
                     <div className="md:col-span-2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
                         <div className="space-y-4">
