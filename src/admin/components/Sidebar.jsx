@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { FaHome, FaPlus, FaBoxes, FaShoppingCart, FaUsers, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaPlus, FaBoxes, FaShoppingCart, FaUsers } from 'react-icons/fa';
 
 const Sidebar = () => {
     const menuItems = [
@@ -7,7 +7,7 @@ const Sidebar = () => {
         { path: '/adminPage/add-product', icon: FaPlus, text: 'Add Product' },
         { path: '/adminPage/products', icon: FaBoxes, text: 'Manage Products' },
         { path: '/adminPage/orders', icon: FaShoppingCart, text: 'Orders' },
-        { path: '/adminPage/users', icon: FaUsers, text: 'Users' },
+        { path: '/adminPage/users', icon: FaUsers, text: 'Users' }
     ];
 
     return (
@@ -37,12 +37,6 @@ const Sidebar = () => {
                     ))}
                 </ul>
             </nav>
-            <div className="p-4 border-t">
-                <button className="flex items-center space-x-3 p-3 rounded-lg w-full text-gray-600 hover:bg-red-50 hover:text-red-500">
-                    <FaSignOutAlt className="w-5 h-5" />
-                    <span>Logout</span>
-                </button>
-            </div>
         </div>
     );
 };

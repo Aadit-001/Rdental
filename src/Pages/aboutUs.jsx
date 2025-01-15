@@ -220,17 +220,19 @@ const AboutUs = () => {
 
       {/* Technical Team Section */}
       <div className="relative max-w-6xl mx-auto h-auto bg-gray-100 py-16">
-        <div className="py-12 px-6">
+        <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12">Meet Our Technical Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {teamMembers.map((member, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {teamMembers.slice(0, 2).map((member, index) => (
               <div key={index} className="text-center">
-                <div className="mb-6 transform transition duration-300 hover:scale-110">
-                  <img 
-                    src={member.image} 
-                    alt={member.name}
-                    className="w-48 h-48 rounded-full mx-auto object-cover border-4 border-white shadow-lg"
-                  />
+                <div className="mb-6">
+                  <div className="relative flex items-center justify-center w-48 h-48 mx-auto rounded-full overflow-hidden shadow-lg">
+                    <img 
+                      src={member.image} 
+                      alt={member.name}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
                 <p className="text-blue-600 mb-2">{member.role}</p>
@@ -269,93 +271,3 @@ const AboutUs = () => {
 }
 
 export default AboutUs;
-  
-
-
-
-
-// services section alternative code with icons
-{/* Services Section */}
-/*
-<div className="bg-gray-50 py-16">
-<div className="max-w-6xl mx-auto px-6">
-  <h2 className="text-3xl font-bold text-center mb-12">Our Comprehensive Services</h2>
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-    {[
-      { icon: "🦷", title: "Dental Implant Solutions", desc: "Complete range of implant systems and surgical tools" },
-      { icon: "💉", title: "Orthodontic Supplies", desc: "Braces, wires, and orthodontic accessories" },
-      { icon: "🔬", title: "Diagnostic Equipment", desc: "Advanced imaging and diagnostic tools" },
-      { icon: "🦿", title: "Prosthetic Materials", desc: "High-quality materials for dental prosthetics" },
-      { icon: "🧰", title: "Surgical Instruments", desc: "Precision tools for dental procedures" },
-      { icon: "🦷", title: "Endodontic Products", desc: "Complete root canal treatment solutions" },
-      { icon: "🧪", title: "Dental Materials", desc: "Composites, cements, and filling materials" },
-      { icon: "🪑", title: "Dental Chairs", desc: "Ergonomic and advanced dental chairs" },
-      { icon: "💡", title: "LED Lighting Solutions", desc: "Dental operatory lighting systems" },
-      { icon: "🧼", title: "Sterilization Equipment", desc: "Autoclave and sterilization products" },
-      { icon: "💊", title: "Preventive Products", desc: "Fluoride treatments and sealants" },
-      { icon: "🦷", title: "Restorative Solutions", desc: "Crown and bridge materials" },
-      { icon: "🎯", title: "Laser Systems", desc: "Dental laser equipment and accessories" },
-      { icon: "🧬", title: "Laboratory Products", desc: "Complete lab equipment solutions" },
-      { icon: "🎨", title: "Aesthetic Dentistry", desc: "Cosmetic dentistry supplies" },
-    ].map((service, index) => (
-      <div 
-        key={index}
-        className="bg-white p-6 rounded-lg shadow-md transform transition duration-300 hover:scale-105 hover:shadow-xl border-l-4 border-green-500"
-      >
-        <div className="text-4xl mb-4">{service.icon}</div>
-        <h3 className="text-xl font-semibold mb-2 text-gray-800">{service.title}</h3>
-        <p className="text-gray-600">{service.desc}</p>
-      </div>
-    ))}
-  </div>
-</div>
-</div>
-*/
-
-
-// services section alternative code with diff styles and animation
-
-      {/* Services Section */}
-      /*
-      <div className="relative max-w-6xl mx-auto h-auto bg-gray-50 py-16 mb-16">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12">Our Comprehensive Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { title: "Prime Dental Products" },
-              { title: "GC", desc: "Innovating braces and orthodontic accessories for confident smiles." },
-              { title: "Ivoclar - Vivadent", desc: "Pioneering diagnostic tools for superior dental care." },
-              { title: "Shofu", desc: "Delivering premium materials for dental prosthetics and restorations." },
-              { title: "GDC", desc: "Crafting high-precision tools for efficient dental procedures." },
-              { title: "Mani - Japan", desc: "Leading in root canal treatment technologies and solutions." },
-              { title: "Dentsply", desc: "Trusted for cements, composites, and reliable filling materials." },
-              { title: "SS White Products", desc: "Redefining comfort with ergonomic dental chairs." },
-              { title: "Prevest Denpro", desc: "Illuminating clinics with cutting-edge operatory lighting." },
-              { title: "ORO Products", desc: "Ensuring hygiene with effective sterilization solutions." },
-              { title: "Oracraft", desc: "Specialized in fluoride treatments and dental sealants." },
-              { title: "3M", desc: "Offering durable crown and bridge restorative materials." },
-              { title: "MAARC", desc: "Revolutionizing dentistry with laser tools and accessories." },
-              { title: "API Instruments", desc: "Supplying essential lab equipment for dental excellence." },
-              { title: "Waldent", desc: "Enhancing smiles with cosmetic dentistry essentials." },
-            ].map((service, index) => (
-              <div 
-                key={index}
-                className="bg-white rounded-lg overflow-hidden shadow-md group hover:shadow-xl transition-all duration-300"
-              >
-                <div className="h-2 bg-gradient-to-r from-green-400 to-blue-500"></div>
-                <div className="p-6">
-                  <div className="relative">
-                    <h3 className="text-xl font-semibold mb-3 text-gray-800 group-hover:text-green-500 transition-colors duration-300">
-                      {service.title}
-                    </h3>
-                    <div className="absolute -bottom-2 left-0 w-12 h-0.5 bg-green-500 group-hover:w-full transition-all duration-300"></div>
-                  </div>
-                  <p className="text-gray-600 mt-4">{service.desc}</p>
-                </div>
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-*/

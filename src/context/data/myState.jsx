@@ -36,6 +36,8 @@ const MyState = (props) => {
             year: "numeric",
         })
     });
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
 
     //future use
     const [cartItems, setCartItems] = useState([]);
@@ -356,7 +358,20 @@ const MyState = (props) => {
         });
     }
 
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+        if (!query.trim()) {
+            setSearchResults([]);
+            return;
+        }
 
+        const filteredProducts = products.filter(product => 
+            product.title.toLowerCase().includes(query.toLowerCase()) ||
+            product.description.toLowerCase().includes(query.toLowerCase()) ||
+            product.category.toLowerCase().includes(query.toLowerCase())
+        );
+        setSearchResults(filteredProducts);
+    };
 
     useEffect(() => {
         if (products.length > 0) {
@@ -380,19 +395,28 @@ const MyState = (props) => {
 
     return (
         <myContext.Provider value={{
-            showSignIn, setShowSignIn,
-            showSignUp, setShowSignUp,
-            showProfile, setShowProfile,
-            isUserLoggedIn, setIsUserLoggedIn,
-            isLoading, setIsLoading,
+            currentUserId,
+            setCurrentUserId,
+            showSignIn,
+            setShowSignIn,
+            showSignUp,
+            setShowSignUp,
+            showProfile,
+            setShowProfile,
+            isUserLoggedIn,
+            setIsUserLoggedIn,
+            isLoading,
+            setIsLoading,
             products,
-            product, setProduct,
+            product, 
+            setProduct,
             addProduct,
             deleteProduct,
             updateProduct,
             getProductData,
             addCategory,
-            categories,setCategories,
+            categories,
+            setCategories,
             deleteCategory,
             getCategories,
             getCategoryProducts,
@@ -405,8 +429,9 @@ const MyState = (props) => {
             getCart,
             getOrders,
             updatequantity,
-            currentUserId,
-            setCurrentUserId,
+            searchQuery,
+            searchResults,
+            handleSearch,
             wishlistItems,
             setWishlistItems,
             cartItems,

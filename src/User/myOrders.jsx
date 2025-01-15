@@ -31,7 +31,7 @@ const MyOrders = () => {
           <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-900 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
         </h1>
       </div>
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-2xl">
+      <div className="sm:mx-auto sm:w-full sm:max-w-7xl mt-[-1rem]">
         {orders.length > 0 ? (
           <div className="bg-white shadow overflow-hidden sm:rounded-lg">
             <ul className="divide-y divide-gray-200">
