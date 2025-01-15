@@ -7,9 +7,13 @@ import restoratives from '../assets/restoratives.jpg';
 import instruments from '../assets/instruments.webp';
 import sterilization from '../assets/sterilization.webp';
 import general from '../assets/general.jpg';
+import {useContext} from 'react';
+import myContext from '../context/data/myContext';
 
 const SpecificCategoryPage = () => {
-  const { category,getCategoryProducts } = useParams();
+  const { getCategoryProducts } = useContext(myContext);
+
+  const { category } = useParams();
   const [products, setProducts] = useState([]);
   // const [loading, setLoading] = useState(true);
 
@@ -31,15 +35,12 @@ const SpecificCategoryPage = () => {
         return instruments;
       case 'sterilization':
         return sterilization;
-      case 'general Dentistry':
+      case 'general dentistry':
         return general;
       default:
         return endodentics; // Default fallback image
     }
   };
-
-
-
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -54,269 +55,6 @@ const SpecificCategoryPage = () => {
     fetchProducts();
   }, [getCategoryProducts, category]);
 
-  // Simulated product data - replace with actual API call
-  // useEffect(() => {
-  //   // Simulate API fetch
-  //   setTimeout(() => {
-  //     // setProducts([
-  //     //   {
-  //     //     id: 1,
-  //     //     title: "Dental Drill Kit",
-  //     //     description: "Professional-grade dental drill kit with multiple attachments and speeds",
-  //     //     price: 1299.99,
-  //     //     image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
-  //     //   },
-  //     //   {
-  //     //     id: 2,
-  //     //     title: "Dental Chair",
-  //     //     description: "Ergonomic fully-adjustable dental chair with LED lighting",
-  //     //     price: 4999.99,
-  //     //     image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787"
-  //     //   },
-  //     //   {
-  //     //     id: 3,
-  //     //     title: "Sterilization Unit",
-  //     //     description: "Advanced autoclave sterilizer for dental instruments",
-  //     //     price: 2499.99,
-  //     //     image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95"
-  //     //   },
-  //     //   {
-  //     //     id: 4,
-  //     //     title: "Dental Forceps Set",
-  //     //     description: "Complete set of dental extraction forceps",
-  //     //     price: 399.99,
-  //     //     image: "https://images.unsplash.com/photo-1571772996211-2f02c9727629"
-  //     //   },
-  //     //   {
-  //     //     id: 5,
-  //     //     title: "Dental Curing Light",
-  //     //     description: "LED curing light for dental composites",
-  //     //     price: 299.99,
-  //     //     image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe"
-  //     //   },
-  //     //   {
-  //     //     id: 6,
-  //     //     title: "Dental X-Ray Machine",
-  //     //     description: "Digital dental X-ray system with sensor",
-  //     //     price: 5999.99,
-  //     //     image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
-  //     //   },
-  //     //   {
-  //     //     id: 7,
-  //     //     title: "Dental Scaler",
-  //     //     description: "Ultrasonic dental scaler for cleaning",
-  //     //     price: 799.99,
-  //     //     image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95"
-  //     //   },
-  //     //   {
-  //     //     id: 8,
-  //     //     title: "Composite Kit",
-  //     //     description: "Complete dental composite restoration kit",
-  //     //     price: 449.99,
-  //     //     image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe"
-  //     //   },
-  //     //   {
-  //     //     id: 9,
-  //     //     title: "Dental Mirror Set",
-  //     //     description: "Set of dental mirrors with handles",
-  //     //     price: 89.99,
-  //     //     image: "https://images.unsplash.com/photo-1571772996211-2f02c9727629"
-  //     //   },
-  //     //   {
-  //     //     id: 10,
-  //     //     title: "Dental Suction Unit",
-  //     //     description: "High-power dental suction system",
-  //     //     price: 1499.99,
-  //     //     image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
-  //     //   },
-  //     //   {
-  //     //     id: 11,
-  //     //     title: "Root Canal Files",
-  //     //     description: "Professional endodontic file set",
-  //     //     price: 199.99,
-  //     //     image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95"
-  //     //   },
-  //     //   {
-  //     //     id: 12,
-  //     //     title: "Dental Impression Material",
-  //     //     description: "Premium dental impression material kit",
-  //     //     price: 149.99,
-  //     //     image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe"
-  //     //   },
-  //     //   {
-  //     //     id: 13,
-  //     //     title: "Dental Light",
-  //     //     description: "LED dental operatory light",
-  //     //     price: 899.99,
-  //     //     image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787"
-  //     //   },
-  //     //   {
-  //     //     id: 14,
-  //     //     title: "Dental Burs Kit",
-  //     //     description: "Comprehensive dental bur set",
-  //     //     price: 299.99,
-  //     //     image: "https://images.unsplash.com/photo-1571772996211-2f02c9727629"
-  //     //   },
-  //     //   {
-  //     //     id: 15,
-  //     //     title: "Dental Cabinet",
-  //     //     description: "Mobile dental storage cabinet",
-  //     //     price: 699.99,
-  //     //     image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
-  //     //   },
-  //     //   {
-  //     //     id: 16,
-  //     //     title: "Dental Cement",
-  //     //     description: "Professional dental cement kit",
-  //     //     price: 79.99,
-  //     //     image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe"
-  //     //   },
-  //     //   {
-  //     //     id: 17,
-  //     //     title: "Dental Handpiece",
-  //     //     description: "High-speed dental handpiece",
-  //     //     price: 899.99,
-  //     //     image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95"
-  //     //   },
-  //     //   {
-  //     //     id: 18,
-  //     //     title: "Dental Implant Kit",
-  //     //     description: "Complete dental implant system",
-  //     //     price: 2999.99,
-  //     //     image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787"
-  //     //   },
-  //     //   {
-  //     //     id: 19,
-  //     //     title: "Dental Loupes",
-  //     //     description: "Magnifying dental loupes with light",
-  //     //     price: 999.99,
-  //     //     image: "https://images.unsplash.com/photo-1571772996211-2f02c9727629"
-  //     //   },
-  //     //   {
-  //     //     id: 20,
-  //     //     title: "Dental Matrix System",
-  //     //     description: "Professional dental matrix kit",
-  //     //     price: 199.99,
-  //     //     image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
-  //     //   },
-  //     //   {
-  //     //     id: 21,
-  //     //     title: "Dental Polishing Kit",
-  //     //     description: "Complete dental polishing system",
-  //     //     price: 249.99,
-  //     //     image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe"
-  //     //   },
-  //     //   {
-  //     //     id: 22,
-  //     //     title: "Dental Retractor Set",
-  //     //     description: "Professional dental retractor kit",
-  //     //     price: 149.99,
-  //     //     image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95"
-  //     //   },
-  //     //   {
-  //     //     id: 23,
-  //     //     title: "Dental Sealant Kit",
-  //     //     description: "Complete dental sealant system",
-  //     //     price: 179.99,
-  //     //     image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787"
-  //     //   },
-  //     //   {
-  //     //     id: 24,
-  //     //     title: "Dental Surgical Kit",
-  //     //     description: "Professional dental surgery instruments",
-  //     //     price: 1499.99,
-  //     //     image: "https://images.unsplash.com/photo-1571772996211-2f02c9727629"
-  //     //   },
-  //     //   {
-  //     //     id: 25,
-  //     //     title: "Dental Tray Set",
-  //     //     description: "Stainless steel dental instrument trays",
-  //     //     price: 199.99,
-  //     //     image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
-  //     //   },
-  //     //   {
-  //     //     id: 26,
-  //     //     title: "Dental Unit Water System",
-  //     //     description: "Complete dental unit water purification system",
-  //     //     price: 899.99,
-  //     //     image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe"
-  //     //   },
-  //     //   {
-  //     //     id: 27,
-  //     //     title: "Dental Vacuum Former",
-  //     //     description: "Professional dental vacuum forming machine",
-  //     //     price: 1299.99,
-  //     //     image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95"
-  //     //   },
-  //     //   {
-  //     //     id: 28,
-  //     //     title: "Dental Wax Kit",
-  //     //     description: "Complete dental wax modeling kit",
-  //     //     price: 89.99,
-  //     //     image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787"
-  //     //   },
-  //     //   {
-  //     //     id: 29,
-  //     //     title: "Dental X-Ray Sensor",
-  //     //     description: "Digital dental X-ray sensor",
-  //     //     price: 3999.99,
-  //     //     image: "https://images.unsplash.com/photo-1571772996211-2f02c9727629"
-  //     //   },
-  //     //   {
-  //     //     id: 30,
-  //     //     title: "Dental Zirconia Blocks",
-  //     //     description: "Premium dental zirconia CAD/CAM blocks",
-  //     //     price: 299.99,
-  //     //     image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
-  //     //   },
-  //     //   {
-  //     //     id: 31,
-  //     //     title: "Dental Articulator",
-  //     //     description: "Professional dental articulator system",
-  //     //     price: 599.99,
-  //     //     image: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe"
-  //     //   },
-  //     //   {
-  //     //     id: 32,
-  //     //     title: "Dental Bleaching Kit",
-  //     //     description: "Professional teeth whitening system",
-  //     //     price: 399.99,
-  //     //     image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95"
-  //     //   },
-  //     //   {
-  //     //     id: 33,
-  //     //     title: "Dental Camera System",
-  //     //     description: "Intraoral dental camera with display",
-  //     //     price: 1999.99,
-  //     //     image: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787"
-  //     //   },
-  //     //   {
-  //     //     id: 34,
-  //     //     title: "Dental Developer Unit",
-  //     //     description: "Automatic X-ray film developer",
-  //     //     price: 2499.99,
-  //     //     image: "https://images.unsplash.com/photo-1571772996211-2f02c9727629"
-  //     //   },
-  //     //   {
-  //     //     id: 35,
-  //     //     title: "Dental Education Model",
-  //     //     description: "Professional dental teaching model",
-  //     //     price: 299.99,
-  //     //     image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
-  //     //   }
-  //     //   // Add more sample products
-  //     // ]);
-  //     setLoading(false);
-  //   }, 1000);
-  // }, [category]);
-
-  // if (loading) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center">
-  //       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20 px-4 sm:px-6 lg:px-8">
@@ -434,11 +172,21 @@ const SpecificCategoryPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-6 pb-12">
                 {products.map((product) => (
                   <ProductCard
-                    key={product.id}
-                    title={product.title}
-                    description={product.description}
-                    price={product.price}
-                    image={product.image}
+                  key={product.id}
+                  image={product.imageUrl}
+                  catagory={product.category}
+                  title={product.title}
+                  description={product.description}
+                  price={product.price}
+                  rating={product.rating}
+                  quantitySold={product.quantitySold}
+                  inStock={product.inStock}
+                  totalStock={product.totalStock}
+                  noOfRatings={product.noOfRatings}
+                  mrp={product.mrp}
+                  id={product.id}
+                  noOfReviews={product.noOfReviews}
+                  reviews={product.reviews}
                   />
                 ))}
               </div>

@@ -94,7 +94,7 @@ const ManageProducts = () => {
                             </div>
                             <div className="mt-4 flex gap-2">
                                 <button
-                                    onClick={() => navigate(`/adminPage/edit-product/${product.id}`)}
+                                    onClick={() => handleEdit(product)}
                                     className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
                                 >
                                     Edit

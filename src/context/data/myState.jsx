@@ -226,7 +226,7 @@ const MyState = (props) => {
     const addCategory = async () => {
         setIsLoading(true);
         const category = prompt("Enter category name");
-        try {
+        try {  
             const categoryRef = collection(fireDb, "categories");
             await addDoc(categoryRef, {
                 name: category,
@@ -286,7 +286,7 @@ const MyState = (props) => {
     };
 
     const getCategoryProducts = (category) => {
-        return products.filter((product) => product.category === category);
+        return products.filter((product) => product.category.toLowerCase() === category.toLowerCase());
 
     };
 
@@ -395,6 +395,9 @@ const MyState = (props) => {
         );
         setSearchResults(filteredProducts);
     };
+
+
+    // const handle
 
     useEffect(() => {
         if (products.length > 0) {
