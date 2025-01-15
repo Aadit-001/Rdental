@@ -1,15 +1,30 @@
 import { useState, useContext } from 'react';
 import myContext from '../../context/data/myContext';
+import EditProductModal from './EditProductModal';
 
 const ManageProducts = () => {
-    const { products, deleteProduct } = useContext(myContext);
+    const { products, deleteProduct, updateProduct } = useContext(myContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [editingProduct, setEditingProduct] = useState(null);
 
     const handleDelete = async (productId) => {
         if (window.confirm('Are you sure you want to delete this product?')) {
             await deleteProduct(productId);
         }
+    };
+
+    const handleEdit = (product) => {
+        setEditingProduct(product);
+        setIsEditing(true);
+    };
+
+    const handleUpdate = async (updatedProduct) => {
+        await updateProduct(updatedProduct.id, updatedProduct);
+        setIsEditing(false);
+        setEditingProduct(null);
     };
 
     const filteredProducts = products?.filter(product => {
@@ -56,9 +71,9 @@ const ManageProducts = () => {
                 {filteredProducts?.map((product) => (
                     <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg w-56 h-96">
                         <div className="relative h-48">
-                            <img 
-                                src={product.imageUrl} 
-                                alt={product.title} 
+                            <img
+                                src={product.imageUrl}
+                                alt={product.title}
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
                         </div>
@@ -76,7 +91,7 @@ const ManageProducts = () => {
                             </div>
                             <div className="mt-4 flex gap-2">
                                 <button
-                                    onClick={() => window.location.href = `/adminPage/edit-product/${product.id}`}
+                                    onClick={() => handleEdit(product)}
                                     className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
                                 >
                                     Edit
@@ -98,6 +113,15 @@ const ManageProducts = () => {
                 <div className="text-center py-12">
                     <p className="text-gray-500 text-lg">No products found</p>
                 </div>
+            )}
+
+            {/* Edit Product Modal */}
+            {isEditing && (
+                <EditProductModal 
+                    product={editingProduct} 
+                    onUpdate={handleUpdate} 
+                    onClose={() => setIsEditing(false)} 
+                />
             )}
         </div>
     );
