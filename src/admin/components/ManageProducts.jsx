@@ -1,12 +1,13 @@
 import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import myContext from '../../context/data/myContext';
 import EditProductModal from './EditProductModal';
 
 const ManageProducts = () => {
-    const { products, deleteProduct, updateProduct } = useContext(myContext);
+    const { products, deleteProduct, updateProduct, categories } = useContext(myContext);
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
-
     const [isEditing, setIsEditing] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
 
@@ -27,8 +28,9 @@ const ManageProducts = () => {
         setEditingProduct(null);
     };
 
-    const filteredProducts = products?.filter(product => {
-        const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const filteredProducts = products?.filter((product) => {
+        const matchesSearch =
+            product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             product.description.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = selectedCategory === '' || product.category === selectedCategory;
         return matchesSearch && matchesCategory;
@@ -58,10 +60,11 @@ const ManageProducts = () => {
                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
                         <option value="">All Categories</option>
-                        <option value="Equipment">Equipment</option>
-                        <option value="Restoratives">Restoratives</option>
-                        <option value="Sterilization">Sterilization</option>
-                        <option value="Endodontics">Endodontics</option>
+                        {categories?.map((category) => (
+                            <option key={category.id} value={category.name}>
+                                {category.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>
@@ -91,7 +94,7 @@ const ManageProducts = () => {
                             </div>
                             <div className="mt-4 flex gap-2">
                                 <button
-                                    onClick={() => handleEdit(product)}
+                                    onClick={() => navigate(`/adminPage/edit-product/${product.id}`)}
                                     className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
                                 >
                                     Edit
@@ -117,10 +120,10 @@ const ManageProducts = () => {
 
             {/* Edit Product Modal */}
             {isEditing && (
-                <EditProductModal 
-                    product={editingProduct} 
-                    onUpdate={handleUpdate} 
-                    onClose={() => setIsEditing(false)} 
+                <EditProductModal
+                    product={editingProduct}
+                    onUpdate={handleUpdate}
+                    onClose={() => setIsEditing(false)}
                 />
             )}
         </div>

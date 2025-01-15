@@ -7,10 +7,12 @@ import myContext from '../context/data/myContext';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
 
+
 const WishlistProductCard = ({ productId }) => {
-  const { removeFromWishlist, currentUserId ,setWishlistItems} = useContext(myContext);
+  const { removeFromWishlist, currentUserId, setWishlistItems, addToCart, removeFromCart, isUserLoggedIn, getCart, setCartItems } = useContext(myContext);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [product, setProduct] = useState(null);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,9 +32,23 @@ const WishlistProductCard = ({ productId }) => {
     getProduct();
   }, [productId]);
 
-  if (!product) return null; 
+  useEffect(() => {
+    const checkCartStatus = async () => {
+      if (isUserLoggedIn && currentUserId) {
+        try {
+          const cartItems = await getCart(currentUserId);
+          setIsAddedToCart(cartItems.some(item => item.productId === productId));
+          setCartItems(cartItems);
+        } catch (error) {
+          console.error('Error checking cart status:', error);
+        }
+      }
+    };
 
-  const savings = Math.round(((product.mrp - product.price) / product.mrp) * 100);
+    checkCartStatus();
+  }, [isUserLoggedIn, currentUserId, productId, getCart, setCartItems]);
+
+  if (!product) return null;
 
   const handleClick = () => {
     setTimeout(() => {
@@ -49,6 +65,25 @@ const WishlistProductCard = ({ productId }) => {
     } catch (error) {
       console.error('Error removing product from wishlist:', error);
       toast.error('Error removing product from wishlist');
+    }
+  };
+
+  const handleAddToCart = async (productId) => {
+    try {
+      if(isAddedToCart){
+        await removeFromCart(productId, currentUserId);
+        setCartItems(prev => prev.filter(item => item.productId !== productId));
+        setIsAddedToCart(false);
+        toast.success('Product removed from cart');
+      } else {
+        await addToCart(productId, currentUserId);
+        setCartItems(prev => [...prev, { productId, quantity: 1 }]);
+        setIsAddedToCart(true);
+        toast.success('Product added to cart successfully');
+      }
+    } catch (error) {
+      console.error('Error updating cart:', error);
+      toast.error('Failed to update cart');
     }
   };
 
@@ -122,12 +157,14 @@ const WishlistProductCard = ({ productId }) => {
               <span className="text-base font-bold text-gray-900">${product.price}</span>
               <span className="text-xs text-gray-400 line-through">${product.mrp}</span>
               <span className="bg-green-100 text-green-800 text-xs px-1 py-0.5 rounded">
-                Save {savings}%
+                Save {Math.round(((product.mrp - product.price) / product.mrp) * 100)}%
               </span>
             </div>
             <button 
               onClick={(e) => {
                 e.stopPropagation();
+                handleAddToCart(productId);
+                handleRemove(product.id);
               }}
               className="px-3 py-1.5 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors duration-300"
             >
