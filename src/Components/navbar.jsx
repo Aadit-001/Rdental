@@ -6,7 +6,7 @@ import myContext from '../context/data/myContext';
 import { useContext } from 'react';
 
 const Navbar = () => {
-  const { setShowSignIn, setShowProfile, showProfile, isUserLoggedIn } = useContext(myContext); // Destructure setShowSignIn from context
+  const { setShowSignIn, setShowProfile, showProfile, isUserLoggedIn, searchResults, handleSearch } = useContext(myContext); // Destructure setShowSignIn from context
   const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,12 +53,15 @@ const Navbar = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-3xl mx-8">
+          <div className="flex-1 max-w-3xl mx-8 relative">
             <div className="relative">
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  handleSearch(e.target.value);
+                  setSearchQuery(e.target.value);
+                }}
                 className="w-full bg-gray-100 rounded-lg py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500"
                 placeholder="Search products..."
               />
@@ -78,6 +81,39 @@ const Navbar = () => {
                 </svg>
               </div>
             </div>
+            
+            {/* Search Results Dropdown */}
+            {searchQuery && searchResults.length > 0 && (
+              <div className="absolute mt-2 w-full bg-white rounded-lg shadow-lg z-50 max-h-96 overflow-auto">
+                {searchResults.map((product) => (
+                  <div
+                    key={product.productId}
+                    onClick={() => {
+                      navigate(`/product/${product.productId}`);
+                      setSearchQuery('');
+                      handleSearch('');
+                    }}
+                    className="flex items-center p-3 hover:bg-gray-50 transition-colors cursor-pointer"
+                  >
+                    <img
+                      src={product.imageUrl}
+                      alt={product.title}
+                      className="w-12 h-12 object-cover rounded"
+                    />
+                    <div className="ml-3">
+                      <p className="text-sm font-medium text-gray-900">{product.title}</p>
+                      <p className="text-sm text-gray-500">₹{product.price}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            {searchQuery && searchResults.length === 0 && (
+              <div className="absolute mt-2 w-full bg-white rounded-lg shadow-lg z-50 p-4">
+                <p className="text-gray-500 text-center">No products found</p>
+              </div>
+            )}
           </div>
 
           {/* Navigation Items */}

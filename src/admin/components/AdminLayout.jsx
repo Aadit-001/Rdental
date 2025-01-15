@@ -1,5 +1,5 @@
 import { Link, useLocation, Outlet } from 'react-router-dom';
-import { FiGrid, FiPackage, FiShoppingBag, FiUsers, FiLogOut } from 'react-icons/fi';
+import { FiGrid, FiPackage, FiShoppingBag, FiUsers } from 'react-icons/fi';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 const AdminLayout = () => {
@@ -14,47 +14,42 @@ const AdminLayout = () => {
         { path: '/adminPage/users', icon: <FiUsers />, label: 'Users' },
     ];
 
-    const handleLogout = () => {
-        // Add your logout logic here
-    };
-
     return (
         <div className="min-h-screen bg-gray-100">
             <div className="flex">
                 {/* Sidebar */}
-                <div className="w-64">
-                    <div className="bg-white h-[60vh] shadow-lg flex flex-col mt-28 overflow-auto">
-                        <div className="p-4 border-b">
-                            <Link to="/" className="text-2xl font-bold text-blue-600">R-Dental</Link>
-                        </div>
-                        <nav className="flex-1 p-4">
-                            <ul className="space-y-2">
+                <div className="w-60">
+                    <div className="bg-gradient-to-b from-teal-50 via-teal-100/80 to-teal-50 h-fit shadow-lg flex flex-col mt-28 rounded-xl mx-4 border border-teal-100">
+                        <nav className="flex-1 py-5 px-4">
+                            <ul className="space-y-3">
                                 {menuItems.map((item) => (
                                     <li key={item.path}>
                                         <Link
                                             to={item.path}
-                                            className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                                            className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 ${
                                                 location.pathname === item.path
-                                                    ? 'bg-blue-500 text-white'
-                                                    : 'text-gray-600 hover:bg-blue-50'
+                                                    ? 'bg-teal-600/10 text-teal-800 shadow-sm transform scale-[1.02]'
+                                                    : 'text-teal-700 hover:bg-teal-50 hover:text-teal-900 hover:transform hover:translate-x-1'
                                             }`}
                                         >
-                                            <span className="text-xl">{item.icon}</span>
-                                            <span>{item.label}</span>
+                                            <span className={`text-lg ${location.pathname === item.path ? 'text-teal-700' : 'text-teal-600'}`}>
+                                                {item.icon}
+                                            </span>
+                                            <span className="font-medium text-sm tracking-wide">
+                                                {item.label}
+                                            </span>
+                                            {location.pathname === item.path && (
+                                                <span className="ml-auto text-teal-600">
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </span>
+                                            )}
                                         </Link>
                                     </li>
                                 ))}
                             </ul>
                         </nav>
-                        <div className="p-4 border-t">
-                            <button
-                                onClick={handleLogout}
-                                className="flex items-center space-x-3 p-3 rounded-lg w-full text-gray-600 hover:bg-red-50 hover:text-red-500"
-                            >
-                                <FiLogOut className="text-xl" />
-                                <span>Logout</span>
-                            </button>
-                        </div>
                     </div>
                 </div>
 
