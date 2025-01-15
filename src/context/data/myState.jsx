@@ -6,7 +6,8 @@ import { collection, addDoc, query, orderBy, onSnapshot, deleteDoc, doc, updateD
 // import { getDoc, setDoc } from 'firebase/firestore';
 import { fireDB as fireDb } from '../../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
-
+import { deleteObject, ref } from 'firebase/storage';
+import { storage } from '../../firebase/firebaseConfig';
 
 const MyState = (props) => {
     const [currentUserId, setCurrentUserId] = useState(null);
@@ -116,10 +117,31 @@ const MyState = (props) => {
         try {
             setIsLoading(true);
 
+            // First get the product to get the image URL
             const productRef = doc(fireDb, "products", productId);
-            await deleteDoc(productRef);
-            toast.success("Product deleted successfully");
-            getProductData(); // Refresh the product list
+            const productSnap = await getDoc(productRef);
+            
+            if (productSnap.exists()) {
+                const productData = productSnap.data();
+                
+                // If there's an image URL and it's from Firebase Storage
+                if (productData.imageUrl && productData.imageUrl.includes('firebase')) {
+                    // Extract the path from the URL
+                    const imageRef = ref(storage, productData.imageUrl);
+                    try {
+                        // Delete the image from storage
+                        await deleteObject(imageRef);
+                    } catch (error) {
+                        console.error("Error deleting image:", error);
+                        // Continue with product deletion even if image deletion fails
+                    }
+                }
+                
+                // Delete the product document
+                await deleteDoc(productRef);
+                toast.success("Product deleted successfully");
+                getProductData(); // Refresh the product list
+            }
         } catch (error) {
             console.error(error);
             toast.error("Error deleting product");
@@ -265,6 +287,7 @@ const MyState = (props) => {
 
     const getCategoryProducts = (category) => {
         return products.filter((product) => product.category === category);
+
     };
 
     const getBestSellers = () => {

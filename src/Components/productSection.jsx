@@ -14,7 +14,7 @@ const ProductSection = ({ title}) => {
 
 
     return (
-        <div className="max-w-[1350px] mx-auto px-4 py-8">
+        <div className="max-w-[1350px] min-w-[1350px] mx-auto px-4 py-8">
             <div className="flex justify-between items-center mb-6 bg-gradient-to-r from-white to-gray-50 p-4 rounded-xl border-l-4 border-green-500 transition-all duration-300 w-[98%] mx-auto">
                 <div className="flex items-center gap-4">
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-800 relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-500 animate-pulse">

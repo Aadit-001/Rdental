@@ -89,7 +89,7 @@ const Navbar = () => {
                   <div
                     key={product.productId}
                     onClick={() => {
-                      navigate(`/product/${product.productId}`);
+                      navigate(`/products/${product.category}/${product.title}`);
                       setSearchQuery('');
                       handleSearch('');
                     }}
@@ -103,6 +103,7 @@ const Navbar = () => {
                     <div className="ml-3">
                       <p className="text-sm font-medium text-gray-900">{product.title}</p>
                       <p className="text-sm text-gray-500">₹{product.price}</p>
+                      <p className="text-sm text-gray-500">{product.category}</p>
                     </div>
                   </div>
                 ))}

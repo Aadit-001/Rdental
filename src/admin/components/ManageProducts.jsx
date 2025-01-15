@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import myContext from '../../context/data/myContext';
 
 const ManageProducts = () => {
-    const { products, deleteProduct } = useContext(myContext);
+    const { products, deleteProduct ,categories} = useContext(myContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -43,10 +43,11 @@ const ManageProducts = () => {
                         className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
                         <option value="">All Categories</option>
-                        <option value="Equipment">Equipment</option>
-                        <option value="Restoratives">Restoratives</option>
-                        <option value="Sterilization">Sterilization</option>
-                        <option value="Endodontics">Endodontics</option>
+                        {
+                            categories?.map((category) => (
+                                <option key={category.id} value={category.name}>{category.name}</option>
+                            ))
+                        }
                     </select>
                 </div>
             </div>
@@ -76,7 +77,7 @@ const ManageProducts = () => {
                             </div>
                             <div className="mt-4 flex gap-2">
                                 <button
-                                    onClick={() => window.location.href = `/adminPage/edit-product/${product.id}`}
+                                    onClick={() => navigate(`/adminPage/edit-product/${product.id}`)}
                                     className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
                                 >
                                     Edit

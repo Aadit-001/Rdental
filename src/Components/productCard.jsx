@@ -56,12 +56,6 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
   }, [currentUserId, id, isUserLoggedIn, getCart]);
 
   const handleLike = async () => {
-    if (!isUserLoggedIn || !currentUserId) {
-      // Show a toast or alert that user needs to login
-      toast.error('Please login to add items to wishlist');
-      return;
-    }
-
     try {
       if(isLiked){
         setIsLiked(false);
@@ -79,11 +73,6 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
   }
 
   const handleAddToCart = async (productId) => {
-    if (!isUserLoggedIn || !currentUserId) {
-      toast.error('Please login to add items to cart');
-      return;
-    }
-
     try {
       if(isAddedToCart){
         await removeFromCart(productId, currentUserId);
