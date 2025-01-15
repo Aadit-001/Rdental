@@ -23,6 +23,7 @@ import ManageProducts from "./Admin/components/ManageProducts.jsx";
 import AdminLayout from "./Admin/components/AdminLayout.jsx";
 import AddProduct from "./Admin/components/AddProduct.jsx";
 import MyOrders from "./User/myOrders.jsx";
+import AddCatagory from "./Admin/components/AddCatagory.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -72,6 +73,7 @@ createRoot(document.getElementById("root")).render(
             >
               <Route index element={<DashboardOverview />} />
               <Route path="add-product" element={<AddProduct />} />
+              <Route path="add-category" element={<AddCatagory />} />
               <Route path="products" element={<ManageProducts />} />
               <Route path="orders" element={<Orders />} />
               <Route path="users" element={<Users />} />

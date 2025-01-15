@@ -7,21 +7,23 @@ import EmptyOrders from "./emptyOrderPage.jsx";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
-  const { userId } = useContext(myContext);
+  const { currentUserId } = useContext(myContext);
 
+
+  //ye mystate se lena hai
   useEffect(() => {
     const q = query(collection(fireDB, "orders"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const data = [];
       querySnapshot.forEach((doc) => {
-        if (doc.data().userId === userId) {
+        if (doc.data().userId === currentUserId) {
           data.push({ ...doc.data(), id: doc.id });
         }
       });
       setOrders(data);
     });
     return unsubscribe;
-  }, [userId]);
+  }, [currentUserId]);
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)] py-16 px-4 sm:px-6 lg:px-8 pt-24">

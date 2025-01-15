@@ -57,14 +57,17 @@ const ProductSection = ({ title}) => {
                             title={product.title}
                             description={product.description}
                             price={product.price}
-                            mrp={product.mrp}
                             rating={product.rating}
-                            noOfRatings={product.noOfRatings}
+                            catagory={product.category}
                             quantitySold={product.quantitySold}
                             inStock={product.inStock}
                             totalStock={product.totalStock}
+                            noOfRatings={product.noOfRatings}
                             image={product.imageUrl}
-                            catagory={title}
+                            mrp={product.mrp}
+                            id={product.id}
+                            noOfReviews={product.noOfReviews}
+                            reviews={product.reviews}
                         />
                     </div>
                 ))}

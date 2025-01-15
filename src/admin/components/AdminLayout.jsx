@@ -8,6 +8,7 @@ const AdminLayout = () => {
     const menuItems = [
         { path: '/adminPage', icon: <FiGrid />, label: 'Dashboard' },
         { path: '/adminPage/add-product', icon: <AiOutlinePlus />, label: 'Add Product' },
+        { path: '/adminPage/add-category', icon: <AiOutlinePlus />, label: 'Add Category' },
         { path: '/adminPage/products', icon: <FiPackage />, label: 'Manage Products' },
         { path: '/adminPage/orders', icon: <FiShoppingBag />, label: 'Orders' },
         { path: '/adminPage/users', icon: <FiUsers />, label: 'Users' },

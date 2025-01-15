@@ -5,6 +5,7 @@ const Sidebar = () => {
     const menuItems = [
         { path: '/adminPage', icon: FaHome, text: 'Dashboard' },
         { path: '/adminPage/add-product', icon: FaPlus, text: 'Add Product' },
+        { path: '/adminPage/add-category', icon: FaPlus, text: 'Add Category' },
         { path: '/adminPage/products', icon: FaBoxes, text: 'Manage Products' },
         { path: '/adminPage/orders', icon: FaShoppingCart, text: 'Orders' },
         { path: '/adminPage/users', icon: FaUsers, text: 'Users' }
