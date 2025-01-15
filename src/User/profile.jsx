@@ -57,35 +57,13 @@ const Profile = () => {
             <div className="flex items-center space-x-6">
               <motion.img
                 whileHover={{ scale: 1.1 }}
-                src={user.profilePhoto}
+                src={user.providerData[0].photoURL}
                 alt="Profile"
                 className="w-24 h-24 rounded-full border-4 border-white shadow-lg"
               />
               <div className="text-white">
-                <h1 className="text-2xl font-bold">{user.name}</h1>
-                <p className="opacity-90">{user.email}</p>
-                <p className="opacity-90 flex items-center mt-1">
-                  <svg
-                    className="w-4 h-4 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                  {user.location}
-                </p>
+                <h1 className="text-2xl font-bold">{user.providerData[0].displayName}</h1>
+                <p className="opacity-90">{user.providerData[0].email}</p>
               </div>
             </div>
           </div>
