@@ -83,7 +83,16 @@ const MyState = (props) => {
                 })
             });
 
-            toast.success("Product added successfully");
+            toast.success("Product added successfully", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
 
             //product ke fields ko empty kardia
             setProduct({
@@ -139,7 +148,16 @@ const MyState = (props) => {
                 
                 // Delete the product document
                 await deleteDoc(productRef);
-                toast.success("Product deleted successfully");
+                toast.success("Product deleted successfully", {
+                    position: "bottom-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                  });
                 getProductData(); // Refresh the product list
             }
         } catch (error) {
@@ -167,7 +185,16 @@ const MyState = (props) => {
                 })
             });
 
-            toast.success("Product updated successfully");
+            toast.success("Product updated successfully", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
 
             //product ka data phir fetch kiya database se
             getProductData(); // Refresh the product list
@@ -234,7 +261,16 @@ const MyState = (props) => {
             });
             // setCategories([...categories, category]);
             getCategories();
-            toast.success("Category added successfully");
+            toast.success("Category added successfully", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
         } catch (e) {
             toast.error("Error adding category");
             console.log(e);
@@ -276,7 +312,16 @@ const MyState = (props) => {
             setIsLoading(true);
             const categoryRef = doc(fireDb, "categories", categoryId);
             await deleteDoc(categoryRef);
-            toast.success("Category deleted successfully");
+            toast.success("Category deleted successfully", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
             getCategories(); // Refresh the category list
         } catch (error) {
             console.error(error);

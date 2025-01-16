@@ -44,7 +44,16 @@ const HorizontalProductCard = ({ id, quantity }) => {
         );
         return updatedItems.sort((a, b) => (b.lastUpdated || 0) - (a.lastUpdated || 0));
       });
-      toast.success('Product quantity updated');
+      toast.success('Product quantity updated', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }catch(error){  
       console.error(error);
       toast.error('Failed to update quantity');
@@ -55,7 +64,16 @@ const HorizontalProductCard = ({ id, quantity }) => {
     try{
       removeFromCart(id, currentUserId);
       setCartItems(prev => prev.filter(item => item.productId !== id));
-      toast.success('Product removed from cart');
+      toast.success('Product removed from cart', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }catch(error){
       console.log(error);
       toast.error('Failed to remove product');
@@ -156,8 +174,8 @@ const HorizontalProductCard = ({ id, quantity }) => {
           </div>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-gray-900">${productData.price}</span>
-              <span className="text-sm text-gray-400 line-through">${productData.mrp}</span>
+              <span className="text-lg font-bold text-gray-900">&#x20B9;{productData.price}</span>
+              <span className="text-sm text-gray-400 line-through">&#x20B9;{productData.mrp}</span>
               <span className="bg-green-100 text-green-800 text-xs px-1 py-0.5 rounded">
                 Save {savingsPercentage}%
               </span>

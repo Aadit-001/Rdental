@@ -167,8 +167,8 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
 
         <div className="mt-auto">
           <div className="flex items-center gap-1 mb-2">
-            <span className="text-base font-bold text-gray-900">${price}</span>
-            <span className="text-sm text-gray-400 line-through">${mrp}</span>
+            <span className="text-base font-bold text-gray-900">&#x20B9;{price}</span>
+            <span className="text-sm text-gray-400 line-through">&#x20B9;{mrp}</span>
             <span className="bg-green-100 text-green-800 text-xs px-1 py-0.5 rounded">
               Save {savings}%</span>
           </div>
