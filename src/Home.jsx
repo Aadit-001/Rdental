@@ -595,7 +595,7 @@ const Home = () => {
         </div>
 
         {/* Products Carousel */}
-        <div className="relative w-full">
+        <div className="relative">
           {/* Optional: Add Left-Right Scroll Buttons */}
           {/* <button className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-lg hover:bg-white transition-colors duration-200 -ml-4 hidden md:block">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -603,9 +603,9 @@ const Home = () => {
             </svg>
           </button> */}
 
-          <div className="flex overflow-x-auto space-x-[-16px] pb-6 pt-6 px-4 scrollbar-hide">
+          <div className="flex justify-center items-center overflow-x-auto space-x-[3px]  pb-6 pt-6 pl-4 scrollbar-hide">
             {bestSellers.map((product) => (
-              <div key={product.id} className="flex-shrink-0 w-[280px] transform hover:scale-10 transition-transform duration-300">
+              <div key={product.id} className="flex-shrink-0 w-[240px] flex items-center justify-center transform hover:scale-10 transition-transform duration-300">
                 <ProductCard
                   title={product.title}
                   description={product.description}
@@ -662,7 +662,7 @@ const Home = () => {
                   <h3 className="text-2xl font-bold mt-2">General Dentistry</h3>
                   <p className="text-sm mt-1 mb-3 text-gray-200">Essential equipment & supplies</p>
                   <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
-                    onClick={() => { navigate('/products/general-dentistry'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                    onClick={() => { navigate('/products/general'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                     Shop Collection
                   </button>
                 </div>
