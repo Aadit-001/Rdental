@@ -13,7 +13,17 @@ const EditProductModal = ({ product, onUpdate, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onUpdate({ ...product, title, price, category, mrp, description, rating });
+        // Convert rating to number and ensure it's between 0 and 5
+        const validatedRating = rating ? Math.min(Math.max(Number(rating), 0), 5) : null;
+        onUpdate({
+            ...product,
+            title,
+            price: Number(price),
+            category,
+            mrp: Number(mrp),
+            description,
+            rating: validatedRating
+        });
     };
 
     return (
@@ -45,14 +55,19 @@ const EditProductModal = ({ product, onUpdate, onClose }) => {
                         placeholder="MRP"
                         className="w-full p-2 border border-gray-300 rounded mb-4"
                     />
-                    <label className="block mb-1">Rating</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Rating (0-5)</label>
                     <input
                         type="number"
-                        value={rating}
-                        onChange={(e) => setRating(e.target.value)}
-                        placeholder="Rating"
-                        className="w-full p-2 border border-gray-300 rounded mb-4"
+                        name="rating"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                        value={rating || ''}
+                        onChange={(e) => setRating(Number(e.target.value))}
+                        placeholder="Enter rating between 0 and 5"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
+                    <p className="mt-1 text-sm text-gray-500">Enter a rating between 0 and 5 stars</p>
                     <label className="block mb-1">Description</label>
                     <textarea
                         value={description}
