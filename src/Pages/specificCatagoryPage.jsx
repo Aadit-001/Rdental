@@ -42,11 +42,14 @@ const SpecificCategoryPage = () => {
     }
   };
 
+
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await getCategoryProducts(category);
         setProducts(response);
+        setFilteredProducts(response);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -54,6 +57,28 @@ const SpecificCategoryPage = () => {
 
     fetchProducts();
   }, [getCategoryProducts, category]);
+
+  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [sort, setSort] = useState('Newest First');
+  const [isSorting,setIsSorting] = useState(false);
+
+  const handleFilter = (filter) => {
+    setSort(filter);
+    setIsSorting(true); 
+    let sortedProducts = [...products]; // Create a copy of products for sorting
+    if (filter === 'Newest First') {
+        sortedProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Assuming createdAt exists
+    } else if (filter === 'Price: Low to High') {
+        sortedProducts.sort((a, b) => a.price - b.price);
+    } else if (filter === 'Price: High to Low') {
+        sortedProducts.sort((a, b) => b.price - a.price);
+    }
+    setFilteredProducts(sortedProducts); // Update filteredProducts with sorted results
+};
+
+  useEffect(() => {
+      setFilteredProducts(products);
+  }, [products]);
 
 
   return (
@@ -89,6 +114,7 @@ const SpecificCategoryPage = () => {
                     radioButtons.forEach(radio => {
                       radio.checked = false;
                     });
+                    setIsSorting(false);
                   }}
                   className="text-sm px-2 py-1 text-green-600 hover:text-white border border-green-500 hover:bg-green-500 rounded transition-colors duration-300"
                 >
@@ -96,7 +122,7 @@ const SpecificCategoryPage = () => {
                 </button>
               </div>
               <div className="space-y-2">
-                {['Newest First', 'Price: Low to High', 'Price: High to Low', 'Most Popular'].map((option) => (
+                {['Newest First', 'Price: Low to High', 'Price: High to Low'].map((option) => (
                   <label 
                     key={option} 
                     className="flex items-center space-x-2 cursor-pointer p-2 rounded-md transition-all duration-300 hover:bg-green-50 group relative overflow-hidden"
@@ -106,6 +132,8 @@ const SpecificCategoryPage = () => {
                       name="sort"
                       onChange={(e) => {
                         if (e.target.checked) {
+                          // Do something when the radio button is checked
+                          handleFilter(e.target.value);
                           // Get all radio buttons in the group
                           const radioButtons = document.getElementsByName('sort');
                           // Uncheck all other radio buttons
@@ -170,7 +198,51 @@ const SpecificCategoryPage = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-6 pb-12">
-                {products.map((product) => (
+                {
+                  isSorting ? (
+                    filteredProducts.map((product) => (
+                      <ProductCard
+                      key={product.id}
+                      image={product.imageUrl}
+                      catagory={product.category}
+                      title={product.title}
+                      description={product.description}
+                      price={product.price}
+                      rating={product.rating}
+                      quantitySold={product.quantitySold}
+                      inStock={product.inStock}
+                      totalStock={product.totalStock}
+                      noOfRatings={product.noOfRatings}
+                      mrp={product.mrp}
+                      id={product.id}
+                      noOfReviews={product.noOfReviews}
+                      reviews={product.reviews}
+                      />
+                    ))
+                  ) : (
+                    products.map((product) => (
+                      <ProductCard
+                      key={product.id}
+                      image={product.imageUrl}
+                      catagory={product.category}
+                      title={product.title}
+                      description={product.description}
+                      price={product.price}
+                      rating={product.rating}
+                      quantitySold={product.quantitySold}
+                      inStock={product.inStock}
+                      totalStock={product.totalStock}
+                      noOfRatings={product.noOfRatings}
+                      mrp={product.mrp}
+                      id={product.id}
+                      noOfReviews={product.noOfReviews}
+                      reviews={product.reviews}
+                      />
+                    ))
+                  ) 
+                }
+                
+                {/* {products.map((product) => (
                   <ProductCard
                   key={product.id}
                   image={product.imageUrl}
@@ -188,7 +260,7 @@ const SpecificCategoryPage = () => {
                   noOfReviews={product.noOfReviews}
                   reviews={product.reviews}
                   />
-                ))}
+                ))} */}
               </div>
             </div>
           </div>

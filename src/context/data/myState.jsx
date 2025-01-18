@@ -396,9 +396,6 @@ const MyState = (props) => {
         setSearchResults(filteredProducts);
     };
 
-
-    // const handle
-
     useEffect(() => {
         if (products.length > 0) {
             getBestSellers();
