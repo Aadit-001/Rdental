@@ -199,7 +199,7 @@ ProductCard.propTypes = {
   rating: PropTypes.number,
   noOfRatings: PropTypes.number,
   noOfReviews: PropTypes.number,
-  reviews: PropTypes.array
+  reviews: PropTypes.array,
 };
 
 export default ProductCard;
