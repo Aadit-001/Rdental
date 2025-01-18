@@ -48,7 +48,22 @@ const MyState = (props) => {
 
 
     useEffect(() => {
+        const user = localStorage.getItem('user');
+        console.log('Checking local storage for user data...');
+        console.log('User data in local storage:', user);
+        if (user) {
+            console.log('User found, setting isUserLoggedIn to true.');
+            setIsUserLoggedIn(true);
+        } else {
+            console.log('No user found, setting isUserLoggedIn to false.');
+            setIsUserLoggedIn(false);
+        }
+        console.log('isUserLoggedIn state after check:', isUserLoggedIn);
+    }, []);
+
+    useEffect(() => {
         const userStr = localStorage.getItem('user');
+        console.log('User data in local storage:', userStr);
         if (userStr) {
             const user = JSON.parse(userStr);
             setCurrentUserId(user.uid);
@@ -61,6 +76,26 @@ const MyState = (props) => {
         getCategories();
         getProductData();
     }, []);
+
+
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        console.log('Checking local storage for user data...');
+        console.log('User data in local storage:', user);
+        if (user) {
+            console.log('User found, setting isUserLoggedIn to true.');
+            setIsUserLoggedIn(true);
+        } else {
+            console.log('No user found, setting isUserLoggedIn to false.');
+            setIsUserLoggedIn(false);
+        }
+        console.log('isUserLoggedIn state after check:', isUserLoggedIn);
+    }, []);
+
+
+    useEffect(() => {
+        console.log('isUserLoggedIn state changed:', isUserLoggedIn);
+    }, [isUserLoggedIn]);
 
 
     const addProduct = async () => {
@@ -452,6 +487,7 @@ const MyState = (props) => {
 
     useEffect(() => {
         const userStr = localStorage.getItem('user');
+        console.log('User data in local storage:', userStr);
         if (userStr) {
             const user = JSON.parse(userStr);
             setCurrentUserId(user.uid);

@@ -1,23 +1,23 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
   };
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -33,7 +33,8 @@ const ContactUs = () => {
             Let's Connect
           </h1>
           <p className="relative text-xl text-gray-600 max-w-2xl mx-auto">
-            Your smile journey begins with a conversation. Reach out to us today.
+            Your smile journey begins with a conversation. Reach out to us
+            today.
           </p>
         </div>
 
@@ -45,14 +46,26 @@ const ContactUs = () => {
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-200">
               <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-green-600 to-emerald-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-green-500 transition-all duration-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
                     <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Give us a call</h3>
-                  <p className="text-gray-600 hover:text-green-600 transition-colors">+91 961 965 3896</p>
-                  <p className="text-gray-600 hover:text-green-600 transition-colors">+91 937 281 7043</p>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Give us a call
+                  </h3>
+                  <p className="text-gray-600 hover:text-green-600 transition-colors">
+                    +91 961 965 3896
+                  </p>
+                  <p className="text-gray-600 hover:text-green-600 transition-colors">
+                    +91 937 281 7043
+                  </p>
                 </div>
               </div>
             </div>
@@ -61,14 +74,36 @@ const ContactUs = () => {
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-200">
               <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-green-600 to-emerald-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-green-500 transition-all duration-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Visit us</h3>
-                  <p className="text-gray-600">Shop no.16, 1st floor, Veer Hanuman Nagar Rd, opp.RBI quarter, Kandarpada, Dahisar West, Mumbai, Maharashtra 400068</p>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Visit us
+                  </h3>
+                  <p className="text-gray-600">
+                    Shop no.16, 1st floor, Veer Hanuman Nagar Rd, opp.RBI
+                    quarter, Kandarpada, Dahisar West, Mumbai, Maharashtra
+                    400068
+                  </p>
                 </div>
               </div>
             </div>
@@ -77,14 +112,27 @@ const ContactUs = () => {
             <div className="bg-white/70 backdrop-blur-lg rounded-2xl p-6 transform hover:scale-105 transition-all duration-300 border border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 hover:border-emerald-200">
               <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-green-600 to-emerald-500 rounded-xl flex items-center justify-center group-hover:from-teal-500 group-hover:to-green-500 transition-all duration-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Business Hours</h3>
-                  <p className="text-gray-600">Mon-Fri: 9:00 AM - 6:00 PM</p>
-                  <p className="text-gray-600">Sat: 9:00 AM - 2:00 PM</p>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Business Hours
+                  </h3>
+                  <p className="text-gray-600">Mon-Sat: 10:00 AM - 7:00 PM</p>
+                  <p className="text-gray-600">Sun: Closed</p>
                 </div>
               </div>
             </div>
@@ -177,7 +225,11 @@ const ContactUs = () => {
                       stroke="currentColor"
                       className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                      />
                     </svg>
                   </span>
                 </button>
@@ -188,24 +240,15 @@ const ContactUs = () => {
 
         {/* Map Section */}
         <div className="relative overflow-hidden rounded-2xl h-[400px] mt-16">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 z-10"></div>
-          <a 
-            href="https://www.google.com/maps?q=19.240462,72.860386"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute inset-0 z-20 cursor-pointer"
-          >
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3766.5791233664824!2d72.85819731469864!3d19.240462087000725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDE0JzI1LjciTiA3MsKwNTEnMzcuNCJF!5e0!3m2!1sen!2sin!4v1629789876543!5e0!3m2!1sen!2sin!4v1629789876543"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="R-Dental Location"
-            ></iframe>
-          </a>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3766.645857417349!2d72.8519759!3d19.254259999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b1aec2dde889%3A0xfc5e3bde6566cef1!2sRdental%20Supplier!5e0!3m2!1sen!2sin!4v1737190240948!5m2!1sen!2sin"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
       </div>
     </div>

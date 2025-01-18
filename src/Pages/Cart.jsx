@@ -5,10 +5,14 @@ import HorizontalProductCard from "../Components/horizontalProductCard";
 import { toast } from 'react-toastify';
 import myContext from "../context/data/myContext";
 import { useContext, useEffect } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { fireDB } from "../firebase/firebaseConfig";
 
 const Cart = () => {
 
   const {getCart,cartItems,setCartItems,currentUserId} = useContext(myContext);
+
+  const [productPrices, setProductPrices] = useState({});
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -17,6 +21,17 @@ const Cart = () => {
         // Sort items by lastUpdated timestamp, most recent first
         const sortedItems = items.sort((a, b) => (b.lastUpdated || 0) - (a.lastUpdated || 0));
         setCartItems(sortedItems || []);
+
+        // Fetch product prices
+        const prices = {};
+        for (const item of sortedItems) {
+          const productRef = doc(fireDB, "products", item.productId);
+          const productDoc = await getDoc(productRef);
+          if (productDoc.exists()) {
+            prices[item.productId] = productDoc.data().price;
+          }
+        }
+        setProductPrices(prices);
       } catch (error) {
         console.error("Error fetching cart:", error);
         toast.error("Failed to load cart");
@@ -26,30 +41,15 @@ const Cart = () => {
     if (currentUserId) {
       fetchCartItems();
     }
-  }, [currentUserId, getCart]);
+  }, [currentUserId, getCart, setCartItems]);
 
-  // const updateQuantity = (id, newQuantity) => {
-  //   setCartItems(
-  //     cartItems.map((item) =>
-  //       item.id === id ? { ...item, quantity: Math.max(0, newQuantity) } : item
-  //     )
-  //   );
-  //   quantityUpdated();
-  // };
-
-  // const removeItem = (id) => {
-  //   const updatedCart = cartItems.filter(item => item.id !== id);
-  //   setCartItems(updatedCart);
-  //   itemRemoved();
-  // };
-
-  // const subtotal = cartItems.reduce(
-  //   (sum, item) => sum + item.price * item.quantity,
-  //   0
-  // );
-  const subtotal = 30;
-  const shipping = 15.0;
-  const tax = subtotal * 0.1;
+  // Calculate real-time values from cart items
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + ((productPrices[item.productId] || 0) * item.quantity),
+    0
+  );
+  const shipping = 15.0; // Fixed shipping cost
+  const tax = subtotal * 0.1; // 10% tax rate
   const total = subtotal + shipping + tax;
 
   return (
@@ -134,7 +134,7 @@ const Cart = () => {
                   <div className="text-sm text-gray-600 mb-4">
                     <div className="flex justify-between mb-2">
                       <span>Items ({cartItems.length})</span>
-                      <span className="font-medium">${subtotal.toFixed(2)}</span>
+                      <span className="font-medium">&#x20B9;{subtotal.toFixed(2)}</span>
                     </div>
                   </div>
 
@@ -147,7 +147,7 @@ const Cart = () => {
                         </svg>
                         <span className="text-sm font-medium text-gray-700">Standard Shipping</span>
                       </div>
-                      <span className="text-sm font-medium text-gray-700">${shipping.toFixed(2)}</span>
+                      <span className="text-sm font-medium text-gray-700">&#x20B9;{shipping.toFixed(2)}</span>
                     </div>
                     <p className="text-xs text-gray-500">Estimated delivery: 3-5 business days</p>
                   </div>
@@ -156,20 +156,20 @@ const Cart = () => {
                   <div className="space-y-3 pt-4 border-t">
                     <div className="flex justify-between text-gray-600">
                       <span>Subtotal</span>
-                      <span>${subtotal.toFixed(2)}</span>
+                      <span>&#x20B9;{subtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
                       <span>Shipping</span>
-                      <span>${shipping.toFixed(2)}</span>
+                      <span>&#x20B9;{shipping.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
                       <span>Estimated Tax</span>
-                      <span>${tax.toFixed(2)}</span>
+                      <span>&#x20B9;{tax.toFixed(2)}</span>
                     </div>
                     <div className="border-t pt-3">
                       <div className="flex justify-between text-lg font-bold text-gray-900">
                         <span>Total</span>
-                        <span>${total.toFixed(2)}</span>
+                        <span>&#x20B9;{total.toFixed(2)}</span>
                       </div>
                       <p className="text-xs text-gray-500 mt-2">
                         *Final tax will be calculated at checkout

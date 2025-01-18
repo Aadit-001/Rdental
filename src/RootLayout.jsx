@@ -5,11 +5,20 @@ import Login from './Components/login.jsx'
 import Signup from './Components/signup.jsx'
 import Profile from './User/profile.jsx'
 import myContext from './context/data/myContext';
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 
 function RootLayout() {
-  const { showSignIn, showSignUp , setShowSignIn, setShowSignUp, showProfile, setShowProfile ,isUserLoggedIn} = useContext(myContext);  
+  const { showSignIn, showSignUp , setShowSignIn, setShowSignUp, showProfile, setShowProfile ,isUserLoggedIn, setIsUserLoggedIn} = useContext(myContext);  
 
+
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      setIsUserLoggedIn(true);
+    } else {
+      setIsUserLoggedIn(false);
+    }
+  }, [setIsUserLoggedIn]);
 
   return (
     <>

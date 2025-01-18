@@ -56,9 +56,9 @@ const DashboardOverview = () => {
                             </div>
                             <div className="flex items-center space-x-2 text-gray-600">
                                 <div className="bg-teal-100 rounded-full p-2">
-                                    <FiDollarSign className="text-teal-600" />
+                                    <span className="text-teal-600">&#x20B9;</span>
                                 </div>
-                                <span className="text-sm">${stats.revenue}</span>
+                                <span className="text-sm">&#x20B9;{stats.revenue}</span>
                             </div>
                             <div className="flex items-center space-x-2 text-gray-600">
                                 <div className="bg-cyan-100 rounded-full p-2">

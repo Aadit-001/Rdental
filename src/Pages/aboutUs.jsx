@@ -1,53 +1,57 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import indiamap from '../assets/indiamap.png'
 
-
-
-
 const AboutUs = () => {
-  const [teamMembers] = useState([
+  const [teamMembers, setTeamMembers] = useState([
     {
-      name: 'Dr. Sarah Johnson',
-      role: 'Chief Technical Officer', 
-      description: 'Over 15 years of experience in dental technology and innovation.',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330 '
+      name: 'Shravan Gupta',
+      role: 'Front-End Integration Engineer', 
+      description: 'Develops user-facing components while ensuring seamless interaction with back-end APIs.',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR48kgQNS7jHuRO0_X6Qv5PCh-chkE0_E8uRA&s'
     },
     {
-      name: 'Dr. Michael Chen',
-      role: 'Head of Product Development',
-      description: 'Specialist in dental materials and equipment design.',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a'
-    },
-    {
-      name: 'Dr. Emily Williams', 
-      role: 'Quality Assurance Director',
-      description: 'Ensures all products meet highest industry standards.',
-      image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e'
+      name: 'Kaif Shaikh',
+      role: 'Back-End Functionality Specialist',
+      description: 'Builds robust server-side logic and ensures smooth communication with front-end frameworks.',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR48kgQNS7jHuRO0_X6Qv5PCh-chkE0_E8uRA&s'
     }
   ]);
+  console.log('teamMembers:', teamMembers);
 
   return (
     <div className="pt-24">
       {/* Hero Poster Section */}
-      <div className="relative max-w-6xl mx-auto h-[500px] rounded-2xl overflow-hidden">
+      <div className="relative max-w-6xl mx-auto h-[450px] rounded-2xl overflow-hidden">
         <img 
-          src="https://images.unsplash.com/photo-1629909613654-28e377c37b09"
+          src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
           alt="Dental Equipment"
           className="w-full h-full object-cover rounded-lg"
         />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center">
-          <h1 className="text-white text-5xl font-bold text-center mb-4">
-            Leading the Future of Dental Supply
+        <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-blue-500 opacity-70 flex flex-col items-center justify-center">
+          <h1 className="text-white text-6xl font-bold text-center mb-8 drop-shadow-md">
+            Empowering the Future of Dental Care
           </h1>
-          <p className="text-white text-xl text-center">
-            Providing Quality Dental Equipment and Supplies Since 2020
+          <p className="text-white text-2xl text-center drop-shadow-md">
+            Providing High-Quality Dental Equipment and Supplies with Unparalleled Customer Service
           </p>
         </div>
       </div>
 
+
       {/* Welcome Section */}
       <div className="container mx-auto px-6 py-16">
-        <h2 className="text-3xl font-bold text-center mb-8">Welcome to <span className='text-green-500'>R</span>-DENTAL</h2>
+        <motion.h2
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{
+            duration: 1,
+            ease: 'easeInOut'
+          }}
+          className="text-3xl font-bold text-center mb-8"
+        >
+          Welcome to <span className='text-green-500'>R</span>-DENTAL
+        </motion.h2>
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="max-w-2xl">
             <p className="text-gray-600 mb-6">
@@ -72,7 +76,7 @@ const AboutUs = () => {
 
       {/* Company Overview Heading */}
       <h2 className="text-4xl font-bold text-center mb-12 max-w-4xl mx-auto px-4">
-        <span className='text-blue-500'>We Deal In All Kind Of Dental Material, Instruments & Equipment.</span></h2>
+        <span className='text-blue-900'>We Deal In All Kind Of Dental Material, Instruments & Equipment.</span></h2>
 
       {/* New Section 1 */}
       <div className="container mx-auto px-6 py-16">
@@ -222,23 +226,23 @@ const AboutUs = () => {
       <div className="relative max-w-6xl mx-auto h-auto bg-gray-100 py-16">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12">Meet Our Technical Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {teamMembers.slice(0, 2).map((member, index) => (
-              <div key={index} className="text-center">
-                <div className="mb-6">
-                  <div className="relative flex items-center justify-center w-48 h-48 mx-auto rounded-full overflow-hidden shadow-lg">
+          <div className="flex items-center justify-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {teamMembers.slice(0, 2).map((member, index) => (
+                <div key={index} className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center justify-center">
+                  <div className="relative w-48 h-48 rounded-full overflow-hidden mb-6">
                     <img 
                       src={member.image} 
                       alt={member.name}
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   </div>
+                  <h3 className="text-2xl font-semibold mb-2">{member.name}</h3>
+                  <p className="text-blue-600 mb-2 text-center">{member.role}</p>
+                  <p className="text-gray-600 text-center">{member.description}</p>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
-                <p className="text-blue-600 mb-2">{member.role}</p>
-                <p className="text-gray-600">{member.description}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
