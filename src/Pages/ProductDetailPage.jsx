@@ -2,8 +2,16 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProductCard from '../Components/ProductCard';
 import demo from '../assets/demo.png';
+import {useParams} from 'react-router-dom';
+import {useContext} from 'react';
+import myContext from '../context/data/myContext';
+import { doc, getDoc } from 'firebase/firestore';
+import { fireDB } from '../firebase/firebaseConfig';
+import { useEffect } from 'react';
 
 const ProductDetailPage = () => {
+  const { category, title } = useParams();
+  const { currentProductId ,getCategoryProducts} = useContext(myContext);
   const [quantity, setQuantity] = useState(1);
   const [showQuantityControls, setShowQuantityControls] = useState(false);
   const [rating, setRating] = useState(0);
@@ -11,24 +19,46 @@ const ProductDetailPage = () => {
   const [showZoom, setShowZoom] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef(null);
+  const [product, setProduct] = useState({});
+  const [relatedProducts, setRelatedProducts] = useState([]);
+
+  useEffect(() => {
+    const getProduct = async () => {
+      const docRef = doc(fireDB, 'products', currentProductId);
+      const docSnap = await getDoc(docRef);
+      console.log(docSnap.data());
+      if (docSnap.exists()) {
+        setProduct(docSnap.data());
+      }
+    };
+    getProduct();
+  }, [currentProductId]);
+
+  useEffect(() => {
+    const fetchRelatedProducts = async () => {
+      const categoryProducts = await getCategoryProducts(category);
+      setRelatedProducts(categoryProducts);
+    };
+    fetchRelatedProducts();
+  }, [category]);
 
   // Sample product data
-  const product = {
-    id: 1,
-    name: "Professional Dental Kit",
-    description: "Complete dental care kit with premium quality tools and accessories",
-    price: 299.99,
-    mrp: 399.99,
-    image: demo,
-    brochure: "dental-kit-brochure.pdf",
-    features: [
-      "Professional Grade Tools",
-      "Sterilized Equipment",
-      "Premium Quality Materials",
-      "Ergonomic Design",
-      "Complete Kit"
-    ]
-  };
+  // const product = {
+  //   id: 1,
+  //   name: "Professional Dental Kit",
+  //   description: "Complete dental care kit with premium quality tools and accessories",
+  //   price: 299.99,
+  //   mrp: 399.99,
+  //   image: demo,
+  //   brochure: "dental-kit-brochure.pdf",
+  //   features: [
+  //     "Professional Grade Tools",
+  //     "Sterilized Equipment",
+  //     "Premium Quality Materials",
+  //     "Ergonomic Design",
+  //     "Complete Kit"
+  //   ]
+  // };
 
   const specifications = [
     {
@@ -61,17 +91,17 @@ const ProductDetailPage = () => {
     }
   ];
 
-  const relatedProducts = [
-    // Sample related products data
-    {
-      id: 2,
-      title: "Dental Cleaning Kit",
-      description: "Professional cleaning tools for dental care",
-      price: 149.99,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-    },
-    // Add more related products...
-  ];
+  // const relatedProducts = [
+  //   // Sample related products data
+  //   {
+  //     id: 2,
+  //     title: "Dental Cleaning Kit",
+  //     description: "Professional cleaning tools for dental care",
+  //     price: 149.99,
+  //     image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+  //   },
+  //   // Add more related products...
+  // ];
 
   const savings = ((product.mrp - product.price) / product.mrp * 100).toFixed(0);
 
@@ -106,7 +136,7 @@ const ProductDetailPage = () => {
                 onMouseMove={handleMouseMove}
               >
                 <img
-                  src={product.image}
+                  src={product.imageUrl}
                   alt={product.name}
                   className="w-full h-auto rounded-lg mb-4"
                 />
@@ -123,7 +153,7 @@ const ProductDetailPage = () => {
                   >
                     <div className="w-full h-full relative overflow-hidden"> 
                       <img //image kitna dikhega nhi dikhega zoom hone pe sab yahi se change hoga
-                        src={product.image}
+                        src={product.imageUrl}
                         alt={product.name}
                         className="absolute w-[100%] h-[100%] object-contain" //yaha pe change karna hai 200% to 100% jisse pura image ka zoom dikhe
                         style={{
@@ -145,7 +175,7 @@ const ProductDetailPage = () => {
                   transform hover:scale-105 transition-all duration-300 ease-in-out
                   hover:shadow-lg hover:shadow-green-200 overflow-hidden">
                   <span className="relative z-10 flex items-center justify-center gap-2 text-white font-semibold tracking-wide">
-                    View Brochure
+                    Brochure
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -163,9 +193,9 @@ const ProductDetailPage = () => {
                   </span>
                 </button>
               )}
-
+              
               <div className="border-t pt-4">
-                <h3 className="text-lg font-semibold mb-2">Rate this Product</h3>
+                <h3 className="text-lg font-semibold mb-2">Rate this Product</h3>                 
                 <div className="flex gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -184,12 +214,12 @@ const ProductDetailPage = () => {
           {/* Middle Section - Product Details */}
           <div className="lg:w-1/3">
             <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
+              <h1 className="text-2xl font-bold mb-2">{product.title}</h1>
               <p className="text-gray-600 mb-4">{product.description}</p>
 
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl font-bold text-black">${product.price}</span>
-                <span className="text-gray-400 line-through">${product.mrp}</span>
+                <span className="text-2xl font-bold text-black">₹{product.price}</span>
+                <span className="text-gray-400 line-through">₹{product.mrp}</span>
                 <span className="bg-green-100 text-green-800 text-sm px-2 py-1 rounded">
                   Save {savings}%
                 </span>
@@ -277,7 +307,7 @@ const ProductDetailPage = () => {
                 <div className="text-sm text-gray-600 mb-4">
                   <div className="flex justify-between mb-2">
                     <span>Items ({quantity})</span>
-                    <span className="font-medium">${subtotal}</span>
+                    <span className="font-medium">₹{subtotal}</span>
                   </div>
                 </div>
 
@@ -290,7 +320,7 @@ const ProductDetailPage = () => {
                       </svg>
                       <span className="text-sm font-medium text-gray-700">Standard Shipping</span>
                     </div>
-                    <span className="text-sm font-medium text-gray-700">${shipping}</span>
+                    <span className="text-sm font-medium text-gray-700">₹{shipping}</span>
                   </div>
                   <p className="text-xs text-gray-500">Estimated delivery: 3-5 business days</p>
                 </div>
@@ -299,20 +329,20 @@ const ProductDetailPage = () => {
                 <div className="space-y-3 pt-4 border-t">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
-                    <span>${subtotal}</span>
+                    <span>₹{subtotal}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Shipping</span>
-                    <span>${shipping}</span>
+                    <span>₹{shipping}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Estimated Tax</span>
-                    <span>${tax}</span>
+                    <span>₹{tax}</span>
                   </div>
                   <div className="border-t pt-3">
                     <div className="flex justify-between text-lg font-bold text-gray-900">
                       <span>Total</span>
-                      <span>${total}</span>
+                      <span>₹{total}</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-2">
                       *Final tax will be calculated at checkout
@@ -402,14 +432,24 @@ const ProductDetailPage = () => {
         {/* Related Products Section */}
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-6">Related Products</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             {relatedProducts.map((product) => (
               <ProductCard
-                key={product.id}
-                title={product.title}
-                description={product.description}
-                price={product.price}
-                image={product.image}
+              key={product.id}
+              title={product.title}
+              description={product.description}
+              price={product.price}
+              rating={product.rating}
+              catagory={product.category}
+              quantitySold={product.quantitySold}
+              inStock={product.inStock}
+              totalStock={product.totalStock}
+              noOfRatings={product.noOfRatings}
+              image={product.imageUrl}
+              mrp={product.mrp}
+              id={product.id}
+              noOfReviews={product.noOfReviews}
+              reviews={product.reviews}
               />
             ))}
           </div>

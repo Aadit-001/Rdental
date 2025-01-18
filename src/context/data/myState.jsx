@@ -18,6 +18,7 @@ const MyState = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [currentProductId, setCurrentProductId] = useState(null);
     const [product, setProduct] = useState({
         title: null,
         imageUrl: null,
@@ -458,7 +459,9 @@ const MyState = (props) => {
             wishlistItems,
             setWishlistItems,
             cartItems,
-            setCartItems
+            setCartItems,
+            setCurrentProductId,
+            currentProductId
         }}>
             {props.children}
         </myContext.Provider>

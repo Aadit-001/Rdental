@@ -72,7 +72,7 @@ const ManageProducts = () => {
             {/* Products Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8">
                 {filteredProducts?.map((product) => (
-                    <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg w-56 h-96">
+                    <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02] hover:h-auto hover:shadow-lg w-56 h-96">
                         <div className="relative h-48">
                             <img
                                 src={product.imageUrl}
@@ -81,18 +81,18 @@ const ManageProducts = () => {
                             />
                         </div>
                         <div className="p-4">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-2">{product.title}</h3>
-                            <div className="space-y-1">
+                            <h3 className="text-lg font-semibold text-gray-800 mb-1 overflow-hidden h-6 hover:h-auto">{product.title}</h3>
+                            <div className="">
                                 <p className="text-gray-800">
-                                    <span className="font-medium">Price:</span>{' '}
-                                    <span className="text-green-600 font-semibold">₹{product.price}</span>
+                                    <span className="font-small">Price:</span>{' '}
+                                    <span className="text-green-600 font-small">₹{product.price}</span>
                                 </p>
                                 <p className="text-gray-800">
-                                    <span className="font-medium">Category:</span>{' '}
+                                    <span className="font-small">Category:</span>{' '}
                                     <span className="text-blue-600">{product.category}</span>
                                 </p>
                                 <div className="flex items-center">
-                                    <span className="font-medium mr-2">Rating:</span>
+                                    <span className="font-small mr-2">Rating:</span>
                                     <div className="flex items-center">
                                         {[...Array(5)].map((_, index) => (
                                             <svg
