@@ -61,7 +61,16 @@ const WishlistProductCard = ({ productId }) => {
     try {
       await removeFromWishlist(productId,currentUserId);
       setWishlistItems((prevItems) => prevItems.filter((item) => item.id !== productId));
-      toast.success('Product removed from wishlist');
+      toast.success('Product removed from wishlist', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     } catch (error) {
       console.error('Error removing product from wishlist:', error);
       toast.error('Error removing product from wishlist');
@@ -74,12 +83,20 @@ const WishlistProductCard = ({ productId }) => {
         await removeFromCart(productId, currentUserId);
         setCartItems(prev => prev.filter(item => item.productId !== productId));
         setIsAddedToCart(false);
-        toast.success('Product removed from cart');
       } else {
         await addToCart(productId, currentUserId);
         setCartItems(prev => [...prev, { productId, quantity: 1 }]);
         setIsAddedToCart(true);
-        toast.success('Product added to cart successfully');
+        toast.success('Product added to cart successfully', {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
     } catch (error) {
       console.error('Error updating cart:', error);
@@ -154,8 +171,8 @@ const WishlistProductCard = ({ productId }) => {
           </div>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-gray-900">${product.price}</span>
-              <span className="text-xs text-gray-400 line-through">${product.mrp}</span>
+              <span className="text-base font-bold text-gray-900">&#x20B9;{product.price}</span>
+              <span className="text-xs text-gray-400 line-through">&#x20B9;{product.mrp}</span>
               <span className="bg-green-100 text-green-800 text-xs px-1 py-0.5 rounded">
                 Save {Math.round(((product.mrp - product.price) / product.mrp) * 100)}%
               </span>

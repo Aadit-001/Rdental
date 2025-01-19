@@ -6,12 +6,11 @@ import myContext from '../context/data/myContext';
 import { useContext } from 'react';
 
 const Navbar = () => {
-  const { setShowSignIn, setShowProfile, showProfile, isUserLoggedIn, searchResults, handleSearch } = useContext(myContext); // Destructure setShowSignIn from context
+  const { setShowSignIn, setShowProfile, showProfile, isUserLoggedIn, searchResults, handleSearch } = useContext(myContext);
   const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
-  // const [showSignIn, setShowSignIn] = useState(false);
 
   const handleSignInClick = () => {
     setShowSignIn(true);
@@ -29,15 +28,17 @@ const Navbar = () => {
 
   const handleLogoClick = () => {
     if (location.pathname !== '/') {
-      // If we're not on the home page, navigate to it first
       window.location.href = '/';
     } else {
-      // If we're already on the home page, just scroll to top
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
     }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   return (
@@ -123,7 +124,7 @@ const Navbar = () => {
             <Link
               to="/adminPage"
               className="text-gray-600 hover:text-gray-800 group"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
+              onClick={scrollToTop}
             >
               <div className="relative transform transition-transform duration-300 group-hover:scale-110">
                 <svg
@@ -154,7 +155,7 @@ const Navbar = () => {
             <Link
               to="/wishlist"
               className="text-gray-600 hover:text-gray-800 group"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'instant' })}
+              onClick={scrollToTop}
             >
               <div className="relative transform transition-transform duration-300 group-hover:scale-110">
                 <svg
@@ -172,7 +173,11 @@ const Navbar = () => {
                 </svg>
               </div>
             </Link>
-            <Link to="/cart" className="text-gray-600 hover:text-gray-800 group">
+            <Link 
+              to="/cart" 
+              className="text-gray-600 hover:text-gray-800 group"
+              onClick={scrollToTop}
+            >
               <div className="relative transform transition-transform duration-300 group-hover:scale-110">
                 <svg
                   className={`h-6 w-6 ${location.pathname === '/cart' ? 'text-green-500 fill-current' : ''}`}

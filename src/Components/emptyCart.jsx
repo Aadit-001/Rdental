@@ -114,7 +114,7 @@ const EmptyCart = () => {
           className="space-y-4 "
         >
           <Link
-            to="/products"
+            to="/"
             className="inline-block relative px-6 py-3 rounded-lg shadow-md 
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
                   before:transition-all before:duration-500 hover:before:opacity-0
@@ -124,6 +124,7 @@ const EmptyCart = () => {
                   hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white relative z-10"
           >
             <span className="relative z-10 text-white">Browse Products</span>
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           </Link>
 
           <div className="flex justify-center gap-4 mt-6">

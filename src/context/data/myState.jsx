@@ -49,7 +49,22 @@ const MyState = (props) => {
 
 
     useEffect(() => {
+        const user = localStorage.getItem('user');
+        console.log('Checking local storage for user data...');
+        console.log('User data in local storage:', user);
+        if (user) {
+            console.log('User found, setting isUserLoggedIn to true.');
+            setIsUserLoggedIn(true);
+        } else {
+            console.log('No user found, setting isUserLoggedIn to false.');
+            setIsUserLoggedIn(false);
+        }
+        console.log('isUserLoggedIn state after check:', isUserLoggedIn);
+    }, []);
+
+    useEffect(() => {
         const userStr = localStorage.getItem('user');
+        console.log('User data in local storage:', userStr);
         if (userStr) {
             const user = JSON.parse(userStr);
             setCurrentUserId(user.uid);
@@ -62,6 +77,26 @@ const MyState = (props) => {
         getCategories();
         getProductData();
     }, []);
+
+
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        console.log('Checking local storage for user data...');
+        console.log('User data in local storage:', user);
+        if (user) {
+            console.log('User found, setting isUserLoggedIn to true.');
+            setIsUserLoggedIn(true);
+        } else {
+            console.log('No user found, setting isUserLoggedIn to false.');
+            setIsUserLoggedIn(false);
+        }
+        console.log('isUserLoggedIn state after check:', isUserLoggedIn);
+    }, []);
+
+
+    useEffect(() => {
+        console.log('isUserLoggedIn state changed:', isUserLoggedIn);
+    }, [isUserLoggedIn]);
 
 
     const addProduct = async () => {
@@ -84,7 +119,16 @@ const MyState = (props) => {
                 })
             });
 
-            toast.success("Product added successfully");
+            toast.success("Product added successfully", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
 
             //product ke fields ko empty kardia
             setProduct({
@@ -140,7 +184,16 @@ const MyState = (props) => {
                 
                 // Delete the product document
                 await deleteDoc(productRef);
-                toast.success("Product deleted successfully");
+                toast.success("Product deleted successfully", {
+                    position: "bottom-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                  });
                 getProductData(); // Refresh the product list
             }
         } catch (error) {
@@ -168,7 +221,16 @@ const MyState = (props) => {
                 })
             });
 
-            toast.success("Product updated successfully");
+            toast.success("Product updated successfully", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
 
             //product ka data phir fetch kiya database se
             getProductData(); // Refresh the product list
@@ -235,7 +297,16 @@ const MyState = (props) => {
             });
             // setCategories([...categories, category]);
             getCategories();
-            toast.success("Category added successfully");
+            toast.success("Category added successfully", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
         } catch (e) {
             toast.error("Error adding category");
             console.log(e);
@@ -277,7 +348,16 @@ const MyState = (props) => {
             setIsLoading(true);
             const categoryRef = doc(fireDb, "categories", categoryId);
             await deleteDoc(categoryRef);
-            toast.success("Category deleted successfully");
+            toast.success("Category deleted successfully", {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
             getCategories(); // Refresh the category list
         } catch (error) {
             console.error(error);
@@ -405,6 +485,7 @@ const MyState = (props) => {
 
     useEffect(() => {
         const userStr = localStorage.getItem('user');
+        console.log('User data in local storage:', userStr);
         if (userStr) {
             const user = JSON.parse(userStr);
             setCurrentUserId(user.uid);
