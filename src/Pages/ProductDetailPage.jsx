@@ -21,6 +21,7 @@ const ProductDetailPage = () => {
   const imageRef = useRef(null);
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -215,7 +216,19 @@ const ProductDetailPage = () => {
           <div className="lg:w-1/3">
             <div className="bg-white rounded-lg shadow-md p-6 mb-6">
               <h1 className="text-2xl font-bold mb-2">{product.title}</h1>
-              <p className="text-gray-600 mb-4">{product.description}</p>
+              <div className="relative">
+                <p className={`text-gray-600 mb-4 ${!showFullDescription ? 'line-clamp-3' : ''}`}>
+                  {product.description}
+                </p>
+                {product.description && product.description.length > 150 && (
+                  <button
+                    onClick={() => setShowFullDescription(!showFullDescription)}
+                    className="text-green-600 hover:text-green-700 font-medium"
+                  >
+                    {showFullDescription ? 'Read Less' : 'Read More'}
+                  </button>
+                )}
+              </div>
 
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-2xl font-bold text-black">₹{product.price}</span>
