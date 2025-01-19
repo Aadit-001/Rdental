@@ -15,7 +15,9 @@ const SpecificCategoryPage = () => {
 
   const { category } = useParams();
   const [products, setProducts] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [sortOption, setSortOption] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Add this useEffect for scroll restoration
   useEffect(() => {
@@ -47,6 +49,7 @@ const SpecificCategoryPage = () => {
       try {
         const response = await getCategoryProducts(category);
         setProducts(response);
+        setFilteredProducts(response);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -55,6 +58,47 @@ const SpecificCategoryPage = () => {
     fetchProducts();
   }, [getCategoryProducts, category]);
 
+  useEffect(() => {
+    const filterProducts = () => {
+      const filtered = products.filter(product => {
+        const productName = product.title.toLowerCase();
+        const searchQueryLowerCase = searchQuery.toLowerCase();
+
+        return productName.includes(searchQueryLowerCase);
+      });
+
+      setFilteredProducts(filtered);
+    };
+
+    filterProducts();
+  }, [searchQuery, products]);
+
+  useEffect(() => {
+    const sortProducts = () => {
+      if (sortOption === '') {
+        setFilteredProducts(products);
+      } else {
+        const sortedProducts = [...filteredProducts].sort((a, b) => {
+          switch (sortOption) {
+            case 'Newest First':
+              return new Date(b.createdAt) - new Date(a.createdAt);
+            case 'Price: Low to High':
+              return a.price - b.price;
+            case 'Price: High to Low':
+              return b.price - a.price;
+            case 'Most Popular':
+              return b.quantitySold - a.quantitySold;
+            default:
+              return 0;
+          }
+        });
+
+        setFilteredProducts(sortedProducts);
+      }
+    };
+
+    sortProducts();
+  }, [sortOption, products, filteredProducts]);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20 px-4 sm:px-6 lg:px-8">
@@ -77,6 +121,17 @@ const SpecificCategoryPage = () => {
         <div className="flex gap-8 pb-12">
           {/* Left Sidebar - 20% */}
           <div className="w-1/5 sticky top-24">
+            {/* Search Bar */}
+            <div className="relative bg-white p-4 rounded-lg shadow-lg mb-6 transform transition duration-500 border-2 border-green-100 hover:border-green-500 backdrop-blur-sm bg-white/90">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products"
+                className="w-full px-4 py-2 bg-transparent outline-none border-b-2 border-green-500 focus:border-green-600"
+              />
+            </div>
+
             {/* Sort Options */}
             <div className="bg-white p-4 rounded-lg shadow-lg mb-6 transform transition duration-500 border-2 border-green-100 hover:border-green-500 backdrop-blur-sm bg-white/90">
               <div className="flex justify-between items-center mb-4">
@@ -104,18 +159,8 @@ const SpecificCategoryPage = () => {
                     <input 
                       type="radio" 
                       name="sort"
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          // Get all radio buttons in the group
-                          const radioButtons = document.getElementsByName('sort');
-                          // Uncheck all other radio buttons
-                          radioButtons.forEach(radio => {
-                            if (radio !== e.target) {
-                              radio.checked = false;
-                            }
-                          });
-                        }
-                      }}
+                      value={option}
+                      onChange={(e) => setSortOption(e.target.value)}
                       className="text-green-500 focus:ring-green-500 relative z-10"
                     />
                     <span className={`
@@ -165,28 +210,28 @@ const SpecificCategoryPage = () => {
                   {category.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')} Products
                 </h2>
                 <span className="text-gray-600">
-                  Showing {products.length} products
+                  Showing {filteredProducts.length} products
                 </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-6 pb-12">
-                {products.map((product) => (
+                {filteredProducts.map((product) => (
                   <ProductCard
-                  key={product.id}
-                  image={product.imageUrl}
-                  catagory={product.category}
-                  title={product.title}
-                  description={product.description}
-                  price={product.price}
-                  rating={product.rating}
-                  quantitySold={product.quantitySold}
-                  inStock={product.inStock}
-                  totalStock={product.totalStock}
-                  noOfRatings={product.noOfRatings}
-                  mrp={product.mrp}
-                  id={product.id}
-                  noOfReviews={product.noOfReviews}
-                  reviews={product.reviews}
+                    key={product.id}
+                    image={product.imageUrl}
+                    catagory={product.category}
+                    title={product.title}
+                    description={product.description}
+                    price={product.price}
+                    rating={product.rating}
+                    quantitySold={product.quantitySold}
+                    inStock={product.inStock}
+                    totalStock={product.totalStock}
+                    noOfRatings={product.noOfRatings}
+                    mrp={product.mrp}
+                    id={product.id}
+                    noOfReviews={product.noOfReviews}
+                    reviews={product.reviews}
                   />
                 ))}
               </div>

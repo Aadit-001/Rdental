@@ -10,13 +10,13 @@ const Sidebar = () => {
         { path: '/adminPage/orders', icon: FaShoppingCart, text: 'Orders' },
         { path: '/adminPage/users', icon: FaUsers, text: 'Users' }
     ];
-
+    
     return (
-        <div className="bg-white w-64 shadow-lg flex flex-col mt-28 h-[60vh] overflow-auto">
+        <div className="bg-white w-64 shadow-lg fixed top-0 left-0 h-screen overflow-hidden">
             <div className="p-4 border-b">
                 <h2 className="text-2xl font-bold text-gray-800">Admin Panel</h2>
             </div>
-            <nav className="flex-1 p-4">
+            <nav className="flex-1 p-4 overflow-y-auto">
                 <ul className="space-y-2">
                     {menuItems.map((item) => (
                         <li key={item.text}>
