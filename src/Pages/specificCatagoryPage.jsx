@@ -221,52 +221,25 @@ const SpecificCategoryPage = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-6 pb-12">
-
                 {filteredProducts.map((product) => (
-                {
-                  isSorting ? (
-                    filteredProducts.map((product) => (
-                      <ProductCard
-                      key={product.id}
-                      image={product.imageUrl}
-                      catagory={product.category}
-                      title={product.title}
-                      description={product.description}
-                      price={product.price}
-                      rating={product.rating}
-                      quantitySold={product.quantitySold}
-                      inStock={product.inStock}
-                      totalStock={product.totalStock}
-                      noOfRatings={product.noOfRatings}
-                      mrp={product.mrp}
-                      id={product.id}
-                      noOfReviews={product.noOfReviews}
-                      reviews={product.reviews}
-                      />
-                    ))
-                  ) : (
-                    products.map((product) => (
-                      <ProductCard
-                      key={product.id}
-                      image={product.imageUrl}
-                      catagory={product.category}
-                      title={product.title}
-                      description={product.description}
-                      price={product.price}
-                      rating={product.rating}
-                      quantitySold={product.quantitySold}
-                      inStock={product.inStock}
-                      totalStock={product.totalStock}
-                      noOfRatings={product.noOfRatings}
-                      mrp={product.mrp}
-                      id={product.id}
-                      noOfReviews={product.noOfReviews}
-                      reviews={product.reviews}
-                      />
-                    ))
-                  ) 
-                }
-                
+                  <ProductCard
+                    key={product.id}
+                    image={product.imageUrl}
+                    catagory={product.category}
+                    title={product.title}
+                    description={product.description}
+                    price={product.price}
+                    rating={product.rating}
+                    quantitySold={product.quantitySold}
+                    inStock={product.inStock}
+                    totalStock={product.totalStock}
+                    noOfRatings={product.noOfRatings}
+                    mrp={product.mrp}
+                    id={product.id}
+                    noOfReviews={product.noOfReviews}
+                    reviews={product.reviews}
+                  />
+                ))}
               </div>
             </div>
           </div>
