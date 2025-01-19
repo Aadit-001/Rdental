@@ -24,6 +24,7 @@ import AdminLayout from "./Admin/components/AdminLayout.jsx";
 import AddProduct from "./Admin/components/AddProduct.jsx";
 import MyOrders from "./User/myOrders.jsx";
 import AddCatagory from "./Admin/components/AddCatagory.jsx";
+import CheckoutLayout from "./Payment/componets/CheckoutLayout";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -78,6 +79,14 @@ createRoot(document.getElementById("root")).render(
               <Route path="orders" element={<Orders />} />
               <Route path="users" element={<Users />} />
             </Route>
+            <Route
+              path="checkout"
+              element={
+                <ProtectedRouteForUser>
+                  <CheckoutLayout />
+                </ProtectedRouteForUser>
+              }
+            />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>

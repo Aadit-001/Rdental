@@ -8,6 +8,7 @@ import myContext from '../context/data/myContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { fireDB } from '../firebase/firebaseConfig';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ProductDetailPage = () => {
   const { category, title } = useParams();
@@ -22,6 +23,7 @@ const ProductDetailPage = () => {
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -365,7 +367,20 @@ const ProductDetailPage = () => {
               </div>
 
               {/* Checkout Button */}
-              <button className="w-full mt-6 relative px-6 py-2 rounded-lg shadow-md 
+              <button 
+                  onClick={() => navigate('/checkout', { 
+                    state: { 
+                      product: {
+                        ...product,
+                        quantity,
+                        subtotal: Number(subtotal),
+                        shipping: Number(shipping),
+                        tax: Number((subtotal * 0.1).toFixed(2)),
+                        total: Number(total)
+                      }
+                    }
+                  })}
+                  className="w-full mt-6 relative px-6 py-2 rounded-lg shadow-md 
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
                   before:transition-all before:duration-500 hover:before:opacity-0
                   after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
@@ -395,7 +410,7 @@ const ProductDetailPage = () => {
               <div className="mt-6 space-y-2">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                   <span>Secure checkout</span>
                 </div>

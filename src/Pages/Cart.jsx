@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EmptyCart from "../Components/emptyCart";
 import HorizontalProductCard from "../Components/horizontalProductCard";
 import { toast } from 'react-toastify';
@@ -11,6 +11,7 @@ import { fireDB } from "../firebase/firebaseConfig";
 const Cart = () => {
 
   const {getCart,cartItems,setCartItems,currentUserId} = useContext(myContext);
+  const navigate = useNavigate();
 
   const [productPrices, setProductPrices] = useState({});
 
@@ -179,13 +180,36 @@ const Cart = () => {
                 </div>
 
                 {/* Checkout Button */}
-                <button className="w-full mt-6 relative px-6 py-3 rounded-lg shadow-md 
+                <button 
+                  onClick={() => {
+                    if (cartItems.length === 0) {
+                      toast.error("Your cart is empty!");
+                      return;
+                    }
+                    navigate('/checkout', { 
+                      state: { 
+                        cartItems: cartItems.map(item => ({
+                          ...item,
+                          price: productPrices[item.productId]
+                        })),
+                        orderSummary: {
+                          subtotal,
+                          shipping,
+                          tax,
+                          total,
+                          itemCount: cartItems.length
+                        }
+                      }
+                    });
+                  }}
+                  className="w-full mt-6 relative px-6 py-3 rounded-lg shadow-md 
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
                   before:transition-all before:duration-500 hover:before:opacity-0
                   after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
                   after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
                   transform hover:scale-105 transition-all duration-300 ease-in-out
-                  hover:shadow-lg hover:shadow-green-200 overflow-hidden">
+                  hover:shadow-lg hover:shadow-green-200 overflow-hidden"
+                >
                   <span className="relative z-10 flex items-center justify-center gap-2 text-white font-semibold tracking-wide">
                     Proceed to Checkout
                     <svg
