@@ -65,11 +65,11 @@ createRoot(document.getElementById("root")).render(
             <Route
               path="adminPage"
               element={
-                // <ProtectedRouteForAdmin>
+                <ProtectedRouteForAdmin>
                 <AdminLayout>
                   <AdminDashboard />
                 </AdminLayout>
-                // </ProtectedRouteForAdmin>
+                </ProtectedRouteForAdmin>
               }
             >
               <Route index element={<DashboardOverview />} />
