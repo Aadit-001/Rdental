@@ -11,6 +11,7 @@ import { storage } from '../../firebase/firebaseConfig';
 
 const MyState = (props) => {
     const [currentUserId, setCurrentUserId] = useState(null);
+    const [user, setUser] = useState(null);
     const [showSignIn, setShowSignIn] = useState(false);
     const [showSignUp, setShowSignUp] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
@@ -68,12 +69,13 @@ const MyState = (props) => {
         if (userStr) {
             const user = JSON.parse(userStr);
             setCurrentUserId(user.uid);
+            setUser(user)
             setIsUserLoggedIn(true);
         } else {
             setIsUserLoggedIn(false);
             setCurrentUserId(null);
         }
-        setIsLoading(false);
+        // setIsLoading(false);
         getCategories();
         getProductData();
     }, []);
@@ -96,6 +98,7 @@ const MyState = (props) => {
 
     useEffect(() => {
         console.log('isUserLoggedIn state changed:', isUserLoggedIn);
+        setShowSignIn(!isUserLoggedIn);
     }, [isUserLoggedIn]);
 
 
@@ -126,7 +129,7 @@ const MyState = (props) => {
                 closeOnClick: false,
                 pauseOnHover: true,
                 draggable: true,
-                progress: undefined,
+                progress: undefined,    
                 theme: "colored",
               });
 
@@ -542,7 +545,9 @@ const MyState = (props) => {
             cartItems,
             setCartItems,
             setCurrentProductId,
-            currentProductId
+            currentProductId,
+            user,
+            setUser
         }}>
             {props.children}
         </myContext.Provider>
