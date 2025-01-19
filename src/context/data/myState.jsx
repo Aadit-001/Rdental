@@ -10,12 +10,20 @@ import { deleteObject, ref } from 'firebase/storage';
 import { storage } from '../../firebase/firebaseConfig';
 
 const MyState = (props) => {
-    const [currentUserId, setCurrentUserId] = useState(null);
-    const [user, setUser] = useState(null);
+    const [currentUserId, setCurrentUserId] = useState(() => {
+        const userStr = localStorage.getItem('user');
+        return userStr ? JSON.parse(userStr).uid : null;
+    });
+    const [user, setUser] = useState(() => {
+        const userStr = localStorage.getItem('user');
+        return userStr ? JSON.parse(userStr) : null;
+    });
     const [showSignIn, setShowSignIn] = useState(false);
     const [showSignUp, setShowSignUp] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
-    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(() => {
+        return localStorage.getItem('user') !== null;
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -49,56 +57,32 @@ const MyState = (props) => {
     const [bestSellers, setBestSellers] = useState([]);
 
 
-    useEffect(() => {
-        const user = localStorage.getItem('user');
-        console.log('Checking local storage for user data...');
-        console.log('User data in local storage:', user);
-        if (user) {
-            console.log('User found, setting isUserLoggedIn to true.');
-            setIsUserLoggedIn(true);
-        } else {
-            console.log('No user found, setting isUserLoggedIn to false.');
-            setIsUserLoggedIn(false);
-        }
-        console.log('isUserLoggedIn state after check:', isUserLoggedIn);
-    }, []);
-
+    // Combined authentication check effect
     useEffect(() => {
         const userStr = localStorage.getItem('user');
-        console.log('User data in local storage:', userStr);
         if (userStr) {
-            const user = JSON.parse(userStr);
-            setCurrentUserId(user.uid);
-            setUser(user)
+            const userData = JSON.parse(userStr);
+            setCurrentUserId(userData.uid);
+            setUser(userData);
             setIsUserLoggedIn(true);
+            setShowSignIn(false);
         } else {
-            setIsUserLoggedIn(false);
             setCurrentUserId(null);
+            setUser(null);
+            setIsUserLoggedIn(false);
+            // Don't automatically show sign in here
         }
-        // setIsLoading(false);
+        
+        // Get initial data
         getCategories();
         getProductData();
-    }, []);
+    }, []); // Only run once on mount
 
-
+    // Handle sign in popup visibility
     useEffect(() => {
-        const user = localStorage.getItem('user');
-        console.log('Checking local storage for user data...');
-        console.log('User data in local storage:', user);
-        if (user) {
-            console.log('User found, setting isUserLoggedIn to true.');
-            setIsUserLoggedIn(true);
-        } else {
-            console.log('No user found, setting isUserLoggedIn to false.');
-            setIsUserLoggedIn(false);
+        if (isUserLoggedIn) {
+            setShowSignIn(false);
         }
-        console.log('isUserLoggedIn state after check:', isUserLoggedIn);
-    }, []);
-
-
-    useEffect(() => {
-        console.log('isUserLoggedIn state changed:', isUserLoggedIn);
-        setShowSignIn(!isUserLoggedIn);
     }, [isUserLoggedIn]);
 
 
@@ -485,21 +469,6 @@ const MyState = (props) => {
             getBestSellers();
         }
     }, [products]);
-
-    useEffect(() => {
-        const userStr = localStorage.getItem('user');
-        console.log('User data in local storage:', userStr);
-        if (userStr) {
-            const user = JSON.parse(userStr);
-            setCurrentUserId(user.uid);
-            setIsUserLoggedIn(true);
-        } else {
-            setIsUserLoggedIn(false);
-            setCurrentUserId(null);
-        }
-        setIsLoading(false);
-        getCategories();
-    }, []);
 
     return (
         <myContext.Provider value={{

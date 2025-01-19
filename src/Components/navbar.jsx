@@ -122,7 +122,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-4 pr-3">
             {/* Admin Link */}
             {
-              isUserLoggedIn && (user.email === 'aaditjha8657@gmail.com' || user.email === 'kaifs1391@gmail.com' || user.email === 'aadit.jha22@spit.ac.in') ?
+              isUserLoggedIn && (user?.email === 'aaditjha8657@gmail.com' || user?.email === 'kaifs1391@gmail.com' || user?.email === 'aadit.jha22@spit.ac.in') ?
 
                 <Link
                   to="/adminPage"

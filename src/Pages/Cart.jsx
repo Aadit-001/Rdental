@@ -12,16 +12,14 @@ const Cart = () => {
 
   const {getCart,cartItems,setCartItems,currentUserId} = useContext(myContext);
   const navigate = useNavigate();
-
   const [productPrices, setProductPrices] = useState({});
 
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
         const items = await getCart(currentUserId);
-        // Sort items by lastUpdated timestamp, most recent first
-        const sortedItems = items.sort((a, b) => (b.lastUpdated || 0) - (a.lastUpdated || 0));
-        setCartItems(sortedItems || []);
+        const sortedItems = items?.sort((a, b) => (b.lastUpdated || 0) - (a.lastUpdated || 0)) || [];
+        setCartItems(sortedItems);
 
         // Fetch product prices
         const prices = {};
@@ -36,6 +34,7 @@ const Cart = () => {
       } catch (error) {
         console.error("Error fetching cart:", error);
         toast.error("Failed to load cart");
+        setCartItems([]);
       }
     };
     
@@ -45,10 +44,10 @@ const Cart = () => {
   }, [currentUserId, getCart, setCartItems]);
 
   // Calculate real-time values from cart items
-  const subtotal = cartItems.reduce(
+  const subtotal = cartItems?.reduce(
     (sum, item) => sum + ((productPrices[item.productId] || 0) * item.quantity),
     0
-  );
+  ) || 0;
   const shipping = 15.0; // Fixed shipping cost
   const tax = subtotal * 0.1; // 10% tax rate
   const total = subtotal + shipping + tax;
@@ -62,7 +61,7 @@ const Cart = () => {
           <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-900 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
         </h1>
           
-        {cartItems.length === 0 ? (
+        {cartItems?.length === 0 ? (
           <EmptyCart />
         ) : (
           <div className="flex flex-col lg:flex-row gap-8">
@@ -134,7 +133,7 @@ const Cart = () => {
                   {/* Items Summary */}
                   <div className="text-sm text-gray-600 mb-4">
                     <div className="flex justify-between mb-2">
-                      <span>Items ({cartItems.length})</span>
+                      <span>Items ({cartItems?.length})</span>
                       <span className="font-medium">&#x20B9;{subtotal.toFixed(2)}</span>
                     </div>
                   </div>
@@ -182,7 +181,7 @@ const Cart = () => {
                 {/* Checkout Button */}
                 <button 
                   onClick={() => {
-                    if (cartItems.length === 0) {
+                    if (cartItems?.length === 0) {
                       toast.error("Your cart is empty!");
                       return;
                     }
