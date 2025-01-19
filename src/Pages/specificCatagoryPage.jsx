@@ -44,6 +44,8 @@ const SpecificCategoryPage = () => {
     }
   };
 
+
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -57,6 +59,7 @@ const SpecificCategoryPage = () => {
 
     fetchProducts();
   }, [getCategoryProducts, category]);
+
 
   useEffect(() => {
     const filterProducts = () => {
@@ -144,6 +147,7 @@ const SpecificCategoryPage = () => {
                     radioButtons.forEach(radio => {
                       radio.checked = false;
                     });
+                    setIsSorting(false);
                   }}
                   className="text-sm px-2 py-1 text-green-600 hover:text-white border border-green-500 hover:bg-green-500 rounded transition-colors duration-300"
                 >
@@ -151,7 +155,7 @@ const SpecificCategoryPage = () => {
                 </button>
               </div>
               <div className="space-y-2">
-                {['Newest First', 'Price: Low to High', 'Price: High to Low', 'Most Popular'].map((option) => (
+                {['Newest First', 'Price: Low to High', 'Price: High to Low'].map((option) => (
                   <label 
                     key={option} 
                     className="flex items-center space-x-2 cursor-pointer p-2 rounded-md transition-all duration-300 hover:bg-green-50 group relative overflow-hidden"
@@ -159,8 +163,10 @@ const SpecificCategoryPage = () => {
                     <input 
                       type="radio" 
                       name="sort"
+
                       value={option}
                       onChange={(e) => setSortOption(e.target.value)}
+
                       className="text-green-500 focus:ring-green-500 relative z-10"
                     />
                     <span className={`
@@ -215,25 +221,52 @@ const SpecificCategoryPage = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-6 pb-12">
+
                 {filteredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    image={product.imageUrl}
-                    catagory={product.category}
-                    title={product.title}
-                    description={product.description}
-                    price={product.price}
-                    rating={product.rating}
-                    quantitySold={product.quantitySold}
-                    inStock={product.inStock}
-                    totalStock={product.totalStock}
-                    noOfRatings={product.noOfRatings}
-                    mrp={product.mrp}
-                    id={product.id}
-                    noOfReviews={product.noOfReviews}
-                    reviews={product.reviews}
-                  />
-                ))}
+                {
+                  isSorting ? (
+                    filteredProducts.map((product) => (
+                      <ProductCard
+                      key={product.id}
+                      image={product.imageUrl}
+                      catagory={product.category}
+                      title={product.title}
+                      description={product.description}
+                      price={product.price}
+                      rating={product.rating}
+                      quantitySold={product.quantitySold}
+                      inStock={product.inStock}
+                      totalStock={product.totalStock}
+                      noOfRatings={product.noOfRatings}
+                      mrp={product.mrp}
+                      id={product.id}
+                      noOfReviews={product.noOfReviews}
+                      reviews={product.reviews}
+                      />
+                    ))
+                  ) : (
+                    products.map((product) => (
+                      <ProductCard
+                      key={product.id}
+                      image={product.imageUrl}
+                      catagory={product.category}
+                      title={product.title}
+                      description={product.description}
+                      price={product.price}
+                      rating={product.rating}
+                      quantitySold={product.quantitySold}
+                      inStock={product.inStock}
+                      totalStock={product.totalStock}
+                      noOfRatings={product.noOfRatings}
+                      mrp={product.mrp}
+                      id={product.id}
+                      noOfReviews={product.noOfReviews}
+                      reviews={product.reviews}
+                      />
+                    ))
+                  ) 
+                }
+                
               </div>
             </div>
           </div>

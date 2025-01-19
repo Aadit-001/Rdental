@@ -6,6 +6,7 @@ import myContext from '../context/data/myContext';
 import toast from 'react-hot-toast'; // Assuming you have react-hot-toast installed
 
 const ProductCard = ({ id,title, description, price, image, catagory, mrp, rating ,noOfRatings, noOfReviews, reviews}) => {
+  const {addToWishlist, removeFromWishlist, currentUserId, isUserLoggedIn, getWishlist,addToCart,removeFromCart,getCart,setCartItems,setCurrentProductId} = useContext(myContext);
   const [isLiked, setIsLiked] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const navigate = useNavigate();
@@ -15,11 +16,11 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
   const handleClick = () => {
     setTimeout(() => {
       navigate(`/products/${catagory}/${title}`);
+      setCurrentProductId(id);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 300);
   };
 
-  const {addToWishlist, removeFromWishlist, currentUserId, isUserLoggedIn, getWishlist,addToCart,removeFromCart,getCart,setCartItems} = useContext(myContext);
 
   //lets understand the logic of this part
   //ye use ho raha hai taki agar page refresh hoye toh bhi jo liked product hai wo liked hi rahe
@@ -167,8 +168,11 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
 
         <div className="mt-auto">
           <div className="flex items-center gap-1 mb-2">
-            <span className="text-base font-bold text-gray-900">&#x20B9;{price}</span>
-            <span className="text-sm text-gray-400 line-through">&#x20B9;{mrp}</span>
+            
+
+            <span className="text-base font-bold text-gray-900">₹{price}</span>
+            <span className="text-sm text-gray-400 line-through">₹{mrp}</span>
+
             <span className="bg-green-100 text-green-800 text-xs px-1 py-0.5 rounded">
               Save {savings}%</span>
           </div>
