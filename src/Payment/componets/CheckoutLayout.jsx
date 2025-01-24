@@ -174,6 +174,7 @@ const CheckoutLayout = () => {
         break;
       case 2:
         // Final review step, no validation needed
+        // handlePayment();
         break;
       default:
         break;
@@ -220,17 +221,17 @@ const CheckoutLayout = () => {
   
           const orderData = await response.json();
           console.log('Order created:', orderData);
-  
+          
           const options = {
             key: "rzp_test_WgkE2ZcqV09BVS",
             amount: amountInPaise.toString(),
             currency: "INR",
             name: "R Dental",
             description: `Payment for ${orderDetails.items.map(item => item.title).join(', ')}`,
-            image: logoo,
+            image: 'https://imageUrl.com',
             order_id: orderData.orderId,
             handler: function (response) {
-
+              
               console.log(response);
               console.log(orderData);
 
@@ -264,8 +265,8 @@ const CheckoutLayout = () => {
               //   text: `Thank you for your order! Your order ID is ${orderData.orderId}. We will process your order and send it to you shortly.`
               // };
               // const sendMail = async (mailOptions) => {
-              //   try {
-              //     await sendEmail(mailOptions);
+                //   try {
+                  //     await sendEmail(mailOptions);
               //     toast.success('Email sent successfully');
               //   } catch (error) {
               //     toast.error('Error sending email');
@@ -285,9 +286,10 @@ const CheckoutLayout = () => {
               color: "#3399cc"
             }
           };
-  
-          const rzp1 = new window.Razorpay(options);
-  
+
+          const rzp1 = await new window.Razorpay(options);
+          rzp1.open();
+
           rzp1.on('payment.failed', function (response) {
             toast.error(response.error.reason);
             // navigate('/checkout');
@@ -299,7 +301,6 @@ const CheckoutLayout = () => {
             document.body.style.overflow = 'auto';
           });
 
-          rzp1.open();
         } catch (error) {
           console.error("Error creating order:", error);
           alert("Failed to create order. Please try again.");
@@ -366,7 +367,15 @@ const CheckoutLayout = () => {
       case 2:
         return orderDetails ? <OrderSummary orderDetails={orderDetails} /> : null;
       default:
-        return <OrderSummary orderDetails={orderDetails} />;
+        return (
+          <Container maxWidth="lg" sx={{ mb: 4 }} className='min-h-screen pt-[9%]'>
+        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+            <CircularProgress /> {/* Display loading spinner */}
+          </Box>
+        </Paper>
+      </Container>
+        );
     }
   };
 
