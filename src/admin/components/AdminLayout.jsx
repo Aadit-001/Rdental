@@ -1,5 +1,5 @@
 import { Link, useLocation, Outlet } from 'react-router-dom';
-import { FiGrid, FiPackage, FiShoppingBag, FiUsers } from 'react-icons/fi';
+import { FiGrid, FiPackage, FiShoppingBag, FiUsers, FiMessageSquare } from 'react-icons/fi';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 const AdminLayout = () => {
@@ -12,6 +12,7 @@ const AdminLayout = () => {
         { path: '/adminPage/products', icon: <FiPackage />, label: 'Manage Products' },
         { path: '/adminPage/orders', icon: <FiShoppingBag />, label: 'Orders' },
         { path: '/adminPage/users', icon: <FiUsers />, label: 'Users' },
+        { path: '/adminPage/messages', icon: <FiMessageSquare />, label: 'Messages' },
     ];
 
     return (
