@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import myContext from './myContext';
 import PropTypes from 'prop-types';
 import { Timestamp } from 'firebase/firestore';
-import { collection, addDoc, query, orderBy, onSnapshot, deleteDoc, doc, updateDoc,arrayUnion, arrayRemove ,getDoc} from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, onSnapshot, deleteDoc, doc, updateDoc,arrayUnion, arrayRemove ,getDoc, setDoc} from 'firebase/firestore';
 // import { getDoc, setDoc } from 'firebase/firestore';
 import { fireDB as fireDb } from '../../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
@@ -203,33 +203,52 @@ const MyState = (props) => {
         try {
             setIsLoading(true);
 
-            //firestore ke collections se wo id ka product liya
+              // Get the current product data
             const productRef = doc(fireDb, "products", productId);
+             const productSnap = await getDoc(productRef);
+            
+            if (productSnap.exists()) {
+                const currentProduct = productSnap.data();
+                
+                // If image URL has changed and old image is from Firebase Storage
+                if (updatedData.imageUrl !== currentProduct.imageUrl && 
+                    currentProduct.imageUrl && 
+                    currentProduct.imageUrl.includes('firebase')) {
+                    try {
+                        // Delete the old image
+                        const imageRef = ref(storage, currentProduct.imageUrl);
+                        await deleteObject(imageRef);
+                    } catch (error) {
+                        console.error("Error deleting old image:", error);
+                        // Continue with update even if image deletion fails
+                    }
+                }
+                
+                // Update the product document
+                await updateDoc(productRef, {
+                    ...updatedData,
+                    time: Timestamp.now(),
+                    date: new Date().toLocaleString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                    })
+                });
 
-            //jaise addDoc kiya tha waise hi update kiya
-            await updateDoc(productRef, {
-                ...updatedData,
-                time: Timestamp.now(),
-                date: new Date().toLocaleString("en-US", {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
-                })
-            });
-
-            toast.success("Product updated successfully", {
-                position: "bottom-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-              });
-
+             toast.success("Product updated successfully", {
+                    position: "bottom-right",
+                    autoClose: 1000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                
             //product ka data phir fetch kiya database se
-            getProductData(); // Refresh the product list
+              getProductData(); // Refresh the product list
+            }   
         } catch (error) {
             console.error(error);
             toast.error("Error updating product");
@@ -247,7 +266,14 @@ const MyState = (props) => {
             const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
                 let productsArray = [];
                 QuerySnapshot.forEach((doc) => {
-                    productsArray.push({ ...doc.data(), id: doc.id });
+                   const data = doc.data();
+                    productsArray.push({
+                        ...data,
+                        price: Number(data.price),
+                        mrp: Number(data.mrp),
+                        rating: Number(data.rating),
+                        id: doc.id
+                    });
                 });
                 setProducts(productsArray);
                 setIsLoading(false);
@@ -392,9 +418,24 @@ const MyState = (props) => {
     }
 
     const getWishlist = async (userId) => {
-        const userRef = doc(fireDb,"users",userId);
-        const userDoc = await getDoc(userRef);
-        return userDoc.data().wishlist || [];
+        try {
+            const userRef = doc(fireDb, "users", userId);
+            const userDoc = await getDoc(userRef);
+            if (userDoc.exists()) {
+                return userDoc.data()?.wishlist || [];
+            }
+            // If user document doesn't exist, create it with empty wishlist
+            await setDoc(userRef, {
+                wishlist: [],
+                carts: [],
+                orders: [],
+                createdAt: Timestamp.now()
+            });
+            return [];
+        } catch (error) {
+            console.error("Error getting wishlist:", error);
+            return [];
+        }
     }
 
     const addToCart = async (productId,userId) => {
@@ -422,9 +463,24 @@ const MyState = (props) => {
     }
 
     const getCart = async (userId) => {
-        const userRef = doc(fireDb,"users",userId);
-        const userDoc = await getDoc(userRef);
-        return userDoc.data().carts || [];
+         try {
+            const userRef = doc(fireDb, "users", userId);
+            const userDoc = await getDoc(userRef);
+            if (userDoc.exists()) {
+                return userDoc.data()?.carts || [];
+            }
+            // If user document doesn't exist, create it with empty cart
+            await setDoc(userRef, {
+                wishlist: [],
+                carts: [],
+                orders: [],
+                createdAt: Timestamp.now()
+            });
+            return [];
+        } catch (error) {
+            console.error("Error getting cart:", error);
+            return [];
+        }
     }
 
     const getOrders = async (userId) => {
@@ -459,18 +515,14 @@ const MyState = (props) => {
     }
 
     const handleSearch = (query) => {
-        setSearchQuery(query);
-        if (!query.trim()) {
-            setSearchResults([]);
-            return;
-        }
-
-        const filteredProducts = products.filter(product => 
-            product.title.toLowerCase().includes(query.toLowerCase()) ||
-            product.description.toLowerCase().includes(query.toLowerCase()) ||
-            product.category.toLowerCase().includes(query.toLowerCase())
+        const searchTerm = query.toLowerCase();
+        const filteredProducts = products.filter(product =>
+            product.title.toLowerCase().includes(searchTerm) ||
+            product.description.toLowerCase().includes(searchTerm) ||
+            product.category.toLowerCase().includes(searchTerm)
         );
         setSearchResults(filteredProducts);
+        setCurrentProductId(filteredProducts.length > 0 ? filteredProducts[0].id : null);
     };
 
     useEffect(() => {

@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { fireDB } from '../firebase/firebaseConfig';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { toast } from 'react-toastify';
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -7,11 +10,52 @@ const ContactUs = () => {
     subject: "",
     message: "",
   });
-
-  const handleSubmit = (e) => {
+const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted:", formData);
+    setIsSubmitting(true);
+    try {
+      // Add the message to Firebase
+      const messageData = {
+        ...formData,
+        timestamp: Timestamp.now(),
+        status: 'unread' // This will help in managing messages in admin panel
+      };
+      await addDoc(collection(fireDB, "messages"), messageData);
+      // Show success message
+      toast.success('Message sent successfully! We will get back to you soon.', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast.error('Failed to send message. Please try again.', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -207,30 +251,34 @@ const ContactUs = () => {
 
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="w-full mt-6 relative px-6 py-3 rounded-lg shadow-md 
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
                   before:transition-all before:duration-500 hover:before:opacity-0
                   after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
                   after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
                   transform hover:scale-105 transition-all duration-300 ease-in-out
-                  hover:shadow-lg hover:shadow-green-200 overflow-hidden"
+                  hover:shadow-lg hover:shadow-green-200 overflow-hidden
+                  disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2 text-white font-semibold tracking-wide">
-                    Send Message
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                      />
-                    </svg>
+                     {isSubmitting ? 'Sending...' : 'Send Message'}
+                    {!isSubmitting && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="currentColor"
+                        className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                        />
+                      </svg>
+                    )}
                   </span>
                 </button>
               </form>

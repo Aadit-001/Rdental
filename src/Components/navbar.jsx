@@ -4,9 +4,11 @@ import Logoo from '../assets/logoo.png';
 import name from '../assets/name.png';
 import myContext from '../context/data/myContext';
 import { useContext } from 'react';
+import { useMediaQuery } from '@mui/material';
 
 const Navbar = () => {
-  const { setShowSignIn, setShowProfile, showProfile, isUserLoggedIn, searchResults, handleSearch, user } = useContext(myContext);
+  const isMobile = useMediaQuery('(max-width:768px)');
+  const { setShowSignIn, setShowProfile, showProfile, isUserLoggedIn, searchResults, handleSearch, user, setCurrentProductId } = useContext(myContext);
   const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -54,75 +56,63 @@ const Navbar = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-3xl mx-8 relative">
+          <div className="flex-1 max-w-2xl mx-auto px-4">
             <div className="relative">
               <input
                 type="text"
+                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => {
-                  handleSearch(e.target.value);
                   setSearchQuery(e.target.value);
+                  handleSearch(e.target.value);
                 }}
-                className="w-full bg-gray-100 rounded-lg py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-green-500"
-                placeholder="Search products..."
+                className="w-full px-4 py-2 pl-10 pr-12 text-sm text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
-              <div className="absolute left-3 top-2.5">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
+               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
             </div>
 
-            {/* Search Results Dropdown */}
-            {searchQuery && searchResults.length > 0 && (
-              <div className="absolute mt-2 w-full bg-white rounded-lg shadow-lg z-50 max-h-96 overflow-auto">
-                {searchResults.map((product) => (
-                  <div
-                    key={product.productId}
-                    onClick={() => {
-                      navigate(`/products/${product.category}/${product.title}`);
-                      setSearchQuery('');
-                      handleSearch('');
-                    }}
-                    className="flex items-center p-3 hover:bg-gray-50 transition-colors cursor-pointer"
-                  >
-                    <img
-                      src={product.imageUrl}
-                      alt={product.title}
-                      className="w-12 h-12 object-cover rounded"
-                    />
-                    <div className="ml-3">
-                      <p className="text-sm font-medium text-gray-900">{product.title}</p>
-                      <p className="text-sm text-gray-500">₹{product.price}</p>
-                      <p className="text-sm text-gray-500">{product.category}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {searchQuery && searchResults.length === 0 && (
-              <div className="absolute mt-2 w-full bg-white rounded-lg shadow-lg z-50 p-4">
-                <p className="text-gray-500 text-center">No products found</p>
-              </div>
-            )}
+            {searchQuery && (
+                <div className="absolute w-full bg-white mt-1 rounded-lg shadow-lg max-h-96 overflow-y-auto z-50">
+                  {searchResults.length > 0 ? (
+                    searchResults.map((product) => (
+                      <div
+                        key={product.id}
+                        onClick={() => {
+                          setSearchQuery('');
+                          navigate(`/products/${product.category}/${product.title}`);
+                          setCurrentProductId(product.id);
+                        }}
+                        className="p-4 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <img src={product.imageUrl} alt={product.title} className="w-12 h-12 object-cover rounded" />
+                          <div>
+                            <h3 className="text-sm font-medium text-gray-900">{product.title}</h3>
+                            <p className="text-sm text-gray-500">{product.category}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-4 text-sm text-gray-500">No products found</div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Navigation Items */}
           <div className="flex items-center space-x-4 pr-3">
             {/* Admin Link */}
             {
-              isUserLoggedIn && (user?.email === 'aaditjha8657@gmail.com' || user?.email === 'kaifs1391@gmail.com' || user?.email === 'aadit.jha22@spit.ac.in') ?
+              isUserLoggedIn && ((user?.email === 'aaditjha8657@gmail.com' || user?.email === 'kaifs1391@gmail.com' || user?.email === 'aadit.jha22@spit.ac.in') || 
+              (JSON.parse(localStorage.getItem('user'))?.email === 'aaditjha8657@gmail.com' || 
+               JSON.parse(localStorage.getItem('user'))?.email === 'kaifs1391@gmail.com' || 
+               JSON.parse(localStorage.getItem('user'))?.email === 'aadit.jha22@spit.ac.in')) ?
 
                 <Link
                   to="/adminPage"

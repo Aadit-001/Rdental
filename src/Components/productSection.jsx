@@ -1,16 +1,54 @@
 import { Link } from 'react-router-dom';
 import ProductCard from './ProductCard';
-import { useContext } from 'react';
-// import { myContext } from '../context/data/myState';
-// import { myContext } from '../context/data/myState';
-import  myContext  from '../context/data/myContext';
+import { useContext, useRef, useState, useEffect } from 'react';
+import myContext from '../context/data/myContext';
 
-// eslint-disable-next-line react/prop-types
-const ProductSection = ({ title}) => {
-
-    const {getCategoryProducts} = useContext(myContext);
+const ProductSection = ({ title }) => {
+    const scrollContainerRef = useRef(null);
+    const { getCategoryProducts } = useContext(myContext);
     const products = getCategoryProducts(title);
     let path = "/products/" + title;
+    const [showLeftButton, setShowLeftButton] = useState(false);
+    const [showRightButton, setShowRightButton] = useState(true);
+    const checkScrollButtons = () => {
+        const container = scrollContainerRef.current;
+        if (container) {
+            // Show left button if we're not at the start
+            setShowLeftButton(container.scrollLeft > 0);
+            // Show right button if there's more content to scroll
+            setShowRightButton(
+                container.scrollLeft < (container.scrollWidth - container.clientWidth - 10)
+            );
+        }
+    };
+    useEffect(() => {
+        const container = scrollContainerRef.current;
+        if (container) {
+            container.addEventListener('scroll', checkScrollButtons);
+            // Initial check
+            checkScrollButtons();
+        }
+        return () => {
+            if (container) {
+                container.removeEventListener('scroll', checkScrollButtons);
+            }
+        };
+    }, []);
+
+    const scroll = (direction) => {
+        const container = scrollContainerRef.current;
+        if (container) {
+            const cardWidth = 250; // Width of each product card
+            const gap = 16; // Approximate gap between cards
+            const scrollAmount = (cardWidth + gap) * 2; // Scroll 2 cards at a time
+            const targetScroll = container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+            
+            container.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
+            });
+        }
+    };
 
 
     return (
@@ -33,44 +71,94 @@ const ProductSection = ({ title}) => {
                     className="group flex items-center gap-0 px-4 py-2 rounded-lg transition-all duration-300"
                 >
                     <span className="text-green-700 font-semibold">View all</span>
-                    <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className="h-6 w-6 text-green-600 group-hover:translate-x-1 transition-transform duration-300" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
+                     <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6 text-green-600 group-hover:translate-x-1 transition-transform duration-300"
+                        fill="none"
+                        viewBox="0 0 24 24"
                         stroke="currentColor"
                     >
-                        <path 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round" 
-                            strokeWidth={2} 
+                         <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
                             d="M13 5l7 7-7 7M13 5l7 7-7 7"
                         />
                     </svg>
                 </Link>
             </div>
 
-            <div className="flex overflow-x-auto pb-6 pt-6 pl-4 scrollbar-hide">
-                {products.map((product) => (
-                    <div key={product.id} className="flex-shrink-0 w-[250px] hover:scale-104 transition-all duration-300">
-                        <ProductCard
-                            title={product.title}
-                            description={product.description}
-                            price={product.price}
-                            rating={product.rating}
-                            catagory={product.category}
-                            quantitySold={product.quantitySold}
-                            inStock={product.inStock}
-                            totalStock={product.totalStock}
-                            noOfRatings={product.noOfRatings}
-                            image={product.imageUrl}
-                            mrp={product.mrp}
-                            id={product.id}
-                            noOfReviews={product.noOfReviews}
-                            reviews={product.reviews}
+              <div className="relative group">
+                {/* Left scroll button */}
+                <button
+                    onClick={() => scroll('left')}
+                    className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-green-600 p-2 rounded-full shadow-lg transition-all duration-300 backdrop-blur-sm border border-green-100 hover:scale-110 ${
+                        showLeftButton ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full'
+                    }`}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 19l-7-7 7-7"
                         />
-                    </div>
-                ))}
+                   </svg>
+                </button>
+                {/* Products container */}
+                <div 
+                    ref={scrollContainerRef}
+                    className="flex overflow-x-auto pb-6 pt-6 pl-4 scrollbar-hide scroll-smooth gap-4"
+                >
+                    {products.map((product) => (
+                        <div key={product.id} className="flex-shrink-0 w-[250px] hover:scale-105 transition-all duration-300">
+                            <ProductCard
+                                title={product.title}
+                                description={product.description}
+                                price={Number(product.price)}
+                                rating={product.rating}
+                                catagory={product.category}
+                                quantitySold={product.quantitySold}
+                                inStock={product.inStock}
+                                totalStock={product.totalStock}
+                                noOfRatings={product.noOfRatings}
+                                image={product.imageUrl}
+                                mrp={Number(product.mrp)}
+                                id={product.id}
+                                noOfReviews={product.noOfReviews}
+                                reviews={product.reviews}
+                            />
+                        </div>
+                    ))}
+                </div>
+                {/* Right scroll button */}
+                <button
+                    onClick={() => scroll('right')}
+                    className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-green-600 p-2 rounded-full shadow-lg transition-all duration-300 backdrop-blur-sm border border-green-100 hover:scale-110 ${
+                        showRightButton ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'
+                    }`}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                        />
+                    </svg>
+                </button>
             </div>
         </div>
     );

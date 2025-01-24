@@ -25,7 +25,8 @@ import AddProduct from "./Admin/components/AddProduct.jsx";
 import MyOrders from "./User/myOrders.jsx";
 import AddCatagory from "./Admin/components/AddCatagory.jsx";
 // import CheckoutLayout from "./Pages/CheckoutFunction.jsx";
-import CheckoutLayout from "./Payment/componets/CheckoutLayout.jsx";
+import ScrollToTop from "./Components/ScrollToTop";
+import Messages from "./Admin/components/Messages.jsx";
 import OrderConfirmationPage from "./Pages/OrderConfirmationPage.jsx";
 import PaymentFailed from "./Payment/componets/PaymentFailed.jsx";
 
@@ -33,6 +34,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <MyState>
       <BrowserRouter>
+         <ScrollToTop />
         <Routes>
           <Route path="/" element={<RootLayout />}>
             <Route index element={<Home />} />
@@ -81,15 +83,8 @@ createRoot(document.getElementById("root")).render(
               <Route path="products" element={<ManageProducts />} />
               <Route path="orders" element={<Orders />} />
               <Route path="users" element={<Users />} />
+                <Route path="messages" element={<Messages />} />
             </Route>
-            <Route
-              path="checkout"
-              element={
-                <ProtectedRouteForUser>
-                  <CheckoutLayout />
-                </ProtectedRouteForUser>
-              }
-            />
             <Route path="orderConfirmation" element={<OrderConfirmationPage />} />
             <Route path="paymentFailed" element={<PaymentFailed />} />
             <Route path="*" element={<PageNotFound />} />
