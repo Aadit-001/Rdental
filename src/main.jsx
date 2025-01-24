@@ -29,6 +29,7 @@ import ScrollToTop from "./Components/ScrollToTop";
 import Messages from "./Admin/components/Messages.jsx";
 import OrderConfirmationPage from "./Pages/OrderConfirmationPage.jsx";
 import PaymentFailed from "./Payment/componets/PaymentFailed.jsx";
+import CheckoutLayout from './Payment/componets/CheckoutLayout.jsx';
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -85,6 +86,11 @@ createRoot(document.getElementById("root")).render(
               <Route path="users" element={<Users />} />
                 <Route path="messages" element={<Messages />} />
             </Route>
+            <Route path="checkout" element={
+              <ProtectedRouteForUser>
+              <CheckoutLayout /> 
+              </ProtectedRouteForUser>
+            } />
             <Route path="orderConfirmation" element={<OrderConfirmationPage />} />
             <Route path="paymentFailed" element={<PaymentFailed />} />
             <Route path="*" element={<PageNotFound />} />
