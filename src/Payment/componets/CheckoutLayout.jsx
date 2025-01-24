@@ -24,13 +24,34 @@ import logoo from '../../assets/logoo.png';
 const steps = ['Shipping Information', 'Payment Information', 'Review Order'];
 
 const loadScript = (src) => {
+  // Check if script is already cached in localStorage
+  const cachedScript = localStorage.getItem('razorpayScript');
+  const cachedTimestamp = localStorage.getItem('razorpayScriptTimestamp');
+  const cacheExpiry = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+  // If script is cached and not expired, return cached version
+  if (cachedScript && cachedTimestamp && (Date.now() - parseInt(cachedTimestamp)) < cacheExpiry) {
+    return Promise.resolve(true);
+  }
+
   return new Promise((resolve) => {
+    // Check if script is already loaded in DOM
+    if (document.querySelector(`script[src="${src}"]`)) {
+      resolve(true);
+      return;
+    }
+
     const script = document.createElement('script');
     script.src = src;
     script.onload = () => {
+      // Cache the script and timestamp
+      localStorage.setItem('razorpayScript', src);
+      localStorage.setItem('razorpayScriptTimestamp', Date.now().toString());
       resolve(true);
     };
     script.onerror = () => {
+      localStorage.removeItem('razorpayScript');
+      localStorage.removeItem('razorpayScriptTimestamp');
       resolve(false);
     };
     document.body.appendChild(script);
@@ -44,6 +65,8 @@ const CheckoutLayout = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [orderDetails, setOrderDetails] = useState(null);
   const [paymentMethodSelected, setPaymentMethodSelected] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [razorpayInstance, setRazorpayInstance] = useState(null);
 
   useEffect(() => {
     const fetchProductDetails = async (productId) => {
@@ -125,6 +148,15 @@ const CheckoutLayout = () => {
     initializeOrderDetails();
   }, [location.state, navigate]);
 
+  useEffect(() => {
+    // Cleanup Razorpay instance on component unmount
+    return () => {
+      if (razorpayInstance) {
+        razorpayInstance.close();
+      }
+    };
+  }, [razorpayInstance]);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -134,7 +166,6 @@ const CheckoutLayout = () => {
     pincode: '',
     phone: '',
   });
-
 
   const validateShippingInfo = () => {
     const required = ['firstName', 'lastName', 'address', 'city', 'pincode', 'phone'];
@@ -160,7 +191,6 @@ const CheckoutLayout = () => {
     return true;
   };
 
-
   const handleNext = () => {
     let isValid = true;
 
@@ -169,12 +199,11 @@ const CheckoutLayout = () => {
         isValid = validateShippingInfo();
         break;
       case 1:
-        isValid = true;
-        // isValid = validatePaymentInfo();
-        break;
-      case 2:
-        // Final review step, no validation needed
-        // handlePayment();
+        isValid = paymentMethodSelected !== '';
+        if (!isValid) {
+          toast.error('Please select a payment method');
+          return;
+        }
         break;
       default:
         break;
@@ -182,10 +211,12 @@ const CheckoutLayout = () => {
 
     if (!isValid) return;
 
-    setActiveStep((prevStep) => prevStep + 1);
     if (activeStep === steps.length - 1) {
       handlePayment();
+      return;
     }
+
+    setActiveStep((prevStep) => prevStep + 1);
   };
 
   const handleBack = () => {
@@ -193,55 +224,71 @@ const CheckoutLayout = () => {
   };
 
   const handlePayment = async () => {
+    if (isProcessing) {
+      console.log('Payment already processing');
+      return;
+    }
+    
+    setIsProcessing(true);
+    let orderData = null;
+
     try {
-      const amountInPaise = Math.round(orderDetails.total*100);
-      if(!amountInPaise){
+      const amountInPaise = Math.round(orderDetails.total * 100);
+      if (!amountInPaise) {
         toast.error('Amount is not available');
+        setIsProcessing(false);
         return;
       }
 
       const userRef = doc(fireDB, "users", currentUserId);
       const getUserInfo = await getDoc(userRef);
 
-      if(paymentMethodSelected === 'cardOrUpi'){
-        try {
-          const response = await fetch('https://rdental-backend.onrender.com/createOrder', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              amount: amountInPaise, 
-            }),
-          });
-  
-          if (!response.ok) {
-            throw new Error('Failed to create order');
+      if (paymentMethodSelected === 'cardOrUpi') {
+        // Create order only if not already created
+        if (!orderData) {
+          try {
+            const response = await fetch('https://rdental-backend.onrender.com/createOrder', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                amount: amountInPaise,
+              }),
+            });
+
+            if (!response.ok) {
+              throw new Error('Failed to create order');
+            }
+
+            orderData = await response.json();
+            console.log('Order created:', orderData);
+          } catch (error) {
+            console.error("Error creating order:", error);
+            toast.error("Failed to create order. Please try again.");
+            setIsProcessing(false);
+            return;
           }
-  
-          const orderData = await response.json();
-          console.log('Order created:', orderData);
-          
-          const options = {
-            key: "rzp_test_WgkE2ZcqV09BVS",
-            amount: amountInPaise.toString(),
-            currency: "INR",
-            name: "R Dental",
-            description: `Payment for ${orderDetails.items.map(item => item.title).join(', ')}`,
-            image: 'https://imageUrl.com',
-            order_id: orderData.orderId,
-            handler: function (response) {
-              
-              console.log(response);
-              console.log(orderData);
+        }
 
-              console.log({
-                payment_id: response.razorpay_payment_id,
+        // Close existing Razorpay instance if any
+        if (razorpayInstance) {
+          razorpayInstance.close();
+        }
 
-              });
-              if(response.razorpay_payment_id){
-              navigate('/orderConfirmation', { 
-                state: { 
+        const options = {
+          key: "rzp_test_WgkE2ZcqV09BVS",
+          amount: amountInPaise.toString(),
+          currency: "INR",
+          name: "R Dental",
+          description: `Payment for ${orderDetails.items.map(item => item.title).join(', ')}`,
+          image: 'https://imageUrl.com',
+          order_id: orderData.orderId,
+          handler: function (response) {
+            setIsProcessing(false);
+            if (response.razorpay_payment_id) {
+              navigate('/orderConfirmation', {
+                state: {
                   paymentDetails: response,
                   orderDetails: orderDetails,
                   paymentMethod: paymentMethodSelected,
@@ -249,64 +296,52 @@ const CheckoutLayout = () => {
                   userInfo: getUserInfo.data().userInformation,
                   orderDate: new Date().toLocaleDateString(),
                   orderTime: new Date().toLocaleTimeString(),
-                  orderStatus: 'processing',  //this needs to be changed to 'processing' once the payment is successful
+                  orderStatus: 'processing',
                   orderId: orderData.id
                 }
               });
-            }else{
+            } else {
               toast.error('Payment failed');
             }
-
-              // //usr ko email pe confirmation mail send karna hai
-              // const mailOptions = {
-              //   from: 'rdental@gmail.com',
-              //   to: getUserInfo.data().email,
-              //   subject: 'Order Confirmation',
-              //   text: `Thank you for your order! Your order ID is ${orderData.orderId}. We will process your order and send it to you shortly.`
-              // };
-              // const sendMail = async (mailOptions) => {
-                //   try {
-                  //     await sendEmail(mailOptions);
-              //     toast.success('Email sent successfully');
-              //   } catch (error) {
-              //     toast.error('Error sending email');
-              //   }
-              // };
-              // await sendMail(mailOptions);
-            },
-            prefill: {
-              name: formData.firstName + " " + formData.lastName,
-              email: getUserInfo.data().email,
-              contact: formData.phone
-            },
-            notes: {
-              address: formData.address
-            },
-            theme: {
-              color: "#3399cc"
+          },
+          modal: {
+            ondismiss: function () {
+              setIsProcessing(false);
+              setRazorpayInstance(null);
             }
-          };
+          },
+          prefill: {
+            name: formData.firstName + " " + formData.lastName,
+            email: getUserInfo.data().email,
+            contact: formData.phone
+          },
+          notes: {
+            address: formData.address
+          },
+          theme: {
+            color: "#3399cc"
+          }
+        };
 
-          const rzp1 = await new window.Razorpay(options);
-          rzp1.open();
-
-          rzp1.on('payment.failed', function (response) {
+        try {
+          const rzp = new window.Razorpay(options);
+          setRazorpayInstance(rzp);
+          
+          rzp.on('payment.failed', function (response) {
+            setIsProcessing(false);
+            setRazorpayInstance(null);
             toast.error(response.error.reason);
-            // navigate('/checkout');
-
           });
 
-          rzp1.on('closed', function () {
-            // Allow background scroll again when modal is closed
-            document.body.style.overflow = 'auto';
-          });
-
+          rzp.open();
         } catch (error) {
-          console.error("Error creating order:", error);
-          alert("Failed to create order. Please try again.");
+          console.error("Error initializing Razorpay:", error);
+          setIsProcessing(false);
+          setRazorpayInstance(null);
+          toast.error("Payment initialization failed. Please try again.");
         }
 
-      }else{
+      } else {
         navigate('/orderConfirmation', { 
           state: { 
             paymentDetails: "Cash On Delivery",
@@ -320,14 +355,11 @@ const CheckoutLayout = () => {
             orderId: `order_${Date.now()}`
           }
         });
+        setIsProcessing(false);
       }
       
-      
-      // navigate('/payment/success');
-      
-      //this is perfectly working
-      await setDoc(userRef,{
-        userInformation:{
+      await setDoc(userRef, {
+        userInformation: {
           firstName: formData.firstName,
           lastName: formData.lastName,
           address: formData.address,
@@ -337,14 +369,14 @@ const CheckoutLayout = () => {
           phone: formData.phone,
           country: "India",
         }
-      }, { merge: true }); // Use merge to avoid overwriting other fields 
+      }, { merge: true });
 
-      // const getUserInfo = await getDoc(userRef);
       setUserInfo(getUserInfo.data().userInformation);
 
     } catch (error) {
+      setIsProcessing(false);
       console.error('Payment failed:', error);
-      navigate('/paymentFailed');
+      toast.error('Payment failed. Please try again.');
     }
   };
 
@@ -368,7 +400,7 @@ const CheckoutLayout = () => {
         return orderDetails ? <OrderSummary orderDetails={orderDetails} /> : null;
       default:
         return (
-          <Container maxWidth="lg" sx={{ mb: 4 }} className='min-h-screen pt-[9%]'>
+          <Container maxWidth="lg" sx={{ mb: 4 }} className='min-h-screen pt-[9%]'> 
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
             <CircularProgress /> {/* Display loading spinner */}
@@ -415,8 +447,9 @@ const CheckoutLayout = () => {
             <Button
               variant="contained"
               onClick={handleNext}
+              disabled={isProcessing}
             >
-              {activeStep === steps.length - 1 ? 'Place Order' : 'Next'}
+              {activeStep === steps.length - 1 ? (isProcessing ? 'Processing...' : 'Place Order') : 'Next'}
             </Button>
           </Box>
         </>

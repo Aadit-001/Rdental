@@ -20,40 +20,31 @@ const OrderConfirmationPage = () => {
   } = location.state || {};
 
   useEffect(() => {
-    const checkIfOrderExists = async () => {
-      if (!orderId) {
-        console.error('No order ID found in location state');
+    const createOrderIfNotExists = async () => {
+      if (!location.state || !orderId) {
+        console.error('No order details or ID found in location state');
         return;
       }
-
-      const orderRef = collection(fireDB, 'orders');
-      const q = query(orderRef, where('orderId', '==', orderId));
-      const querySnapshot = await getDocs(q);
-      const orderDoc = querySnapshot.docs[0];
-
-      if (querySnapshot.size > 0 && querySnapshot.docs[0].data().orderId === orderId) {
-        console.log('Order already created, skipping...');
-        return; // Prevent duplicate order creation
-      }
-
-    const createOrder = async () => {
-      if (!paymentDetails || !orderDetails || !paymentMethod || !orderStatus || !orderId) {
-        console.error('Missing required order details:', {
-          paymentDetails,
-          orderDetails,
-          paymentMethod,
-          orderStatus,
-          orderId,
-        });
-        return;
-      }
-
 
       try {
+        // First check if order exists
         const orderRef = collection(fireDB, 'orders');
-        const userInfoRef = doc(fireDB, 'users', userId);
+        const q = query(orderRef, where('orderId', '==', orderId));
+        const querySnapshot = await getDocs(q);
 
-        const orderDoc = await addDoc(orderRef, {
+        if (querySnapshot.size > 0) {
+          console.log('Order already exists, skipping creation');
+          return;
+        }
+
+        // If order doesn't exist, create it
+        if (!paymentDetails || !orderDetails || !paymentMethod || !orderStatus) {
+          console.error('Missing required order details');
+          return;
+        }
+
+        // Create the order
+        const newOrderDoc = await addDoc(orderRef, {
           paymentDetails,
           orderDetails,
           paymentMethod,
@@ -63,27 +54,24 @@ const OrderConfirmationPage = () => {
           orderTime,
           orderStatus,
           orderId,
+          createdAt: new Date().toISOString() // Add timestamp for better tracking
         });
-        console.log('Order created with ID:', orderDoc.id);
+        console.log('Order created with ID:', newOrderDoc.id);
 
+        // Update user's orders array
+        const userInfoRef = doc(fireDB, 'users', userId);
         await setDoc(userInfoRef, {
-          orders: arrayUnion(orderDoc.id),
+          orders: arrayUnion(newOrderDoc.id)
         }, { merge: true });
         console.log('User info updated with new order ID');
+
       } catch (error) {
-        console.error('Error creating order:', error);
+        console.error('Error in order creation process:', error);
       }
     };
 
-    if (location.state) {
-      createOrder();
-    } else {
-      console.error('No order details found in location state');
-    }
-    };
-
-    checkIfOrderExists();
-  }, [location.state]);
+    createOrderIfNotExists();
+  }, []); // Empty dependency array since we only want this to run once
 
   return (
     <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
