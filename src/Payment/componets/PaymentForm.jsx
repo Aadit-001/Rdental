@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
-  TextField,
   Grid,
   Typography,
   Box,
@@ -9,15 +9,14 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
+  SvgIcon
 } from '@mui/material';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import MoneyIcon from '@mui/icons-material/Money';
 
-const PaymentForm = ({ onSubmit, paymentData, setPaymentData }) => {
+const PaymentForm = ({ paymentMethodSelected, setPaymentMethodSelected }) => {
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPaymentData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setPaymentMethodSelected(e.target.value);
   };
 
   return (
@@ -30,86 +29,36 @@ const PaymentForm = ({ onSubmit, paymentData, setPaymentData }) => {
           <FormControl component="fieldset">
             <FormLabel component="legend">Select Payment Method</FormLabel>
             <RadioGroup
-              name="paymentMethod"
-              value={paymentData.paymentMethod}
+              value={paymentMethodSelected}
               onChange={handleChange}
             >
-              <FormControlLabel 
-                value="card" 
-                control={<Radio />} 
-                label="Credit/Debit Card" 
-              />
-              <FormControlLabel 
-                value="upi" 
-                control={<Radio />} 
-                label="UPI" 
-              />
               <FormControlLabel 
                 value="cod" 
                 control={<Radio />} 
                 label="Cash on Delivery" 
-              />
+                sx={{ display: 'flex', alignItems: 'center' }}
+              >
+                <SvgIcon component={MoneyIcon} inheritViewBox />
+              </FormControlLabel>
+              <FormControlLabel 
+                value="cardOrUpi" 
+                control={<Radio />} 
+                label="Card/UPI" 
+                sx={{ display: 'flex', alignItems: 'center' }}
+              >
+                <SvgIcon component={CreditCardIcon} inheritViewBox />
+              </FormControlLabel>
             </RadioGroup>
           </FormControl>
         </Grid>
-
-        {paymentData.paymentMethod === 'card' && (
-          <>
-            <Grid item xs={12}>
-              <TextField
-                required
-                id="cardNumber"
-                name="cardNumber"
-                label="Card Number"
-                fullWidth
-                value={paymentData.cardNumber}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="expiryDate"
-                name="expiryDate"
-                label="Expiry Date"
-                fullWidth
-                placeholder="MM/YY"
-                value={paymentData.expiryDate}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id="cvv"
-                name="cvv"
-                label="CVV"
-                type="password"
-                fullWidth
-                value={paymentData.cvv}
-                onChange={handleChange}
-              />
-            </Grid>
-          </>
-        )}
-
-        {paymentData.paymentMethod === 'upi' && (
-          <Grid item xs={12}>
-            <TextField
-              required
-              id="upiId"
-              name="upiId"
-              label="UPI ID"
-              fullWidth
-              placeholder="example@upi"
-              value={paymentData.upiId}
-              onChange={handleChange}
-            />
-          </Grid>
-        )}
       </Grid>
     </Box>
   );
+};
+
+PaymentForm.propTypes = {
+  paymentMethodSelected: PropTypes.string.isRequired,
+  setPaymentMethodSelected: PropTypes.func.isRequired,
 };
 
 export default PaymentForm;

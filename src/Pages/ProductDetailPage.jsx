@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProductCard from '../Components/ProductCard';
-import demo from '../assets/demo.png';
 import {useParams} from 'react-router-dom';
 import {useContext} from 'react';
 import myContext from '../context/data/myContext';
@@ -11,7 +10,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ProductDetailPage = () => {
-  const { category, title } = useParams();
+  const { category } = useParams();
   const { currentProductId ,getCategoryProducts} = useContext(myContext);
   const [quantity, setQuantity] = useState(1);
   const [showQuantityControls, setShowQuantityControls] = useState(false);
@@ -31,7 +30,7 @@ const ProductDetailPage = () => {
       const docSnap = await getDoc(docRef);
       console.log(docSnap.data());
       if (docSnap.exists()) {
-        setProduct(docSnap.data());
+        setProduct({ id: docSnap.id, ...docSnap.data() });  //ye imp tha , isse apne ko wo document ka id bhi jata hai
       }
     };
     getProduct();
@@ -44,24 +43,6 @@ const ProductDetailPage = () => {
     };
     fetchRelatedProducts();
   }, [category]);
-
-  // Sample product data
-  // const product = {
-  //   id: 1,
-  //   name: "Professional Dental Kit",
-  //   description: "Complete dental care kit with premium quality tools and accessories",
-  //   price: 299.99,
-  //   mrp: 399.99,
-  //   image: demo,
-  //   brochure: "dental-kit-brochure.pdf",
-  //   features: [
-  //     "Professional Grade Tools",
-  //     "Sterilized Equipment",
-  //     "Premium Quality Materials",
-  //     "Ergonomic Design",
-  //     "Complete Kit"
-  //   ]
-  // };
 
   const specifications = [
     {
@@ -94,18 +75,6 @@ const ProductDetailPage = () => {
     }
   ];
 
-  // const relatedProducts = [
-  //   // Sample related products data
-  //   {
-  //     id: 2,
-  //     title: "Dental Cleaning Kit",
-  //     description: "Professional cleaning tools for dental care",
-  //     price: 149.99,
-  //     image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-  //   },
-  //   // Add more related products...
-  // ];
-
   const savings = ((product.mrp - product.price) / product.mrp * 100).toFixed(0);
 
   const handleMouseMove = (e) => {
@@ -122,6 +91,22 @@ const ProductDetailPage = () => {
   const shipping = 15.0;
   const tax = (subtotal * 0.1).toFixed(2); //toFixed(2) to round to 2 decimal places,toFixed() returns a string
   const total = subtotal + shipping + Number(tax); //Number() to convert string to number
+
+  const handleCheckout = () => {
+    navigate('/checkout', {
+      state: {
+        product: {
+          ...product,
+          id: product.id || product.productId,
+          quantity,
+          subtotal: Number(subtotal),
+          shipping: Number(shipping),
+          tax: Number((subtotal * 0.1).toFixed(2)),
+          total: Number(total)
+        }
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen pt-24 bg-gray-50">
@@ -368,18 +353,7 @@ const ProductDetailPage = () => {
 
               {/* Checkout Button */}
               <button 
-                  onClick={() => navigate('/checkout', { 
-                    state: { 
-                      product: {
-                        ...product,
-                        quantity,
-                        subtotal: Number(subtotal),
-                        shipping: Number(shipping),
-                        tax: Number((subtotal * 0.1).toFixed(2)),
-                        total: Number(total)
-                      }
-                    }
-                  })}
+                  onClick={handleCheckout}
                   className="w-full mt-6 relative px-6 py-2 rounded-lg shadow-md 
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
                   before:transition-all before:duration-500 hover:before:opacity-0

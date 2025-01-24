@@ -24,7 +24,10 @@ import AdminLayout from "./Admin/components/AdminLayout.jsx";
 import AddProduct from "./Admin/components/AddProduct.jsx";
 import MyOrders from "./User/myOrders.jsx";
 import AddCatagory from "./Admin/components/AddCatagory.jsx";
-import CheckoutLayout from "./Payment/componets/CheckoutLayout";
+// import CheckoutLayout from "./Pages/CheckoutFunction.jsx";
+import CheckoutLayout from "./Payment/componets/CheckoutLayout.jsx";
+import OrderConfirmationPage from "./Pages/OrderConfirmationPage.jsx";
+import PaymentFailed from "./Payment/componets/PaymentFailed.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -87,6 +90,8 @@ createRoot(document.getElementById("root")).render(
                 </ProtectedRouteForUser>
               }
             />
+            <Route path="orderConfirmation" element={<OrderConfirmationPage />} />
+            <Route path="paymentFailed" element={<PaymentFailed />} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>

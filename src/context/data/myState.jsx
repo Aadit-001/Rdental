@@ -55,7 +55,16 @@ const MyState = (props) => {
     // const [orders, setOrders] = useState([]);
     const [wishlistItems, setWishlistItems] = useState([]);
     const [bestSellers, setBestSellers] = useState([]);
-
+    const [userInfo, setUserInfo] = useState({
+        firstName: null,
+        lastName: null, 
+        phone: null,
+        address: null,
+        city: null,
+        pincode: null,
+        state: null,
+        country: "India",
+    });
 
     // Combined authentication check effect
     useEffect(() => {
@@ -516,7 +525,9 @@ const MyState = (props) => {
             setCurrentProductId,
             currentProductId,
             user,
-            setUser
+            setUser,
+            userInfo,
+            setUserInfo
         }}>
             {props.children}
         </myContext.Provider>
