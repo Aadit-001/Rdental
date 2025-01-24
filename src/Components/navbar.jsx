@@ -6,7 +6,9 @@ import myContext from '../context/data/myContext';
 import { useContext } from 'react';
 import { useMediaQuery } from '@mui/material';
 
+
 const Navbar = () => {
+
   const isMobile = useMediaQuery('(max-width:768px)');
   const { setShowSignIn, setShowProfile, showProfile, isUserLoggedIn, searchResults, handleSearch, user, setCurrentProductId } = useContext(myContext);
   const navigate = useNavigate();
@@ -60,7 +62,7 @@ const Navbar = () => {
             <div className="relative">
               <input
                 type="text"
-                 placeholder="Search products..."
+                placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
@@ -68,14 +70,12 @@ const Navbar = () => {
                 }}
                 className="w-full px-4 py-2 pl-10 pr-12 text-sm text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
-               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
-            </div>
-
-            {searchQuery && (
+              {searchQuery && (
                 <div className="absolute w-full bg-white mt-1 rounded-lg shadow-lg max-h-96 overflow-y-auto z-50">
                   {searchResults.length > 0 ? (
                     searchResults.map((product) => (
