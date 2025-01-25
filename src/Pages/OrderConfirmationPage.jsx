@@ -1,11 +1,13 @@
 import { useLocation } from 'react-router-dom';
-import { doc, setDoc, collection, addDoc ,arrayUnion,getDoc,query,where,getDocs} from 'firebase/firestore';
+import { doc, setDoc, collection, addDoc, arrayUnion, getDoc, query, where, getDocs } from 'firebase/firestore';
 import { fireDB } from './../firebase/firebaseConfig';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const OrderConfirmationPage = () => {
-    const location = useLocation();
+  const location = useLocation();
+  const [isOrderProcessed, setIsOrderProcessed] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const processingRef = useRef(false);
 
   const {
     paymentDetails,
@@ -21,19 +23,38 @@ const OrderConfirmationPage = () => {
 
   useEffect(() => {
     const createOrderIfNotExists = async () => {
+      // Prevent concurrent processing
+      if (processingRef.current || isProcessing) {
+        console.log('Already processing order, skipping');
+        return;
+      }
+
+      // Prevent reprocessing of completed orders
+      if (isOrderProcessed) {
+        console.log('Order already processed in this session, skipping');
+        return;
+      }
+
       if (!location.state || !orderId) {
         console.error('No order details or ID found in location state');
         return;
       }
 
       try {
-        // First check if order exists
-        const orderRef = collection(fireDB, 'orders');
-        const q = query(orderRef, where('orderId', '==', orderId));
+        // Set processing flags
+        setIsProcessing(true);
+        processingRef.current = true;
+
+        console.log('Checking for existing order with ID:', orderId);
+        
+        // First check if order exists in the orders collection
+        const ordersCollection = collection(fireDB, 'orders');
+        const q = query(ordersCollection, where('orderId', '==', orderId));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.size > 0) {
-          console.log('Order already exists, skipping creation');
+          console.log('Order already exists in database, skipping creation');
+          setIsOrderProcessed(true);
           return;
         }
 
@@ -43,8 +64,10 @@ const OrderConfirmationPage = () => {
           return;
         }
 
-        // Create the order
-        const newOrderDoc = await addDoc(orderRef, {
+        console.log('Creating new order with ID:', orderId);
+
+        // Create the order with a new document in the orders collection
+        const orderData = {
           paymentDetails,
           orderDetails,
           paymentMethod,
@@ -54,24 +77,37 @@ const OrderConfirmationPage = () => {
           orderTime,
           orderStatus,
           orderId,
-          createdAt: new Date().toISOString() // Add timestamp for better tracking
-        });
-        console.log('Order created with ID:', newOrderDoc.id);
+          createdAt: new Date().toISOString()
+        };
+
+        // Add the document to the orders collection
+        const newOrderRef = await addDoc(ordersCollection, orderData);
+        console.log('Order successfully created with document ID:', newOrderRef.id);
 
         // Update user's orders array
-        const userInfoRef = doc(fireDB, 'users', userId);
-        await setDoc(userInfoRef, {
-          orders: arrayUnion(newOrderDoc.id)
-        }, { merge: true });
-        console.log('User info updated with new order ID');
+        if (userId) {
+          const userInfoRef = doc(fireDB, 'users', userId);
+          await setDoc(userInfoRef, {
+            orders: arrayUnion(newOrderRef.id)
+          }, { merge: true });
+          console.log('User info updated with new order ID');
+        }
+
+        setIsOrderProcessed(true);
 
       } catch (error) {
         console.error('Error in order creation process:', error);
+      } finally {
+        // Clear processing flags
+        setIsProcessing(false);
+        processingRef.current = false;
       }
     };
 
-    createOrderIfNotExists();
-  }, []); // Empty dependency array since we only want this to run once
+    if (orderId && !isOrderProcessed && !isProcessing) {
+      createOrderIfNotExists();
+    }
+  }, [location.state, orderId, isOrderProcessed, isProcessing]); // Add isProcessing to dependencies
 
   return (
     <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
