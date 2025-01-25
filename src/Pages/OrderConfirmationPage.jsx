@@ -1,11 +1,13 @@
 import { useLocation } from 'react-router-dom';
-import { doc, setDoc, collection, addDoc ,arrayUnion,getDoc,query,where,getDocs} from 'firebase/firestore';
+import { doc, setDoc, collection, addDoc, arrayUnion, getDoc, query, where, getDocs } from 'firebase/firestore';
 import { fireDB } from './../firebase/firebaseConfig';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const OrderConfirmationPage = () => {
-    const location = useLocation();
+  const location = useLocation();
+  const [isOrderProcessed, setIsOrderProcessed] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const processingRef = useRef(false);
 
   const {
     paymentDetails,
@@ -20,40 +22,52 @@ const OrderConfirmationPage = () => {
   } = location.state || {};
 
   useEffect(() => {
-    const checkIfOrderExists = async () => {
-      if (!orderId) {
-        console.error('No order ID found in location state');
+    const createOrderIfNotExists = async () => {
+      // Prevent concurrent processing
+      if (processingRef.current || isProcessing) {
+        console.log('Already processing order, skipping');
         return;
       }
 
-      const orderRef = collection(fireDB, 'orders');
-      const q = query(orderRef, where('orderId', '==', orderId));
-      const querySnapshot = await getDocs(q);
-      const orderDoc = querySnapshot.docs[0];
-
-      if (querySnapshot.size > 0 && querySnapshot.docs[0].data().orderId === orderId) {
-        console.log('Order already created, skipping...');
-        return; // Prevent duplicate order creation
-      }
-
-    const createOrder = async () => {
-      if (!paymentDetails || !orderDetails || !paymentMethod || !orderStatus || !orderId) {
-        console.error('Missing required order details:', {
-          paymentDetails,
-          orderDetails,
-          paymentMethod,
-          orderStatus,
-          orderId,
-        });
+      // Prevent reprocessing of completed orders
+      if (isOrderProcessed) {
+        console.log('Order already processed in this session, skipping');
         return;
       }
 
+      if (!location.state || !orderId) {
+        console.error('No order details or ID found in location state');
+        return;
+      }
 
       try {
-        const orderRef = collection(fireDB, 'orders');
-        const userInfoRef = doc(fireDB, 'users', userId);
+        // Set processing flags
+        setIsProcessing(true);
+        processingRef.current = true;
 
-        const orderDoc = await addDoc(orderRef, {
+        console.log('Checking for existing order with ID:', orderId);
+        
+        // First check if order exists in the orders collection
+        const ordersCollection = collection(fireDB, 'orders');
+        const q = query(ordersCollection, where('orderId', '==', orderId));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.size > 0) {
+          console.log('Order already exists in database, skipping creation');
+          setIsOrderProcessed(true);
+          return;
+        }
+
+        // If order doesn't exist, create it
+        if (!paymentDetails || !orderDetails || !paymentMethod || !orderStatus) {
+          console.error('Missing required order details');
+          return;
+        }
+
+        console.log('Creating new order with ID:', orderId);
+
+        // Create the order with a new document in the orders collection
+        const orderData = {
           paymentDetails,
           orderDetails,
           paymentMethod,
@@ -63,27 +77,37 @@ const OrderConfirmationPage = () => {
           orderTime,
           orderStatus,
           orderId,
-        });
-        console.log('Order created with ID:', orderDoc.id);
+          createdAt: new Date().toISOString()
+        };
 
-        await setDoc(userInfoRef, {
-          orders: arrayUnion(orderDoc.id),
-        }, { merge: true });
-        console.log('User info updated with new order ID');
+        // Add the document to the orders collection
+        const newOrderRef = await addDoc(ordersCollection, orderData);
+        console.log('Order successfully created with document ID:', newOrderRef.id);
+
+        // Update user's orders array
+        if (userId) {
+          const userInfoRef = doc(fireDB, 'users', userId);
+          await setDoc(userInfoRef, {
+            orders: arrayUnion(newOrderRef.id)
+          }, { merge: true });
+          console.log('User info updated with new order ID');
+        }
+
+        setIsOrderProcessed(true);
+
       } catch (error) {
-        console.error('Error creating order:', error);
+        console.error('Error in order creation process:', error);
+      } finally {
+        // Clear processing flags
+        setIsProcessing(false);
+        processingRef.current = false;
       }
     };
 
-    if (location.state) {
-      createOrder();
-    } else {
-      console.error('No order details found in location state');
+    if (orderId && !isOrderProcessed && !isProcessing) {
+      createOrderIfNotExists();
     }
-    };
-
-    checkIfOrderExists();
-  }, [location.state]);
+  }, [location.state, orderId, isOrderProcessed, isProcessing]); // Add isProcessing to dependencies
 
   return (
     <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
