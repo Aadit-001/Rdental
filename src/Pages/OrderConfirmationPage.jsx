@@ -1,12 +1,20 @@
-import { useLocation } from 'react-router-dom';
-import { doc, setDoc, collection, addDoc, arrayUnion, getDoc, query, where, getDocs } from 'firebase/firestore';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { doc, setDoc, collection, addDoc, arrayUnion, getDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { fireDB } from './../firebase/firebaseConfig';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
+import { FaCheckCircle, FaTruck, FaSpinner, FaExclamationTriangle, FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { clearCartAsync } from '../Redux/slices/cartSlice';
+import myContext from '../context/data/myContext';
 
 const OrderConfirmationPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { setCartItems } = useContext(myContext);
   const [isOrderProcessed, setIsOrderProcessed] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState(null);
   const processingRef = useRef(false);
 
   const {
@@ -21,52 +29,49 @@ const OrderConfirmationPage = () => {
     orderId,
   } = location.state || {};
 
+  // Format currency
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount);
+  };
+
   useEffect(() => {
+    if (!location.state || !orderId) {
+      navigate('/');
+      return;
+    }
+
     const createOrderIfNotExists = async () => {
-      // Prevent concurrent processing
       if (processingRef.current || isProcessing) {
-        console.log('Already processing order, skipping');
         return;
       }
 
-      // Prevent reprocessing of completed orders
       if (isOrderProcessed) {
-        console.log('Order already processed in this session, skipping');
-        return;
-      }
-
-      if (!location.state || !orderId) {
-        console.error('No order details or ID found in location state');
         return;
       }
 
       try {
-        // Set processing flags
         setIsProcessing(true);
         processingRef.current = true;
-
-        console.log('Checking for existing order with ID:', orderId);
+        setError(null);
         
-        // First check if order exists in the orders collection
         const ordersCollection = collection(fireDB, 'orders');
         const q = query(ordersCollection, where('orderId', '==', orderId));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.size > 0) {
-          console.log('Order already exists in database, skipping creation');
           setIsOrderProcessed(true);
           return;
         }
 
-        // If order doesn't exist, create it
-        if (!paymentDetails || !orderDetails || !paymentMethod || !orderStatus) {
-          console.error('Missing required order details');
-          return;
+        if (!paymentDetails || !orderDetails || !paymentMethod || !orderStatus || !userInfo) {
+          throw new Error('Missing required order information');
         }
 
-        console.log('Creating new order with ID:', orderId);
-
-        // Create the order with a new document in the orders collection
         const orderData = {
           paymentDetails,
           orderDetails,
@@ -77,28 +82,36 @@ const OrderConfirmationPage = () => {
           orderTime,
           orderStatus,
           orderId,
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
+          lastUpdated: new Date().toISOString()
         };
 
-        // Add the document to the orders collection
         const newOrderRef = await addDoc(ordersCollection, orderData);
-        console.log('Order successfully created with document ID:', newOrderRef.id);
 
-        // Update user's orders array
         if (userId) {
           const userInfoRef = doc(fireDB, 'users', userId);
-          await setDoc(userInfoRef, {
-            orders: arrayUnion(newOrderRef.id)
-          }, { merge: true });
-          console.log('User info updated with new order ID');
-        }
+          const userDoc = await getDoc(userInfoRef);
+          
+          if (userDoc.exists()) {
+            // Update user document with new order and clear cart
+            await updateDoc(userInfoRef, {
+              orders: arrayUnion(newOrderRef.id),
+              carts: [] // Clear the carts array
+            });
+          }
 
+          // Clear Redux cart state
+          await dispatch(clearCartAsync(userId)).unwrap();
+          // Clear Context cart state
+          setCartItems([]);
+        }
+        
         setIsOrderProcessed(true);
 
       } catch (error) {
         console.error('Error in order creation process:', error);
+        setError(error.message);
       } finally {
-        // Clear processing flags
         setIsProcessing(false);
         processingRef.current = false;
       }
@@ -107,33 +120,240 @@ const OrderConfirmationPage = () => {
     if (orderId && !isOrderProcessed && !isProcessing) {
       createOrderIfNotExists();
     }
-  }, [location.state, orderId, isOrderProcessed, isProcessing]); // Add isProcessing to dependencies
+  }, [location.state, orderId, isOrderProcessed, isProcessing, navigate, dispatch]);
+
+  if (error) {
+    return (
+      <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg text-center">
+        <FaExclamationTriangle className="text-red-500 text-5xl mx-auto mb-4" />
+        <h1 className="text-2xl font-bold text-red-500 mb-4">Error Processing Order</h1>
+        <p className="text-gray-700 mb-4">{error}</p>
+        <button 
+          onClick={() => navigate('/')}
+          className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
+        >
+          Return to Home
+        </button>
+      </div>
+    );
+  }
+
+  if (isProcessing) {
+    return (
+      <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg text-center">
+        <FaSpinner className="animate-spin text-primary text-5xl mx-auto mb-4" />
+        <h1 className="text-2xl font-bold text-gray-800">Processing Your Order...</h1>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-center mb-6">Thank You for Your Order!</h1>
-      
-      <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
-      <div className="mb-4">
-        {orderDetails?.items.map((item) => (
-          <p key={item.id} className="text-lg">
-            {item.title} (Quantity: {item.quantity}) - ₹{item.price}
-          </p>
-        ))}
+    <div className="container mx-auto my-8 p-8 bg-gradient-to-b from-white to-gray-50 rounded-xl shadow-2xl max-w-4xl mt-24">
+      <div className="text-center mb-8">
+        <FaCheckCircle className="text-primary text-6xl mx-auto mb-4 animate-bounce" />
+        <h1 className="text-4xl font-bold text-gray-800 mb-2">Thank You for Your Order!</h1>
+        <p className="text-gray-600 text-lg font-medium">Order #{orderId}</p>
+        <div className="mt-4">
+          <span className={`inline-block px-6 py-2 rounded-full text-sm font-semibold ${
+            orderStatus === 'completed' ? 'bg-green-100 text-green-800 border border-green-300' :
+            orderStatus === 'processing' ? 'bg-blue-100 text-blue-800 border border-blue-300' :
+            'bg-gray-100 text-gray-800 border border-gray-300'
+          }`}>
+            {orderStatus?.charAt(0).toUpperCase() + orderStatus?.slice(1)}
+          </span>
+        </div>
       </div>
-      <p className="text-xl font-bold">Total Amount: ₹{orderDetails?.total}</p>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-4">Payment Details</h2>
-      <p className="text-lg">Payment Method: {paymentDetails?.method}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-white p-6 rounded-xl shadow-md">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+            <FaTruck className="mr-3 text-primary" /> Order Details
+          </h2>
+          <div className="space-y-6">
+            {orderDetails?.items.map((item) => (
+              <div key={item.id} className="flex items-start border-b border-gray-200 pb-6 transition-all hover:bg-gray-50 p-4 rounded-lg">
+                <div className="w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden mr-4 shadow-md">
+                  {item.imageUrl ? (
+                    <img 
+                      src={item.imageUrl} 
+                      alt={item.title}
+                      className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = '/placeholder-image.png'; // Add a placeholder image
+                      }}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                      <FaExclamationTriangle className="text-gray-400 text-2xl" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex-grow">
+                  <h3 className="font-semibold text-lg text-gray-800 hover:text-primary transition-colors">{item.title}</h3>
+                  <p className="text-sm text-gray-600">Category: {item.category}</p>
+                  <div className="flex justify-between items-center mt-3">
+                    <p className="text-sm font-medium text-gray-700">Quantity: {item.quantity}</p>
+                    <p className="font-bold text-primary text-lg">{formatCurrency(item.price)}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <div className="pt-4 border-t border-gray-200 space-y-3">
+              <div className="flex justify-between text-gray-700">
+                <span className="font-medium">Subtotal</span>
+                <span>{formatCurrency(orderDetails?.subtotal)}</span>
+              </div>
+              {orderDetails?.tax && (
+                <div className="flex justify-between text-gray-700">
+                  <span className="font-medium">Tax</span>
+                  <span>{formatCurrency(orderDetails.tax)}</span>
+                </div>
+              )}
+              {orderDetails?.shipping && (
+                <div className="flex justify-between text-gray-700">
+                  <span className="font-medium">Shipping</span>
+                  <span>{formatCurrency(orderDetails.shipping)}</span>
+                </div>
+              )}
+              <div className="flex justify-between items-center pt-3 border-t border-gray-200">
+                <p className="font-bold text-lg text-gray-800">Total Amount</p>
+                <p className="font-bold text-2xl text-primary">{formatCurrency(orderDetails?.total)}</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-4">User Information</h2>
-      <p className="text-lg">Name: {userInfo?.firstName} {userInfo?.lastName}</p>
-      <p className="text-lg">Email: {userInfo?.email}</p>
-      <p className="text-lg">Phone: {userInfo?.phone}</p>
-      <p className="text-lg">Address: {userInfo?.address}</p>
+        <div className="space-y-6">
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+              <span className="text-primary mr-3">💳</span> Payment Information
+            </h2>
+            <div className="space-y-4">
+              <p className="text-gray-700 flex items-center bg-gray-50 p-3 rounded-lg">
+                <span className="font-semibold w-28">Method:</span> 
+                <span className="text-primary font-medium">{paymentMethod}</span>
+              </p>
+              <p className="text-gray-700 flex items-center bg-gray-50 p-3 rounded-lg">
+                <span className="font-semibold w-28">Status:</span>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  paymentDetails?.status === 'completed' ? 'bg-green-100 text-green-800 border border-green-300' :
+                  'bg-yellow-100 text-yellow-800 border border-yellow-300'
+                }`}>
+                  {paymentDetails?.status || 'Completed'}
+                </span>
+              </p>
+              <p className="text-gray-700 flex items-center bg-gray-50 p-3 rounded-lg">
+                <span className="font-semibold w-28">Date:</span>
+                <span>{orderDate} {orderTime}</span>
+              </p>
+              {paymentDetails?.transactionId && (
+                <p className="text-gray-700 flex items-center bg-gray-50 p-3 rounded-lg">
+                  <span className="font-semibold w-28">Transaction:</span>
+                  <span className="font-mono">{paymentDetails.transactionId}</span>
+                </p>
+              )}
+            </div>
+          </div>
 
-      <h2 className="text-2xl font-semibold mt-6 mb-4">Next Steps</h2>
-      <p className="text-lg">You will receive a confirmation email shortly with the details of your order.</p>
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+              <span className="text-primary mr-3">📍</span> Delivery Details
+            </h2>
+            <div className="space-y-6">
+              {/* Personal Information */}
+              <div className="border-b border-gray-200 pb-6">
+                <h3 className="text-lg font-semibold mb-4 text-gray-700 flex items-center">
+                  <FaUser className="text-primary mr-2" /> Contact Information
+                </h3>
+                <div className="space-y-4">
+                  <div className="flex items-center bg-gray-50 p-3 rounded-lg">
+                    <div className="flex-grow">
+                      <p className="font-semibold text-gray-800">
+                        {userInfo?.firstName} {userInfo?.lastName}
+                      </p>
+                      {userInfo?.hospitalName && (
+                        <p className="text-sm text-gray-600 mt-1">
+                          {userInfo.hospitalName}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center bg-gray-50 p-3 rounded-lg">
+                    <FaEnvelope className="text-primary mr-3" />
+                    <p className="text-gray-700">{userInfo?.email}</p>
+                  </div>
+                  <div className="flex items-center bg-gray-50 p-3 rounded-lg">
+                    <FaPhone className="text-primary mr-3" />
+                    <div>
+                      <p className="text-gray-700">{userInfo?.phone}</p>
+                      {userInfo?.alternatePhone && (
+                        <p className="text-sm text-gray-600 mt-1">
+                          Alt: {userInfo.alternatePhone}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Shipping Address */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4 text-gray-700 flex items-center">
+                  <FaMapMarkerAlt className="text-primary mr-2" /> Shipping Address
+                </h3>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="text-gray-700 space-y-2">
+                    {userInfo?.hospitalName && (
+                      <p className="font-medium text-gray-800">{userInfo.hospitalName}</p>
+                    )}
+                    <p>{userInfo?.address?.streetAddress || userInfo?.address?.street}</p>
+                    <p>{userInfo?.address?.landmark && `Near ${userInfo.address.landmark}`}</p>
+                    <p className="font-medium">
+                      {userInfo?.address?.city}
+                      {userInfo?.address?.state && `, ${userInfo.address.state}`}
+                    </p>
+                    <p className="font-medium">
+                      {userInfo?.address?.pincode || userInfo?.address?.zipCode}
+                    </p>
+                    {userInfo?.address?.country && (
+                      <p>{userInfo.address.country}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Delivery Instructions */}
+              {userInfo?.deliveryInstructions && (
+                <div className="mt-4 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                  <h4 className="font-semibold text-yellow-800 mb-2">Delivery Instructions</h4>
+                  <p className="text-yellow-700">{userInfo.deliveryInstructions}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 text-center">
+        <p className="text-gray-600 mb-4">
+          A confirmation email has been sent to {userInfo?.email}
+        </p>
+        <div className="space-x-4">
+          <button 
+            onClick={() => navigate('/')}
+            className="bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary-dark transition-colors"
+          >
+            Continue Shopping
+          </button>
+          <button 
+            onClick={() => window.print()}
+            className="bg-gray-100 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-200 transition-colors"
+          >
+            Print Receipt
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

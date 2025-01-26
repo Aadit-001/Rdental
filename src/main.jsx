@@ -30,74 +30,78 @@ import Messages from "./Admin/components/Messages.jsx";
 import OrderConfirmationPage from "./Pages/OrderConfirmationPage.jsx";
 import PaymentFailed from "./Payment/componets/PaymentFailed.jsx";
 import CheckoutLayout from './Payment/componets/CheckoutLayout.jsx';
+import { Provider } from 'react-redux';
+import { store } from './Redux/Store';
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <MyState>
-      <BrowserRouter>
-         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<RootLayout />}>
-            <Route index element={<Home />} />
-            <Route path="aboutUs" element={<AboutUs />} />
-            <Route path="products/:category" element={<SpecificCatagoryPage />} />
-            <Route path="products/:category/:title" element={<ProductDetailPage />} />
-            <Route
-              path="cart"
-              element={
+    <Provider store={store}>
+      <MyState>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<RootLayout />}>
+              <Route index element={<Home />} />
+              <Route path="aboutUs" element={<AboutUs />} />
+              <Route path="products/:category" element={<SpecificCatagoryPage />} />
+              <Route path="products/:category/:productId" element={<ProductDetailPage />} />
+              <Route
+                path="cart"
+                element={
+                  <ProtectedRouteForUser>
+                    <Cart />
+                  </ProtectedRouteForUser>
+                }
+              />
+              <Route
+                path="myOrders"
+                element={
+                  <ProtectedRouteForUser>
+                    <MyOrders />
+                  </ProtectedRouteForUser>
+                }
+              />
+              <Route
+                path="wishlist"
+                element={
+                  <ProtectedRouteForUser>
+                    <WishList />
+                  </ProtectedRouteForUser>
+                }
+              />
+              <Route path="contactUs" element={<ContactUs />} />
+              <Route path="forgetPassword" element={<ForgetPassword />} />
+              <Route
+                path="adminPage"
+                element={
+                  <ProtectedRouteForAdmin>
+                  <AdminLayout>
+                    <AdminDashboard />
+                  </AdminLayout>
+                  </ProtectedRouteForAdmin>
+                }
+              >
+                <Route index element={<DashboardOverview />} />
+                <Route path="add-product" element={<AddProduct />} />
+                <Route path="add-category" element={<AddCatagory />} />
+                <Route path="products" element={<ManageProducts />} />
+                <Route path="orders" element={<Orders />} />
+                <Route path="users" element={<Users />} />
+                  <Route path="messages" element={<Messages />} />
+              </Route>
+              <Route path="checkout" element={
                 <ProtectedRouteForUser>
-                  <Cart />
+                <CheckoutLayout /> 
                 </ProtectedRouteForUser>
-              }
-            />
-            <Route
-              path="myOrders"
-              element={
-                <ProtectedRouteForUser>
-                  <MyOrders />
-                </ProtectedRouteForUser>
-              }
-            />
-            <Route
-              path="wishlist"
-              element={
-                <ProtectedRouteForUser>
-                  <WishList />
-                </ProtectedRouteForUser>
-              }
-            />
-            <Route path="contactUs" element={<ContactUs />} />
-            <Route path="forgetPassword" element={<ForgetPassword />} />
-            <Route
-              path="adminPage"
-              element={
-                <ProtectedRouteForAdmin>
-                <AdminLayout>
-                  <AdminDashboard />
-                </AdminLayout>
-                </ProtectedRouteForAdmin>
-              }
-            >
-              <Route index element={<DashboardOverview />} />
-              <Route path="add-product" element={<AddProduct />} />
-              <Route path="add-category" element={<AddCatagory />} />
-              <Route path="products" element={<ManageProducts />} />
-              <Route path="orders" element={<Orders />} />
-              <Route path="users" element={<Users />} />
-                <Route path="messages" element={<Messages />} />
+              } />
+              <Route path="orderConfirmation" element={<OrderConfirmationPage />} />
+              <Route path="paymentFailed" element={<PaymentFailed />} />
+              <Route path="*" element={<PageNotFound />} />
             </Route>
-            <Route path="checkout" element={
-              <ProtectedRouteForUser>
-              <CheckoutLayout /> 
-              </ProtectedRouteForUser>
-            } />
-            <Route path="orderConfirmation" element={<OrderConfirmationPage />} />
-            <Route path="paymentFailed" element={<PaymentFailed />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-      <ToastContainer transition={Bounce} />
-    </MyState>
+          </Routes>
+        </BrowserRouter>
+        <ToastContainer transition={Bounce} />
+      </MyState>
+    </Provider>
   </StrictMode>
 );
