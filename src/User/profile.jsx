@@ -57,13 +57,13 @@ const Profile = () => {
             <div className="flex items-center space-x-6">
               <motion.img
                 whileHover={{ scale: 1.1 }}
-                src={user.providerData[0].photoURL}
+                src={user?.providerData?.[0]?.photoURL || "https://via.placeholder.com/150"}
                 alt="Profile"
                 className="w-24 h-24 rounded-full border-4 border-white shadow-lg"
               />
-              <div className="text-white">
-                <h1 className="text-2xl font-bold">{user.providerData[0].displayName}</h1>
-                <p className="opacity-90">{user.providerData[0].email}</p>
+              <div>
+                <h1 className="text-2xl font-bold">{user?.providerData?.[0]?.displayName || "Guest User"}</h1>
+                <p className="opacity-90">{user?.providerData?.[0]?.email || "No email available"}</p>
               </div>
             </div>
           </div>
