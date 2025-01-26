@@ -15,8 +15,7 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
 
   const handleClick = () => {
     setTimeout(() => {
-      navigate(`/products/${catagory}/${title}`);
-      setCurrentProductId(id);
+      navigate(`/products/${catagory}/${id}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 300);
   };
