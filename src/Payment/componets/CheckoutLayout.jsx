@@ -282,7 +282,7 @@ const CheckoutLayout = () => {
           currency: "INR",
           name: "R Dental",
           description: `Payment for ${orderDetails.items.map(item => item.title).join(', ')}`,
-          image: 'https://imageUrl.com',
+          image: '',
           order_id: orderData.orderId,
           handler: function (response) {
             setIsProcessing(false);
