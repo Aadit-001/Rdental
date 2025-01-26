@@ -249,6 +249,7 @@ const Cart = () => {
                 {/* Checkout Button */}
                 <button 
                   onClick={() => {
+                  
                     if (cartItems?.length === 0) {
                       toast.error("Your cart is empty!");
                       return;
