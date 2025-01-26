@@ -83,7 +83,7 @@ const Navbar = () => {
                         key={product.id}
                         onClick={() => {
                           setSearchQuery('');
-                          navigate(`/products/${product.category}/${product.title}`);
+                          navigate(`/products/${product.category}/${product.id}`);
                           setCurrentProductId(product.id);
                         }}
                         className="p-4 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"

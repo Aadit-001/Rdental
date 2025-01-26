@@ -242,6 +242,7 @@ const CheckoutLayout = () => {
 
       const userRef = doc(fireDB, "users", currentUserId);
       const getUserInfo = await getDoc(userRef);
+      console.log(getUserInfo.data())
 
       if (paymentMethodSelected === 'cardOrUpi') {
         // Create order only if not already created

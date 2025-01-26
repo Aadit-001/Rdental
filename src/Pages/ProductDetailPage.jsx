@@ -4,8 +4,6 @@ import ProductCard from '../Components/ProductCard';
 import {useParams} from 'react-router-dom';
 import {useContext} from 'react';
 import myContext from '../context/data/myContext';
-import { doc, getDoc } from 'firebase/firestore';
-import { fireDB } from '../firebase/firebaseConfig';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -19,7 +17,8 @@ const ProductDetailPage = () => {
     isUserLoggedIn, 
     setShowSignIn,
     updatequantity,
-    getCart
+    getCart,
+    products
   } = useContext(myContext);
   const [quantity, setQuantity] = useState(1);
   const [showQuantityControls, setShowQuantityControls] = useState(false);
@@ -32,49 +31,190 @@ const ProductDetailPage = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const navigate = useNavigate();
+  const [imageError, setImageError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [localQuantity, setLocalQuantity] = useState(1);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const updateTimeout = useRef(null);
 
   useEffect(() => {
-    const getProduct = async () => {
+    const getProduct = () => {
       try {
-        // Use productId from URL params
-        const docRef = doc(fireDB, 'products', productId);
-        const docSnap = await getDoc(docRef);
+        if (!productId || !products) return;
         
-        if (docSnap.exists()) {
-          setProduct({ id: docSnap.id, ...docSnap.data() });
+        const foundProduct = products.find(p => p.id === productId);
+        if (foundProduct) {
+          setProduct(foundProduct);
+          setIsLoading(false);
         } else {
           console.error('Product not found');
           toast.error('Product not found');
           navigate('/'); // Redirect to home if product doesn't exist
         }
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error('Error finding product:', error);
         toast.error('Error loading product details');
+        navigate('/');
       }
     };
     
-    if (productId) {
-      getProduct();
-    }
-  }, [productId, navigate]);
+    getProduct();
+  }, [productId, navigate, products]);
 
   useEffect(() => {
-    const fetchRelatedProducts = async () => {
+    const fetchRelatedProducts = () => {
       try {
-        if (category) {
-          const categoryProducts = await getCategoryProducts(category);
-          // Filter out the current product and limit to 5 related products
-          const filtered = categoryProducts
-            .filter(p => p.id !== productId)
-            .slice(0, 5);
-          setRelatedProducts(filtered);
-        }
+        if (!category || !products) return;
+        
+        // Filter products from the same category
+        const categoryProducts = products.filter(p => p.catagory === category);
+        // Filter out the current product and limit to 5 related products
+        const filtered = categoryProducts
+          .filter(p => p.id !== productId)
+          .slice(0, 5);
+        setRelatedProducts(filtered);
       } catch (error) {
-        console.error('Error fetching related products:', error);
+        console.error('Error finding related products:', error);
       }
     };
+    
     fetchRelatedProducts();
-  }, [category, productId, getCategoryProducts]);
+  }, [category, productId, products]);
+
+  // Check cart status on component mount
+  useEffect(() => {
+    const checkCartStatus = async () => {
+      if (!isUserLoggedIn || !currentUserId) {
+        setShowQuantityControls(false);
+        return;
+      }
+
+      try {
+        const cartItems = await getCart(currentUserId);
+        const existingItem = cartItems?.find(item => item.productId === productId);
+        if (existingItem) {
+          setShowQuantityControls(true);
+          setQuantity(existingItem.quantity);
+        }
+      } catch (error) {
+        console.error('Error checking cart status:', error);
+      }
+    };
+
+    checkCartStatus();
+  }, [isUserLoggedIn, currentUserId, productId, getCart]);
+
+  useEffect(() => {
+    setLocalQuantity(quantity);
+  }, [quantity]);
+
+  const handleQuantityUpdate = async (newQuantity) => {
+    if (!isUserLoggedIn) {
+      setShowSignIn(true);
+      return;
+    }
+
+    if (newQuantity < 1 || isUpdating) return;
+
+    // Update local state immediately
+    setLocalQuantity(newQuantity);
+    
+    // Clear any pending updates
+    if (updateTimeout.current) {
+      clearTimeout(updateTimeout.current);
+    }
+
+    // Debounce the database update
+    updateTimeout.current = setTimeout(async () => {
+      setIsUpdating(true);
+      try {
+        setQuantity(newQuantity);
+        toast.success('Updated quantity successfully!', {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        await updatequantity(product.id, currentUserId, newQuantity);
+      } catch (error) {
+        // Revert local state on error
+        setLocalQuantity(quantity);
+        setQuantity(quantity);
+        console.error('Error updating quantity:', error);
+        toast.error('Failed to update quantity');
+      } finally {
+        setIsUpdating(false);
+      }
+    }, 500);
+  };
+
+  const handleAddToCart = async () => {
+    if (!isUserLoggedIn) {
+      setShowSignIn(true);
+      return;
+    }
+
+    try {
+      setIsUpdating(true);
+      // Check if the item is already in the cart
+      const cartItems = await getCart(currentUserId);
+      const existingItem = cartItems.find(item => item.productId === product.id);
+
+      if (existingItem) {
+        // If item exists, update its quantity
+        const newQuantity = existingItem.quantity + 1;
+        setLocalQuantity(newQuantity);
+        setQuantity(newQuantity);
+        toast.success('Updated cart quantity!', {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        await updatequantity(product.id, currentUserId, newQuantity);
+      } else {
+        // If item doesn't exist, add it to cart
+        await addToCart(product.id, currentUserId);
+        setLocalQuantity(1);
+        toast.success('Added to cart successfully!', {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+      setShowQuantityControls(true);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      toast.error('Failed to add to cart. Please try again.', {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-green-500"></div>
+      </div>
+    );
+  }
 
   const specifications = [
     {
@@ -144,55 +284,6 @@ const ProductDetailPage = () => {
     });
   };
 
-  const handleAddToCart = async () => {
-    if (!isUserLoggedIn) {
-      setShowSignIn(true);
-      return;
-    }
-
-    try {
-      // Check if the item is already in the cart
-      const cartItems = await getCart(currentUserId);
-      const existingItem = cartItems.find(item => item.productId === product.id);
-
-      if (existingItem) {
-        // If item exists, update its quantity
-        await updatequantity(product.id, currentUserId, existingItem.quantity + 1);
-        setQuantity(existingItem.quantity + 1);
-        toast.success('Updated cart quantity!', {
-          position: "bottom-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else {
-        // If item doesn't exist, add it to cart
-        await addToCart(product.id, currentUserId);
-        toast.success('Added to cart successfully!', {
-          position: "bottom-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      }
-      setShowQuantityControls(true);
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      toast.error('Failed to add to cart. Please try again.', {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
-    }
-  };
-
   return (
     <div className="min-h-screen pt-24 bg-gray-50">
       <div className="container mx-auto px-4 py-8">
@@ -209,9 +300,10 @@ const ProductDetailPage = () => {
                 onMouseMove={handleMouseMove}
               >
                 <img
-                  src={product.imageUrl}
+                  src={imageError ? '/placeholder-image.jpg' : product.imageUrl}
                   alt={product.name}
                   className="w-full h-auto rounded-lg mb-4"
+                  onError={() => setImageError(true)}
                 />
               </div>
 
@@ -341,33 +433,21 @@ const ProductDetailPage = () => {
               ) : (
                 <div className="flex items-center justify-center gap-4 bg-gray-100 p-2 rounded">
                   <button
-                    onClick={async () => {
-                      if (quantity > 1) {
-                        setQuantity(quantity - 1);
-                        try {
-                          await updatequantity(product.id, currentUserId, quantity - 1);
-                        } catch (error) {
-                          console.error('Error updating quantity:', error);
-                          toast.error('Failed to update quantity');
-                        }
-                      }
-                    }}
-                    className="px-3 py-1 bg-white rounded shadow hover:bg-red-100 transition-colors duration-300"
+                    onClick={() => localQuantity > 1 && handleQuantityUpdate(localQuantity - 1)}
+                    className={`px-3 py-1 bg-white rounded shadow hover:bg-red-100 transition-colors duration-300 ${
+                      (localQuantity <= 1 || isUpdating) ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                    disabled={localQuantity <= 1 || isUpdating}
                   >
-                    <span className="text-red-500 font-bold animate-pulse">-</span>
+                    <span className={`font-bold ${localQuantity <= 1 ? 'text-gray-400' : 'text-red-500 animate-pulse'}`}>-</span>
                   </button>
-                  <span className="text-lg font-semibold">{quantity}</span>
+                  <span className="text-lg font-semibold">{localQuantity}</span>
                   <button
-                    onClick={async () => {
-                      setQuantity(quantity + 1);
-                      try {
-                        await updatequantity(product.id, currentUserId, quantity + 1);
-                      } catch (error) {
-                        console.error('Error updating quantity:', error);
-                        toast.error('Failed to update quantity');
-                      }
-                    }}
-                    className="px-3 py-1 bg-white rounded shadow hover:bg-green-100 transition-colors duration-300"
+                    onClick={() => handleQuantityUpdate(localQuantity + 1)}
+                    className={`px-3 py-1 bg-white rounded shadow hover:bg-green-100 transition-colors duration-300 ${
+                      isUpdating ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                    disabled={isUpdating}
                   >
                     <span className="text-green-500 font-bold animate-pulse">+</span>
                   </button>
@@ -418,7 +498,12 @@ const ProductDetailPage = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                        />
                       </svg>
                       <span className="text-sm font-medium text-gray-700">Standard Shipping</span>
                     </div>

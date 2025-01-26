@@ -191,7 +191,7 @@ const Home = () => {
             <h2 className="text-3xl font-bold relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-green-500 to-teal-500 animate-gradient-x drop-shadow-lg tracking-wide  animate-pulse">Best Sellers</h2>
             <p className="text-black-900 text-sm mt-1">Our most popular dental products</p>
           </div>
-          <button
+          {/* <button
             onClick={() => navigate('/products/best-sellers')}
             className="px-6 py-2 bg-white text-gray-800 rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 group"
           >
@@ -205,7 +205,7 @@ const Home = () => {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-          </button>
+          </button> */}
         </div>
 
         {/* Products Carousel */}

@@ -10,6 +10,7 @@ function WishList() {
 
   // const [wishlistItems, setWishlistItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [iswishlistEmpty, setWishlistEmpty] = useState(false);
 
   const { getWishlist, addToWishlist, removeFromWishlist, wishlistItems, setWishlistItems } = useContext(myContext);
   
@@ -22,6 +23,7 @@ function WishList() {
           return;
         }
         const items = await getWishlist(user.uid);
+        setWishlistEmpty(items.length === 0);
         setWishlistItems(items || []);
       } catch (error) {
         console.error("Error fetching wishlist:", error);
@@ -125,7 +127,6 @@ function WishList() {
                   </Link>
                 </motion.div>
               ) : (
-                <>
                   <div>
                     {wishlistItems.map((productId) => (
                       <WishlistProductCard
@@ -133,7 +134,6 @@ function WishList() {
                         productId={productId}
                       />
                     ))}
-                  </div>
                   <div className="flex justify-center mt-10 mb-10">
                     <Link to="/">
                       <motion.div
@@ -147,25 +147,25 @@ function WishList() {
                         transform hover:scale-105 transition-all duration-300 ease-in-out
                         hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white" 
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                      >
+                        >
                         <span className="mr-2 relative z-10">Add more to wishlist</span>
                         <svg
                           className="w-5 h-5 relative z-10"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
-                        >
+                          >
                           <path
                             d="M17 8l4 4m0 0l-4 4m4-4H3"
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                          />
+                            />
                         </svg>
                       </motion.div>
                     </Link>
                   </div>
-                </>
+                </div>
               )}
             </div>
           </div>

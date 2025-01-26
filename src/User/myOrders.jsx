@@ -356,7 +356,12 @@ const MyOrders = () => {
   }, [currentUserId]);
 
   if (isLoading) {
-    return <Loader />;
+
+    return (
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Loader />
+    </div>
+    );
   }
 
   if (error) {

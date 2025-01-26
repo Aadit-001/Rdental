@@ -5,8 +5,8 @@ import {useContext} from 'react';
 import myContext from '../context/data/myContext';
 import toast from 'react-hot-toast'; // Assuming you have react-hot-toast installed
 
-const ProductCard = ({ id,title, description, price, image, catagory, mrp, rating ,noOfRatings, noOfReviews, reviews}) => {
-  const {addToWishlist, removeFromWishlist, currentUserId, isUserLoggedIn, getWishlist,addToCart,removeFromCart,getCart,setCartItems,setCurrentProductId} = useContext(myContext);
+const ProductCard = ({ id,title, description, price, image, catagory, mrp, rating ,noOfRatings}) => {
+  const {addToWishlist, removeFromWishlist, currentUserId, isUserLoggedIn, getWishlist,addToCart,removeFromCart,getCart,setCartItems} = useContext(myContext);
   const [isLiked, setIsLiked] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const navigate = useNavigate();
@@ -56,6 +56,10 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
   }, [currentUserId, id, isUserLoggedIn, getCart]);
 
   const handleLike = async () => {
+    if(!isUserLoggedIn){
+      toast.error('Please login to like products');
+      return;
+    }
     try {
       if(isLiked){
         setIsLiked(false);
@@ -73,17 +77,21 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
   }
 
   const handleAddToCart = async (productId) => {
+    if(!isUserLoggedIn){
+      toast.error('Please login to add products to cart');
+      return;
+    }
     try {
       if(isAddedToCart){
         await removeFromCart(productId, currentUserId);
-        setCartItems(prev => prev.filter(item => item.productId !== productId));
         setIsAddedToCart(false);
         toast.success('Product removed from cart');
+        setCartItems(prev => prev.filter(item => item.productId !== productId));
       } else {
         await addToCart(productId, currentUserId);
-        setCartItems(prev => [...prev, { productId, quantity: 1 }]);
         setIsAddedToCart(true);
         toast.success('Product added to cart successfully');
+        setCartItems(prev => [...prev, { productId, quantity: 1 }]);
       }
     } catch (error) {
       console.error('Error updating cart:', error);
@@ -176,7 +184,7 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
               Save {savings}%</span>
           </div>
 
-          <button 
+          <button
             onClick={(e) => {
               e.stopPropagation();
               handleAddToCart(id);

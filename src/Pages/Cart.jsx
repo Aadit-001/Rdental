@@ -4,53 +4,121 @@ import EmptyCart from "../Components/emptyCart";
 import HorizontalProductCard from "../Components/horizontalProductCard";
 import { toast } from 'react-toastify';
 import myContext from "../context/data/myContext";
-import { useContext, useEffect } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { fireDB } from "../firebase/firebaseConfig";
+import { useContext, useEffect, useMemo } from "react";
 
 const Cart = () => {
-
-  const {getCart,cartItems,setCartItems,currentUserId} = useContext(myContext);
+  const {getCart, cartItems, setCartItems, currentUserId, products, isUserLoggedIn} = useContext(myContext);
   const navigate = useNavigate();
   const [productPrices, setProductPrices] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const items = await getCart(currentUserId);
-        const sortedItems = items?.sort((a, b) => (b.lastUpdated || 0) - (a.lastUpdated || 0)) || [];
-        setCartItems(sortedItems);
+    let isMounted = true;
 
-        // Fetch product prices
+    const fetchCartItems = async () => {
+      if (!isMounted) return;
+      
+      try {
+        // If user is not logged in, clear cart and stop loading
+        if (!currentUserId || !isUserLoggedIn) {
+          setCartItems([]);
+          setIsLoading(false);
+          return;
+        }
+
+        // Wait for products to be available
+        if (!products || products.length === 0) {
+          return;
+        }
+
+        const items = await getCart(currentUserId);
+        if (!isMounted) return;
+
+        // Update cart items only if component is still mounted
+        setCartItems(items || []);
+
+        // Create prices map from products
         const prices = {};
-        for (const item of sortedItems) {
-          const productRef = doc(fireDB, "products", item.productId);
-          const productDoc = await getDoc(productRef);
-          if (productDoc.exists()) {
-            prices[item.productId] = productDoc.data().price;
+        for (const item of items || []) {
+          const product = products.find(p => p.id === item.productId);
+          if (product) {
+            prices[item.productId] = product.price;
           }
         }
-        setProductPrices(prices);
+        if (isMounted) {
+          setProductPrices(prices);
+          setError(null);
+        }
       } catch (error) {
-        console.error("Error fetching cart:", error);
-        toast.error("Failed to load cart");
-        setCartItems([]);
+        if (isMounted) {
+          console.error("Error fetching cart:", error);
+          setError("Failed to load cart");
+          toast.error("Failed to load cart");
+          setCartItems([]);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
     
-    if (currentUserId) {
-      fetchCartItems();
-    }
-  }, [currentUserId, getCart, setCartItems]);
+    fetchCartItems();
 
-  // Calculate real-time values from cart items
-  const subtotal = cartItems?.reduce(
-    (sum, item) => sum + ((productPrices[item.productId] || 0) * item.quantity),
-    0
-  ) || 0;
-  const shipping = 15.0; // Fixed shipping cost
-  const tax = subtotal * 0.1; // 10% tax rate
-  const total = subtotal + shipping + tax;
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
+  }, [currentUserId, getCart, setCartItems, products, isUserLoggedIn]);
+
+  // Memoize calculations to prevent unnecessary re-renders
+  const { subtotal, shipping, tax, total } = useMemo(() => {
+    const subtotal = cartItems?.reduce(
+      (sum, item) => {
+        const price = productPrices[item.productId] || 0;
+        const quantity = item.quantity || 0;
+        return sum + (price * quantity);
+      },
+      0
+    ) || 0;
+    const shipping = cartItems?.length > 0 ? 15.0 : 0;
+    const tax = subtotal * 0.1;
+    const total = subtotal + shipping + tax;
+
+    return { subtotal, shipping, tax, total };
+  }, [cartItems, productPrices]);
+
+  // Show loading state only on initial load
+  if (isLoading && !error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)]">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-green-500"></div>
+      </div>
+    );
+  }
+
+  if (!isUserLoggedIn) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)]">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Please log in to view your cart</h2>
+        <button 
+          onClick={() => navigate('/login')}
+          className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+        >
+          Go to Login
+        </button>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)]">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">{error}</h2>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -67,9 +135,9 @@ const Cart = () => {
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="lg:w-2/3">
               <div className="space-y-4">
-                {cartItems.map((item) => (
+                {cartItems.map((item, index) => (
                   <HorizontalProductCard
-                    key={item.productId}
+                    key={`${item.productId}-${index}`}
                     id={item.productId}
                     quantity={item.quantity}
                   />
