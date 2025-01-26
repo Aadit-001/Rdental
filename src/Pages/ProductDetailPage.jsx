@@ -8,10 +8,19 @@ import { doc, getDoc } from 'firebase/firestore';
 import { fireDB } from '../firebase/firebaseConfig';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const ProductDetailPage = () => {
-  const { category } = useParams();
-  const { currentProductId ,getCategoryProducts} = useContext(myContext);
+  const { category, productId } = useParams();
+  const { 
+    getCategoryProducts, 
+    addToCart, 
+    currentUserId, 
+    isUserLoggedIn, 
+    setShowSignIn,
+    updatequantity,
+    getCart
+  } = useContext(myContext);
   const [quantity, setQuantity] = useState(1);
   const [showQuantityControls, setShowQuantityControls] = useState(false);
   const [rating, setRating] = useState(0);
@@ -26,23 +35,46 @@ const ProductDetailPage = () => {
 
   useEffect(() => {
     const getProduct = async () => {
-      const docRef = doc(fireDB, 'products', currentProductId);
-      const docSnap = await getDoc(docRef);
-      console.log(docSnap.data());
-      if (docSnap.exists()) {
-        setProduct({ id: docSnap.id, ...docSnap.data() });  //ye imp tha , isse apne ko wo document ka id bhi jata hai
+      try {
+        // Use productId from URL params
+        const docRef = doc(fireDB, 'products', productId);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          setProduct({ id: docSnap.id, ...docSnap.data() });
+        } else {
+          console.error('Product not found');
+          toast.error('Product not found');
+          navigate('/'); // Redirect to home if product doesn't exist
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error);
+        toast.error('Error loading product details');
       }
     };
-    getProduct();
-  }, [currentProductId]);
+    
+    if (productId) {
+      getProduct();
+    }
+  }, [productId, navigate]);
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
-      const categoryProducts = await getCategoryProducts(category);
-      setRelatedProducts(categoryProducts);
+      try {
+        if (category) {
+          const categoryProducts = await getCategoryProducts(category);
+          // Filter out the current product and limit to 5 related products
+          const filtered = categoryProducts
+            .filter(p => p.id !== productId)
+            .slice(0, 5);
+          setRelatedProducts(filtered);
+        }
+      } catch (error) {
+        console.error('Error fetching related products:', error);
+      }
     };
     fetchRelatedProducts();
-  }, [category]);
+  }, [category, productId, getCategoryProducts]);
 
   const specifications = [
     {
@@ -75,7 +107,10 @@ const ProductDetailPage = () => {
     }
   ];
 
-  const savings = ((product.mrp - product.price) / product.mrp * 100).toFixed(0);
+  // Calculate savings only if both mrp and price exist
+  const savings = product.mrp && product.price 
+    ? ((product.mrp - product.price) / product.mrp * 100).toFixed(0)
+    : 0;
 
   const handleMouseMove = (e) => {
     if (imageRef.current) {
@@ -87,10 +122,11 @@ const ProductDetailPage = () => {
     }
   };
 
-  const subtotal = product.price * quantity;
+  // Only calculate these if product.price exists
+  const subtotal = product.price ? product.price * quantity : 0;
   const shipping = 15.0;
-  const tax = (subtotal * 0.1).toFixed(2); //toFixed(2) to round to 2 decimal places,toFixed() returns a string
-  const total = subtotal + shipping + Number(tax); //Number() to convert string to number
+  const tax = subtotal ? (subtotal * 0.1).toFixed(2) : "0.00";
+  const total = subtotal + shipping + Number(tax);
 
   const handleCheckout = () => {
     navigate('/checkout', {
@@ -106,6 +142,55 @@ const ProductDetailPage = () => {
         }
       }
     });
+  };
+
+  const handleAddToCart = async () => {
+    if (!isUserLoggedIn) {
+      setShowSignIn(true);
+      return;
+    }
+
+    try {
+      // Check if the item is already in the cart
+      const cartItems = await getCart(currentUserId);
+      const existingItem = cartItems.find(item => item.productId === product.id);
+
+      if (existingItem) {
+        // If item exists, update its quantity
+        await updatequantity(product.id, currentUserId, existingItem.quantity + 1);
+        setQuantity(existingItem.quantity + 1);
+        toast.success('Updated cart quantity!', {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        // If item doesn't exist, add it to cart
+        await addToCart(product.id, currentUserId);
+        toast.success('Added to cart successfully!', {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+      setShowQuantityControls(true);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      toast.error('Failed to add to cart. Please try again.', {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
+    }
   };
 
   return (
@@ -227,15 +312,14 @@ const ProductDetailPage = () => {
 
               {!showQuantityControls ? (
                 <button
-                  onClick={() => setShowQuantityControls(true)}
+                  onClick={handleAddToCart}
                   className="w-full mt-6 relative px-6 py-2 rounded-lg shadow-md 
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
                   before:transition-all before:duration-500 hover:before:opacity-0
                   after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
                   after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
                   transform hover:scale-105 transition-all duration-300 ease-in-out
-                  hover:shadow-lg hover:shadow-green-200 overflow-hidden"
-                >
+                  hover:shadow-lg hover:shadow-green-200 overflow-hidden">
                   <span className="relative z-10 flex items-center justify-center gap-2 text-white font-semibold tracking-wide">
                     Add to Cart
                     <svg
@@ -257,14 +341,32 @@ const ProductDetailPage = () => {
               ) : (
                 <div className="flex items-center justify-center gap-4 bg-gray-100 p-2 rounded">
                   <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    onClick={async () => {
+                      if (quantity > 1) {
+                        setQuantity(quantity - 1);
+                        try {
+                          await updatequantity(product.id, currentUserId, quantity - 1);
+                        } catch (error) {
+                          console.error('Error updating quantity:', error);
+                          toast.error('Failed to update quantity');
+                        }
+                      }
+                    }}
                     className="px-3 py-1 bg-white rounded shadow hover:bg-red-100 transition-colors duration-300"
                   >
                     <span className="text-red-500 font-bold animate-pulse">-</span>
                   </button>
                   <span className="text-lg font-semibold">{quantity}</span>
                   <button
-                    onClick={() => setQuantity(quantity + 1)}
+                    onClick={async () => {
+                      setQuantity(quantity + 1);
+                      try {
+                        await updatequantity(product.id, currentUserId, quantity + 1);
+                      } catch (error) {
+                        console.error('Error updating quantity:', error);
+                        toast.error('Failed to update quantity');
+                      }
+                    }}
                     className="px-3 py-1 bg-white rounded shadow hover:bg-green-100 transition-colors duration-300"
                   >
                     <span className="text-green-500 font-bold animate-pulse">+</span>

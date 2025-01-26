@@ -101,6 +101,21 @@ export const updateItemQuantity = createAsyncThunk(
     }
 );
 
+// Async thunk for clearing cart
+export const clearCartAsync = createAsyncThunk(
+    'cart/clearCartAsync',
+    async (userId) => {
+        try {
+            const cartRef = doc(db, 'carts', userId);
+            await setDoc(cartRef, { items: [] }, { merge: true });
+            return [];
+        } catch (error) {
+            console.error('Error clearing cart:', error);
+            throw error;
+        }
+    }
+);
+
 const initialState = {
     items: [],
     totalQuantity: 0,
@@ -181,6 +196,21 @@ const cartSlice = createSlice({
                 cartSlice.caseReducers.calculateTotals(state);
             })
             .addCase(updateItemQuantity.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            // Handle clearCartAsync
+            .addCase(clearCartAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(clearCartAsync.fulfilled, (state) => {
+                state.loading = false;
+                state.items = [];
+                state.totalQuantity = 0;
+                state.totalAmount = 0;
+            })
+            .addCase(clearCartAsync.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

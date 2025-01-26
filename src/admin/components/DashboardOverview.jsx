@@ -13,29 +13,63 @@ const DashboardOverview = () => {
 
     useEffect(() => {
         const fetchStats = async () => {
-            const productsRef = collection(fireDB, 'products');
-            const ordersRef = collection(fireDB, 'orders');
-            const usersRef = collection(fireDB, 'users');
+            try {
+                const productsRef = collection(fireDB, 'products');
+                const ordersRef = collection(fireDB, 'orders');
+                const usersRef = collection(fireDB, 'users');
 
-            const productsSnapshot = await getDocs(productsRef);
-            const ordersSnapshot = await getDocs(ordersRef);
-            const usersSnapshot = await getDocs(usersRef);
+                const productsSnapshot = await getDocs(productsRef);
+                const ordersSnapshot = await getDocs(ordersRef);
+                const usersSnapshot = await getDocs(usersRef);
 
-            const productsCount = productsSnapshot.docs.length;
-            const ordersCount = ordersSnapshot.docs.length;
-            const usersCount = usersSnapshot.docs.length;
-            let revenue = 0;
+                const productsCount = productsSnapshot.docs.length;
+                const ordersCount = ordersSnapshot.docs.length;
+                const usersCount = usersSnapshot.docs.length;
+                let revenue = 0;
 
-            ordersSnapshot.docs.forEach((order) => {
-                revenue += order.data().totalPrice;
-            });
+                // Calculate total revenue from all orders
+                ordersSnapshot.docs.forEach((orderDoc) => {
+                    const orderData = orderDoc.data();
+                    console.log('Processing order:', orderData);
 
-            setStats({
-                products: productsCount,
-                orders: ordersCount,
-                users: usersCount,
-                revenue: revenue.toFixed(2),
-            });
+                    // Get total from orderDetails
+                    if (orderData.orderDetails) {
+                        if (typeof orderData.orderDetails === 'object' && !Array.isArray(orderData.orderDetails)) {
+                            // If orderDetails is an object with total
+                            const total = parseFloat(orderData.orderDetails.total);
+                            console.log('Order total from object:', total);
+                            if (!isNaN(total)) {
+                                revenue += total;
+                            }
+                        } else if (Array.isArray(orderData.orderDetails)) {
+                            // If orderDetails is an array of items
+                            const total = orderData.orderDetails.reduce((sum, item) => {
+                                const itemTotal = (parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1);
+                                return sum + itemTotal;
+                            }, 0);
+                            console.log('Order total from array:', total);
+                            revenue += total;
+                        }
+                    }
+                });
+
+                console.log('Final total revenue:', revenue);
+
+                setStats({
+                    products: productsCount,
+                    orders: ordersCount,
+                    users: usersCount,
+                    revenue: revenue.toFixed(2),
+                });
+            } catch (error) {
+                console.error('Error fetching stats:', error);
+                setStats({
+                    products: 0,
+                    orders: 0,
+                    users: 0,
+                    revenue: '0.00',
+                });
+            }
         };
 
         fetchStats();
