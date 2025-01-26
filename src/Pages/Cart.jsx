@@ -249,7 +249,7 @@ const Cart = () => {
                 {/* Checkout Button */}
                 <button 
                   onClick={() => {
-                  
+
                     if (cartItems?.length === 0) {
                       toast.error("Your cart is empty!");
                       return;
@@ -270,7 +270,7 @@ const Cart = () => {
                       }
                     });
                   }}
-                  className="w-full mt-6 relative px-6 py-3 rounded-lg shadow-md 
+                  className=" w-full mt-6 relative px-6 py-3 rounded-lg shadow-md 
                   before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
                   before:transition-all before:duration-500 hover:before:opacity-0
                   after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
