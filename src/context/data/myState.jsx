@@ -60,6 +60,7 @@ const MyState = (props) => {
         lastName: null, 
         phone: null,
         address: null,
+        email: null,
         city: null,
         pincode: null,
         state: null,

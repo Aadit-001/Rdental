@@ -22,7 +22,7 @@ const OrderModal = ({ order, onClose }) => {
                 }
 
                 // Ensure orderDetails is an array
-                const details = Array.isArray(order.orderDetails) ? order.orderDetails : [order.orderDetails];
+                const details = Array.isArray(order.orderDetails.items) ? order.orderDetails.items : [order.orderDetails.items];
                 console.log('Processing order details:', details);
 
                 const productsWithDetails = await Promise.all(
@@ -246,6 +246,45 @@ const OrderModal = ({ order, onClose }) => {
                                                 </tr>
                                             ))}
                                         </tbody>
+                                                    <tbody>
+                                                        <tr className="bg-gray-50">
+                                                            <td colSpan="4" className="px-4 py-3 text-sm font-medium text-gray-900 text-right">Subtotal:</td>
+                                                            <td className="px-4 py-3 text-sm font-medium text-gray-900 text-right">
+                                                                {new Intl.NumberFormat('en-IN', {
+                                                                    style: 'currency',
+                                                                    currency: 'INR',
+                                                                    minimumFractionDigits: 0,
+                                                                    maximumFractionDigits: 0
+                                                                }).format((order.orderDetails?.subtotal || 0))}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                        <tbody>
+                                            <tr className="bg-gray-50">
+                                                <td colSpan="4" className="px-4 py-3 text-sm font-medium text-gray-900 text-right">Total Tax:</td>
+                                                <td className="px-4 py-3 text-sm font-medium text-gray-900 text-right">
+                                                    {new Intl.NumberFormat('en-IN', {
+                                                        style: 'currency',
+                                                        currency: 'INR',
+                                                        minimumFractionDigits: 0,
+                                                        maximumFractionDigits: 0
+                                                    }).format((order.orderDetails?.tax || 0))}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                            <tr className="bg-gray-50">
+                                                <td colSpan="4" className="px-4 py-3 text-sm font-medium text-gray-900 text-right">Shipping:</td>
+                                                <td className="px-4 py-3 text-sm font-medium text-gray-900 text-right">
+                                                    {new Intl.NumberFormat('en-IN', {
+                                                        style: 'currency',
+                                                        currency: 'INR',
+                                                        minimumFractionDigits: 0,
+                                                        maximumFractionDigits: 0
+                                                    }).format((order.orderDetails?.shipping || 0))}
+                                                </td>
+                                            </tr>
+                                        </tbody>
                                         <tfoot>
                                             <tr className="bg-gray-50">
                                                 <td colSpan="4" className="px-4 py-3 text-sm font-medium text-gray-900 text-right">Total Amount:</td>
@@ -255,7 +294,7 @@ const OrderModal = ({ order, onClose }) => {
                                                         currency: 'INR',
                                                         minimumFractionDigits: 0,
                                                         maximumFractionDigits: 0
-                                                    }).format(calculateTotal())}
+                                                    }).format((order.orderDetails?.total || 0))}
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -275,7 +314,9 @@ const OrderModal = ({ order, onClose }) => {
                                     </div>
                                     <div>
                                         <div className="font-medium">Payment Status</div>
-                                        <div className="text-gray-700">{order.paymentDetails?.status || 'N/A'}</div>
+                                        <div className="text-gray-700">{
+                                            (order?.paymentDetails?.razorpay_payment_id && order.paymentMethod === 'cardOrUpi') ? 'Paid' : 'Not Paid'
+                                        }</div>
                                     </div>
                                 </div>
                             </div>
@@ -430,9 +471,9 @@ const Orders = () => {
                                                 {order.userInfo?.firstName || 'Unknown'} {order.userInfo?.lastName || ''}
                                             </td>
                                             <td className="px-6 py-4 text-sm text-gray-900">
-                                                {Array.isArray(order.orderDetails) ? (
+                                                {Array.isArray(order?.orderDetails?.items) ? (
                                                     <div className="space-y-1">
-                                                        {order.orderDetails.map((item, index) => (
+                                                        {order.orderDetails.items.map((item, index) => (
                                                             <div key={index}>
                                                                 {item.title} x {item.quantity}
                                                             </div>
@@ -443,7 +484,7 @@ const Orders = () => {
                                                 )}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {formatCurrency(order.paymentDetails?.amount || 0)}
+                                                {formatCurrency(order.orderDetails?.total || 0)}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.orderStatus)}`}>

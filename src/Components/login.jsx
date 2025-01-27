@@ -92,12 +92,15 @@ const Login = () => {
     try {
       const user = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       // First update local storage
-      localStorage.setItem('user', JSON.stringify(user));
-      
+
+      const userDoc = doc(fireDB, "users", user.user.uid);
+      const docSnap = await getDoc(userDoc);
+      localStorage.setItem('user', JSON.stringify(docSnap.data()));
+
       // Then update app state
       setIsUserLoggedIn(true);
       setShowSignIn(false);
-      
+
       toast.success('User Logged in successfully', {
         position: "bottom-right",
         autoClose: 1000,

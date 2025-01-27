@@ -11,7 +11,7 @@ const OrderConfirmationPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { setCartItems } = useContext(myContext);
+  const { setCartItems, user } = useContext(myContext);
   const [isOrderProcessed, setIsOrderProcessed] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
@@ -67,6 +67,8 @@ const OrderConfirmationPage = () => {
           setIsOrderProcessed(true);
           return;
         }
+
+        console.log(paymentDetails, orderDetails, paymentMethod, orderStatus, userInfo);
 
         if (!paymentDetails || !orderDetails || !paymentMethod || !orderStatus || !userInfo) {
           throw new Error('Missing required order information');
@@ -140,7 +142,7 @@ const OrderConfirmationPage = () => {
 
   if (isProcessing) {
     return (
-      <div className="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg text-center">
+      <div className="container h-screen w-screen mx-auto my-8 p-6 bg-white rounded-lg shadow-lg text-center">
         <FaSpinner className="animate-spin text-primary text-5xl mx-auto mb-4" />
         <h1 className="text-2xl font-bold text-gray-800">Processing Your Order...</h1>
       </div>
@@ -151,7 +153,7 @@ const OrderConfirmationPage = () => {
     <div className="container mx-auto my-8 p-8 bg-gradient-to-b from-white to-gray-50 rounded-xl shadow-2xl max-w-4xl mt-24">
       <div className="text-center mb-8">
         <FaCheckCircle className="text-primary text-6xl mx-auto mb-4 animate-bounce" />
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">Thank You for Your Order!</h1>
+        <h1 className="text-4xl font-bold text-green-500 mb-2">Thank You for Your Order!</h1>
         <p className="text-gray-600 text-lg font-medium">Order #{orderId}</p>
         <div className="mt-4">
           <span className={`inline-block px-6 py-2 rounded-full text-sm font-semibold ${
@@ -272,26 +274,26 @@ const OrderConfirmationPage = () => {
                       <p className="font-semibold text-gray-800">
                         {userInfo?.firstName} {userInfo?.lastName}
                       </p>
-                      {userInfo?.hospitalName && (
+                      {/* {userInfo?.hospitalName && (
                         <p className="text-sm text-gray-600 mt-1">
                           {userInfo.hospitalName}
                         </p>
-                      )}
+                      )} */}
                     </div>
                   </div>
                   <div className="flex items-center bg-gray-50 p-3 rounded-lg">
                     <FaEnvelope className="text-primary mr-3" />
-                    <p className="text-gray-700">{userInfo?.email}</p>
+                    <p className="text-gray-700">{user?.email}</p>
                   </div>
                   <div className="flex items-center bg-gray-50 p-3 rounded-lg">
                     <FaPhone className="text-primary mr-3" />
                     <div>
                       <p className="text-gray-700">{userInfo?.phone}</p>
-                      {userInfo?.alternatePhone && (
+                      {/* {userInfo?.alternatePhone && (
                         <p className="text-sm text-gray-600 mt-1">
                           Alt: {userInfo.alternatePhone}
                         </p>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
@@ -304,20 +306,20 @@ const OrderConfirmationPage = () => {
                 </h3>
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <div className="text-gray-700 space-y-2">
-                    {userInfo?.hospitalName && (
+                    {/* {userInfo?.hospitalName && (
                       <p className="font-medium text-gray-800">{userInfo.hospitalName}</p>
-                    )}
-                    <p>{userInfo?.address?.streetAddress || userInfo?.address?.street}</p>
-                    <p>{userInfo?.address?.landmark && `Near ${userInfo.address.landmark}`}</p>
+                    )} */}
+                    <p>{userInfo?.address}</p>
+                    {/* <p>{userInfo?.address?.landmark && `Near ${userInfo.address.landmark}`}</p> */}
                     <p className="font-medium">
-                      {userInfo?.address?.city}
-                      {userInfo?.address?.state && `, ${userInfo.address.state}`}
+                      {userInfo?.city}
+                      {userInfo?.state && `, ${userInfo.state}`}
                     </p>
                     <p className="font-medium">
-                      {userInfo?.address?.pincode || userInfo?.address?.zipCode}
+                      {userInfo?.pincode || userInfo?.zipCode}
                     </p>
-                    {userInfo?.address?.country && (
-                      <p>{userInfo.address.country}</p>
+                    {userInfo?.country && (
+                      <p>{userInfo.country}</p>
                     )}
                   </div>
                 </div>

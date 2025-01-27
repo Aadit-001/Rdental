@@ -70,18 +70,9 @@ const SpecificCategoryPage = () => {
         return productName.includes(searchQueryLowerCase);
       });
 
-      setFilteredProducts(filtered);
-    };
-
-    filterProducts();
-  }, [searchQuery, products]);
-
-  useEffect(() => {
-    const sortProducts = () => {
-      if (sortOption === '') {
-        setFilteredProducts(products);
-      } else {
-        const sortedProducts = [...filteredProducts].sort((a, b) => {
+      let sorted = [...filtered];
+      if (sortOption) {
+        sorted.sort((a, b) => {
           switch (sortOption) {
             case 'Newest First':
               return new Date(b.createdAt) - new Date(a.createdAt);
@@ -95,13 +86,13 @@ const SpecificCategoryPage = () => {
               return 0;
           }
         });
-
-        setFilteredProducts(sortedProducts);
       }
+
+      setFilteredProducts(sorted);
     };
 
-    sortProducts();
-  }, [sortOption, products, filteredProducts]);
+    filterProducts();
+  }, [searchQuery, products, sortOption]);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20 px-4 sm:px-6 lg:px-8">

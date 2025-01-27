@@ -1,65 +1,88 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { doc, getDoc } from 'firebase/firestore';
-import { fireDB as fireDb } from '../firebase/firebaseConfig';
-import myContext from '../context/data/myContext';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
-
+import myContext from '../context/data/myContext';
 
 const WishlistProductCard = ({ productId }) => {
-  const { removeFromWishlist, currentUserId, setWishlistItems, addToCart, removeFromCart, isUserLoggedIn, getCart, setCartItems } = useContext(myContext);
+  const { 
+    removeFromWishlist, 
+    currentUserId, 
+    setWishlistItems, 
+    addToCart, 
+    removeFromCart, 
+    isUserLoggedIn, 
+    getCart, 
+    setCartItems, 
+    products 
+  } = useContext(myContext);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [product, setProduct] = useState(null);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getProduct = async() => {
+    const getProduct = () => {
       try {
-        if (!productId) return;
-        const productDoc = await getDoc(doc(fireDb, "products", productId));
-        if (productDoc.exists()) {
-          setProduct({ id: productDoc.id, ...productDoc.data() });
+        if (!productId || !products) return;
+        const foundProduct = products.find(p => p.id === productId);
+        if (foundProduct) {
+          setProduct(foundProduct);
         } else {
           console.error('Product not found:', productId);
         }
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error('Error finding product:', error);
       }
     };
     getProduct();
-  }, [productId]);
+  }, [productId, products]);
 
   useEffect(() => {
+    let isMounted = true;
+
     const checkCartStatus = async () => {
-      if (isUserLoggedIn && currentUserId) {
-        try {
-          const cartItems = await getCart(currentUserId);
-          setIsAddedToCart(cartItems.some(item => item.productId === productId));
-          setCartItems(cartItems);
-        } catch (error) {
-          console.error('Error checking cart status:', error);
+      if (!isUserLoggedIn || !currentUserId) return;
+
+      try {
+        const cartItems = await getCart(currentUserId);
+        if (isMounted) {
+          setIsAddedToCart(cartItems?.some(item => item.productId === productId) || false);
+          setCartItems(cartItems || []);
+        }
+      } catch (error) {
+        console.error('Error checking cart status:', error);
+        if (isMounted) {
+          setIsAddedToCart(false);
         }
       }
     };
 
     checkCartStatus();
+    return () => {
+      isMounted = false;
+    };
   }, [isUserLoggedIn, currentUserId, productId, getCart, setCartItems]);
 
   if (!product) return null;
 
   const handleClick = () => {
     setTimeout(() => {
-      navigate(`/products/${product.catagory}/${product.title}`);
+      navigate(`/products/${product.catagory}/${product.id}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 300);
   };
 
   const handleRemove = async (productId) => {
+    if (!isUserLoggedIn) {
+      toast.error('Please login to manage wishlist');
+      return;
+    }
+
     try {
-      await removeFromWishlist(productId,currentUserId);
+      await removeFromWishlist(productId, currentUserId);
       setWishlistItems((prevItems) => prevItems.filter((item) => item.id !== productId));
       toast.success('Product removed from wishlist', {
         position: "bottom-right",
@@ -78,14 +101,21 @@ const WishlistProductCard = ({ productId }) => {
   };
 
   const handleAddToCart = async (productId) => {
+    if (!isUserLoggedIn) {
+      toast.error('Please login to add products to cart');
+      return;
+    }
+
     try {
-      if(isAddedToCart){
+      if (isAddedToCart) {
         await removeFromCart(productId, currentUserId);
         setCartItems(prev => prev.filter(item => item.productId !== productId));
         setIsAddedToCart(false);
+        toast.success('Product removed from cart');
       } else {
         await addToCart(productId, currentUserId);
-        setCartItems(prev => [...prev, { productId, quantity: 1 }]);
+        const cartItems = await getCart(currentUserId);
+        setCartItems(cartItems || []);
         setIsAddedToCart(true);
         toast.success('Product added to cart successfully', {
           position: "bottom-right",
@@ -112,9 +142,10 @@ const WishlistProductCard = ({ productId }) => {
       <div className="flex">
         <div className="relative w-40 h-40">
           <img 
-            src={product.imageUrl} 
+            src={imageError ? '/placeholder-image.jpg' : product.imageUrl}
             alt={product.title}
             className="w-full h-full object-cover"
+            onError={() => setImageError(true)}
           />
         </div>
 

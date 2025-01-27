@@ -4,66 +4,107 @@ import PropTypes from 'prop-types';
 import  myContext  from '../context/data/myContext';
 import { useContext } from 'react';
 import { toast } from 'react-toastify';
-import { useEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { fireDB } from '../firebase/firebaseConfig';
+import { useEffect, useRef } from 'react';
 
 const HorizontalProductCard = ({ id, quantity }) => {
-  const { removeFromCart,currentUserId ,setCartItems,updatequantity} = useContext(myContext);
+  const { removeFromCart,currentUserId ,setCartItems,updatequantity, products } = useContext(myContext);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [productData, setProductData] = useState(null);
+  const [localQuantity, setLocalQuantity] = useState(quantity);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const updateTimeout = useRef(null);
+  const [isRemoving, setIsRemoving] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getCartProduct = async () => {
-      try{
-        const productRef = doc(fireDB,"products",id);
-        const productDoc = await getDoc(productRef);
-        if (productDoc.exists()) {
-          setProductData({ id: productDoc.id, ...productDoc.data() });
+    const getCartProduct = () => {
+      try {
+        const product = products.find(product => product.id === id);
+        if (product) {
+          setProductData(product);
         } else {
           throw new Error('Product not found');
         }
-      }catch(error){
+      } catch (error) {
         console.log(error);
       }
     }
     getCartProduct();
-  }, [id]);
+  }, [id, products]);
 
-  const handleQuantityChange = async (id,newQuantity) => {
-    if (newQuantity < 1) return;
+  // Sync local quantity with prop
+  useEffect(() => {
+    setLocalQuantity(quantity);
+  }, [quantity]);
+
+  const handleQuantityChange = async (id, newQuantity) => {
+    if (newQuantity < 1 || isUpdating) return;
     
-    try{
-      await updatequantity(id, currentUserId, newQuantity);
-      setCartItems(prev => {
-        const updatedItems = prev.map(item => 
-          item.productId === id 
-            ? { ...item, quantity: newQuantity, lastUpdated: Date.now() }
-            : item
-        );
-        return updatedItems.sort((a, b) => (b.lastUpdated || 0) - (a.lastUpdated || 0));
-      });
-      toast.success('Product quantity updated', {
-        position: "bottom-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }catch(error){  
-      console.error(error);
-      toast.error('Failed to update quantity');
+    // Update local state immediately
+    setLocalQuantity(newQuantity);
+    
+    // Clear any pending updates
+    if (updateTimeout.current) {
+      clearTimeout(updateTimeout.current);
     }
+
+    // Debounce the database update
+    updateTimeout.current = setTimeout(async () => {
+      setIsUpdating(true);
+      try {
+        // Update cart items state
+        setCartItems(prev => {
+          const updatedItems = prev.map(item => 
+            item.productId === id 
+              ? { ...item, quantity: newQuantity, lastUpdated: Date.now() }
+              : item
+          );
+          return updatedItems;
+        });
+
+        // Update database
+        toast.success('Product quantity updated', {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        await updatequantity(id, currentUserId, newQuantity);
+        
+      } catch(error) {
+        // Revert local state on error
+        setLocalQuantity(quantity);
+        setCartItems(prev => {
+          const updatedItems = prev.map(item => 
+            item.productId === id 
+              ? { ...item, quantity, lastUpdated: Date.now() }
+              : item
+          );
+          return updatedItems;
+        });
+        
+        console.error('Failed to update quantity:', error);
+        toast.error('Failed to update quantity');
+      } finally {
+        setIsUpdating(false);
+      }
+    }, 500); // Wait 500ms before updating database
   };
 
-  const handleRemove = (id)  => {
-    try{
-      removeFromCart(id, currentUserId);
+  const handleRemove = async (id) => {
+    try {
+      // Update local state first to prevent flicker
+      setIsRemoving(true);
+      await removeFromCart(id, currentUserId);
       setCartItems(prev => prev.filter(item => item.productId !== id));
+      setIsRemoving(false);
+      
+      // Then remove from database
+      
       toast.success('Product removed from cart', {
         position: "bottom-right",
         autoClose: 1000,
@@ -74,8 +115,14 @@ const HorizontalProductCard = ({ id, quantity }) => {
         progress: undefined,
         theme: "colored",
       });
-    }catch(error){
-      console.log(error);
+    } catch(error) {
+      // Revert local state if database operation fails
+      setCartItems(prev => {
+        const existingItem = prev.find(item => item.productId === id);
+        return existingItem ? prev : [...prev, { productId: id, quantity }];
+      });
+      
+      console.error('Failed to remove product:', error);
       toast.error('Failed to remove product');
     }
   };
@@ -84,7 +131,7 @@ const HorizontalProductCard = ({ id, quantity }) => {
     if (!productData) return;
     
     setTimeout(() => {
-      navigate(`/products/${productData.catagory}/${productData.name}`);
+      navigate(`/products/${productData.catagory}/${productData.id}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 300);
   };
@@ -112,6 +159,13 @@ const HorizontalProductCard = ({ id, quantity }) => {
       className="w-full cursor-pointer max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] bg-white mb-4"
       onClick={handleClick}
     >
+      {
+        isRemoving && (
+          <div className="absolute inset-0 z-10 bg-black/40 text-white   backdrop-blur-sm h-full w-full flex justify-center items-center">
+              Removing.....
+          </div>
+        )
+      }
       <div className="flex">
         <div className="relative w-40 h-40">
           <img 
@@ -184,19 +238,25 @@ const HorizontalProductCard = ({ id, quantity }) => {
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleQuantityChange(id,quantity - 1);
+                  handleQuantityChange(id, localQuantity - 1);
                 }}
-                className="px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors duration-300"
+                disabled={localQuantity <= 1 || isUpdating}
+                className={`px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors duration-300 ${
+                  (localQuantity <= 1 || isUpdating) ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
-                <span className="text-red-500 font-bold animate-pulse">-</span>
+                <span className={`font-bold ${localQuantity <= 1 ? 'text-gray-400' : 'text-red-500 animate-pulse'}`}>-</span>
               </button>
-              <span className="px-4">{quantity}</span>
+              <span className="px-4">{localQuantity}</span>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleQuantityChange(id,quantity + 1);
+                  handleQuantityChange(id, localQuantity + 1);
                 }}
-                className="px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors duration-300"
+                disabled={isUpdating}
+                className={`px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors duration-300 ${
+                  isUpdating ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
                 <span className="text-green-500 font-bold animate-pulse">+</span>
               </button>
