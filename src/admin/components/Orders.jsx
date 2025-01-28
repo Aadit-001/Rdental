@@ -169,7 +169,7 @@ const OrderModal = ({ order, onClose }) => {
                                         <FaEnvelope className="mt-1 mr-2 text-gray-500" />
                                         <div>
                                             <div className="font-medium">Email</div>
-                                            <div>{order.userInfo?.email}</div>
+                                            <div>{order.userInfo?.email || order.userInfo?.userInformation?.email || 'N/A'}</div>
                                         </div>
                                     </div>
                                     <div className="flex items-start">
@@ -374,7 +374,16 @@ const Orders = () => {
                 lastUpdated: new Date().toISOString()
             });
             
-            toast.success('Order status updated successfully');
+            toast.success('Order status updated successfully', {
+                position: "bottom-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+              });
             fetchOrders(); // Refresh orders list
         } catch (error) {
             console.error('Error updating order status:', error);
@@ -383,7 +392,9 @@ const Orders = () => {
     };
 
     const handleViewOrder = (order) => {
-        console.log('Viewing order:', order); // Debug log
+        console.log('Full order data:', order); // Debug log for the entire order
+        console.log('User info:', order.userInfo); // Debug log for userInfo
+        console.log('Email:', order.userInfo?.email); // Debug log specifically for email
         setSelectedOrder(order);
     };
 
@@ -442,6 +453,9 @@ const Orders = () => {
                                 <thead className="bg-gray-50">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Sr. No.
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Order ID
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -462,8 +476,11 @@ const Orders = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {currentOrders.map((order) => (
+                                    {currentOrders.map((order, index) => (
                                         <tr key={order.id} className="hover:bg-gray-50">
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                {orders.length - (indexOfFirstOrder + index)}
+                                            </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 {order.orderId || 'N/A'}
                                             </td>

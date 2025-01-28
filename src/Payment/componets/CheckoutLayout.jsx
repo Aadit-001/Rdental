@@ -59,7 +59,7 @@ const loadScript = (src) => {
 };
 
 const CheckoutLayout = () => {
-  const {userInfo, setUserInfo,currentUserId} = useContext(myContext);
+  const {userInfo, setUserInfo, currentUserId, user} = useContext(myContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [activeStep, setActiveStep] = useState(0);
@@ -294,7 +294,10 @@ const CheckoutLayout = () => {
                   orderDetails: orderDetails,
                   paymentMethod: paymentMethodSelected,
                   userId: currentUserId,
-                  userInfo: getUserInfo.data().userInformation,
+                  userInfo: {
+                    ...getUserInfo.data().userInformation,
+                    email: user?.email || getUserInfo.data()?.email
+                  },
                   orderDate: new Date().toLocaleDateString(),
                   orderTime: new Date().toLocaleTimeString(),
                   orderStatus: 'processing',
@@ -349,7 +352,10 @@ const CheckoutLayout = () => {
             orderDetails: orderDetails,
             paymentMethod: paymentMethodSelected,
             userId: currentUserId,
-            userInfo: getUserInfo.data().userInformation,
+            userInfo: {
+              ...getUserInfo.data().userInformation,
+              email: user?.email || getUserInfo.data()?.email
+            },
             orderDate: new Date().toLocaleDateString(),
             orderTime: new Date().toLocaleTimeString(),
             orderStatus: 'processing',

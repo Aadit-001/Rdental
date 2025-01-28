@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { useContext } from 'react';
@@ -7,9 +7,23 @@ import myContext from '../context/data/myContext';
 
 
 const Profile = () => {
-  const { setIsUserLoggedIn, setShowProfile,setIsLoading } = useContext(myContext);
+  const { setIsUserLoggedIn, setShowProfile, setIsLoading } = useContext(myContext);
   const navigate = useNavigate();
   const location = useLocation();
+  const profileRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfile(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setShowProfile]);
 
   //isme changes karne hai
   const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -46,7 +60,7 @@ const Profile = () => {
   };
 
   return (
-    <div className=" pt-1 mr-6  w-[20vw] bg-black/1 fixed top-0 right-0 z-40 ">
+    <div className="pt-1 mr-6 w-[20vw] bg-black/1 fixed top-0 right-0 z-40" ref={profileRef}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
