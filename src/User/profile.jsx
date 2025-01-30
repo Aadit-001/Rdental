@@ -46,13 +46,13 @@ const Profile = () => {
   };
 
   return (
-    <div className=" pt-1 mr-6  w-[20vw] bg-black/1 fixed top-0 right-0 z-40 ">
+    <div className=" pt-1 mr-6  w-full h-full bg-transparent fixed top-0 z-40 " onClick={() => setShowProfile(false)}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="pt-20 mx-auto"
       >
-        <div className="bg-gray-100 text-white rounded-2xl shadow-xl overflow-hidden h-[100%] w-[99%]">
+        <div className="bg-gray-100 text-white rounded-2xl shadow-xl overflow-hidden  w-[20%] fixed right-10">
           <div className="bg-gradient-to-r from-green-600 to-green-700 p-6">
             <div className="flex items-center space-x-6 h-[100%] w-[100%]">
               <motion.img
