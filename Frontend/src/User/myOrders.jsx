@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { FaClipboardList, FaBox, FaClock, FaMoneyBillWave, FaShippingFast, FaBoxOpen, FaExclamationTriangle } from 'react-icons/fa';
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from 'react';
+import { FaClipboardList, FaBox, FaMoneyBillWave, FaShippingFast, FaBoxOpen, FaExclamationTriangle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { collection, onSnapshot, query, where, getDocs, doc, getDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { fireDB } from "../firebase/firebaseConfig";
 import { useContext } from "react";
 import myContext from "../context/data/myContext";

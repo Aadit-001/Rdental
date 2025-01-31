@@ -1,5 +1,6 @@
 import React from 'react';
 import {useContext} from 'react';
+import PropTypes from 'prop-types';
 import myContext from '../../context/data/myContext';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../firebase/firebaseConfig';
@@ -218,6 +219,20 @@ const EditProductModal = ({ product, onUpdate, onClose }) => {
             </div>
         </div>
     );
+};
+
+EditProductModal.propTypes = {
+    product: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        category: PropTypes.string.isRequired,
+        mrp: PropTypes.number.isRequired,
+        description: PropTypes.string.isRequired,
+        rating: PropTypes.number.isRequired,
+        imageUrl: PropTypes.string.isRequired
+    }).isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired
 };
 
 export default EditProductModal;

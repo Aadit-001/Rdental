@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { fireDB as db } from '../../firebase/firebaseConfig';
 
 // Async thunk for fetching user's cart
@@ -23,7 +23,7 @@ export const fetchCart = createAsyncThunk(
 // Async thunk for adding item to cart
 export const addItemToCart = createAsyncThunk(
     'cart/addItem',
-    async ({ userId, product }, { getState }) => {
+    async ({ userId, product }) => {
         try {
             const cartRef = doc(db, 'carts', userId);
             const cartDoc = await getDoc(cartRef);
@@ -58,7 +58,7 @@ export const addItemToCart = createAsyncThunk(
 // Async thunk for removing item from cart
 export const removeItemFromCart = createAsyncThunk(
     'cart/removeItem',
-    async ({ userId, productId }, { getState }) => {
+    async ({ userId, productId }) => {
         try {
             const cartRef = doc(db, 'carts', userId);
             const cartDoc = await getDoc(cartRef);
@@ -79,7 +79,7 @@ export const removeItemFromCart = createAsyncThunk(
 // Async thunk for updating item quantity
 export const updateItemQuantity = createAsyncThunk(
     'cart/updateQuantity',
-    async ({ userId, productId, quantity }, { getState }) => {
+    async ({ userId, productId, quantity }) => {
         try {
             const cartRef = doc(db, 'carts', userId);
             const cartDoc = await getDoc(cartRef);

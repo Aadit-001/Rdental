@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const PaymentFailed = () => {
@@ -25,7 +24,7 @@ const PaymentFailed = () => {
           Payment Failed
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          We're sorry, but there was an error processing your payment. Please try again or contact our support team if the problem persists.
+          We&apos;re sorry, but there was an error processing your payment. Please try again or contact our support team if the problem persists.
         </p>
         <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
           <button

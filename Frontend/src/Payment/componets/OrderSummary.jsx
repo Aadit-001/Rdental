@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Typography,
   List,
@@ -6,7 +6,6 @@ import {
   ListItemText,
   Divider,
   Box,
-  Grid,
   Avatar,
   Paper
 } from '@mui/material';
@@ -70,6 +69,24 @@ const OrderSummary = ({ orderDetails }) => {
       </Box>
     </Paper>
   );
+};
+
+OrderSummary.propTypes = {
+  orderDetails: PropTypes.shape({
+    items: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        imageUrl: PropTypes.string,
+        price: PropTypes.number,
+        quantity: PropTypes.number
+      })
+    ).isRequired,
+    subtotal: PropTypes.number.isRequired,
+    shipping: PropTypes.number.isRequired,
+    tax: PropTypes.number.isRequired,
+    total: PropTypes.number.isRequired
+  }).isRequired
 };
 
 export default OrderSummary;

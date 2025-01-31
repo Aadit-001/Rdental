@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import ProductCard from './ProductCard';
+import ProductCard from './productCard';
 import { useContext, useRef, useState, useEffect } from 'react';
 import myContext from '../context/data/myContext';
+import PropTypes from 'prop-types';
 
 const ProductSection = ({ title }) => {
     const scrollContainerRef = useRef(null);
@@ -162,6 +163,10 @@ const ProductSection = ({ title }) => {
             </div>
         </div>
     );
+};
+
+ProductSection.propTypes = {
+    title: PropTypes.string.isRequired
 };
 
 export default ProductSection;

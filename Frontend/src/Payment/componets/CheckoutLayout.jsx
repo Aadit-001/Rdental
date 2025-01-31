@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Container,
@@ -19,7 +19,6 @@ import { doc, getDoc ,setDoc} from 'firebase/firestore';
 import { fireDB } from '../../firebase/firebaseConfig';
 import { useContext } from 'react';
 import myContext from '../../context/data/myContext';
-import logoo from '../../assets/logoo.png';
 
 const steps = ['Shipping Information', 'Payment Information', 'Review Order'];
 
@@ -59,7 +58,7 @@ const loadScript = (src) => {
 };
 
 const CheckoutLayout = () => {
-  const {userInfo, setUserInfo,currentUserId} = useContext(myContext);
+  const { setUserInfo,currentUserId} = useContext(myContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [activeStep, setActiveStep] = useState(0);
@@ -233,7 +232,7 @@ const CheckoutLayout = () => {
     let orderData = null;
 
     try {
-      const amountInPaise = Math.round(orderDetails.total * 100);
+      const amountInPaise = Math.round(orderDetails.total*100);
       if (!amountInPaise) {
         toast.error('Amount is not available');
         setIsProcessing(false);
@@ -248,7 +247,7 @@ const CheckoutLayout = () => {
         // Create order only if not already created
         if (!orderData) {
           try {
-            const response = await fetch('https://rdental-backend.onrender.com/createOrder', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/createOrder`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -278,7 +277,7 @@ const CheckoutLayout = () => {
         }
 
         const options = {
-          key: "rzp_test_WgkE2ZcqV09BVS",
+          key: import.meta.env.VITE_RAZORPAY_KEY_ID,
           amount: amountInPaise.toString(),
           currency: "INR",
           name: "R Dental",

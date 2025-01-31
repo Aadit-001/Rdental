@@ -1,11 +1,9 @@
 import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import myContext from '../../context/data/myContext';
 import EditProductModal from './EditProductModal';
 
 const ManageProducts = () => {
     const { products, deleteProduct, updateProduct, categories } = useContext(myContext);
-    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [isEditing, setIsEditing] = useState(false);

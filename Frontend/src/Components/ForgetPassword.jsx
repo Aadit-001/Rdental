@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { toast } from 'react-toastify';
 import Logoo from '../assets/logoo.png';
 import {sendPasswordResetEmail} from "firebase/auth";
-import Loader from "./Loader";
 import { auth } from "../firebase/firebaseConfig";
 import { useContext } from "react";
 import myContext from "../context/data/myContext";
@@ -19,7 +18,7 @@ const ForgetPassword = () => {
     e.preventDefault();
     setIsLoading(true);
     sendPasswordResetEmail(auth,email,{
-        url:"http://localhost:5173/"
+        url: import.meta.env.VITE_APP_URL || "http://localhost:5173/"
     });
     try {
       // Here you would typically make an API call to handle password reset
@@ -35,7 +34,7 @@ const ForgetPassword = () => {
         theme: "colored",
       });
     } catch (error) {
-      toast.error('Failed to send reset link. Please try again.', {
+      toast.error(`Failed to send reset link: ${error.message}`, {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -69,7 +68,7 @@ const ForgetPassword = () => {
             Forgot Password?
           </h2>
           <p className="mt-4 text-center text-sm text-gray-600 max-w-sm">
-            Don't worry! It happens. Please enter your email address and we'll send you a link to reset your password.
+            Don&apos;t worry! It happens. Please enter your email address and we&apos;ll send you a link to reset your password.
           </p>
         </div>
         <motion.form 

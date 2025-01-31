@@ -4,12 +4,11 @@ import Logoo from '../assets/logoo.png';
 import name from '../assets/name.png';
 import myContext from '../context/data/myContext';
 import { useContext } from 'react';
-import { useMediaQuery } from '@mui/material';
 
 
 const Navbar = () => {
 
-  const isMobile = useMediaQuery('(max-width:768px)');
+  // const isMobile = useMediaQuery('(max-width:768px)');
   const { setShowSignIn, setShowProfile, showProfile, isUserLoggedIn, searchResults, handleSearch, user, setCurrentProductId } = useContext(myContext);
   const navigate = useNavigate();
 
@@ -109,10 +108,10 @@ const Navbar = () => {
           <div className="flex items-center space-x-4 pr-3">
             {/* Admin Link */}
             {
-              isUserLoggedIn && ((user?.email === 'aaditjha8657@gmail.com' || user?.email === 'kaifs1391@gmail.com' || user?.email === 'aadit.jha22@spit.ac.in') || 
-              (JSON.parse(localStorage.getItem('user'))?.email === 'aaditjha8657@gmail.com' || 
-               JSON.parse(localStorage.getItem('user'))?.email === 'kaifs1391@gmail.com' || 
-               JSON.parse(localStorage.getItem('user'))?.email === 'aadit.jha22@spit.ac.in')) ?
+              isUserLoggedIn && ((user?.email === import.meta.env.VITE_ADMIN_EMAIL1 || user?.email === import.meta.env.VITE_ADMIN_EMAIL2 || user?.email === import.meta.env.VITE_ADMIN_EMAIL3) || 
+              (JSON.parse(localStorage.getItem('user'))?.email === import.meta.env.VITE_ADMIN_EMAIL1 || 
+               JSON.parse(localStorage.getItem('user'))?.email === import.meta.env.VITE_ADMIN_EMAIL2 || 
+               JSON.parse(localStorage.getItem('user'))?.email === import.meta.env.VITE_ADMIN_EMAIL3)) ?
 
                 <Link
                   to="/adminPage"

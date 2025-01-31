@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import myContext from '../context/data/myContext.jsx';
 import { useContext } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -24,7 +25,7 @@ const ProtectedRouteForAdmin = ({ children }) => {
     const location = useLocation();
     const admin = JSON.parse(localStorage.getItem('user'));
     
-    if (admin?.email === 'aaditjha8657@gmail.com' || admin?.email === 'kaifs1391@gmail.com' || admin?.email === 'aadit.jha22@spit.ac.in') {
+    if (admin?.email === import.meta.env.VITE_ADMIN_EMAIL1 || admin?.email === import.meta.env.VITE_ADMIN_EMAIL2 || admin?.email === import.meta.env.VITE_ADMIN_EMAIL3) {
         return children;
     }
 

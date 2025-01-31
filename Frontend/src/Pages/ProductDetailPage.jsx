@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ProductCard from '../Components/ProductCard';
+import ProductCard from '../Components/productCard';
 import {useParams} from 'react-router-dom';
 import {useContext} from 'react';
 import myContext from '../context/data/myContext';
@@ -11,7 +11,6 @@ import { toast } from 'react-toastify';
 const ProductDetailPage = () => {
   const { category, productId } = useParams();
   const { 
-    getCategoryProducts, 
     addToCart, 
     currentUserId, 
     isUserLoggedIn, 

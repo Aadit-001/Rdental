@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { doc, setDoc, collection, addDoc, arrayUnion, getDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
+import { doc, collection, addDoc, arrayUnion, getDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { fireDB } from './../firebase/firebaseConfig';
 import { useEffect, useState, useRef, useContext } from 'react';
 import { FaCheckCircle, FaTruck, FaSpinner, FaExclamationTriangle, FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone } from 'react-icons/fa';

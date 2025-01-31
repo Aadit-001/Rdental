@@ -104,7 +104,7 @@ const EmptyCart = () => {
           transition={{ delay: 0.3 }}
           className="text-gray-600 mb-8"
         >
-          Looks like you haven't added any dental supplies to your cart yet.
+          Looks like you haven&apos;t added any dental supplies to your cart yet.
         </motion.p>
 
         <motion.div
@@ -121,7 +121,7 @@ const EmptyCart = () => {
                   after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
                   after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
                   transform hover:scale-105 transition-all duration-300 ease-in-out
-                  hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white relative z-10"
+                  hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white z-10"
           >
             <span className="relative z-10 text-white">Browse Products</span>
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

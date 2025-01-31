@@ -1,8 +1,8 @@
-import React from 'react';
 import {
   Grid,
   TextField,
 } from '@mui/material';
+import PropTypes from 'prop-types';
 
 const UserInfoForm = ({ formData, setFormData }) => {
   const handleChange = (e) => {
@@ -105,6 +105,11 @@ const UserInfoForm = ({ formData, setFormData }) => {
       </Grid>
     </Grid>
   );
+};
+
+UserInfoForm.propTypes = {
+  formData: PropTypes.object.isRequired,
+  setFormData: PropTypes.func.isRequired
 };
 
 export default UserInfoForm;
