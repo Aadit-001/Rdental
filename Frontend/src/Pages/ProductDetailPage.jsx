@@ -1,12 +1,13 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProductCard from '../Components/productCard';
 import {useParams} from 'react-router-dom';
 import {useContext} from 'react';
 import myContext from '../context/data/myContext';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { doc, updateDoc, getDoc, setDoc, collection } from 'firebase/firestore';
+import { fireDB } from '../firebase/firebaseConfig';
 
 const ProductDetailPage = () => {
   const { category, productId } = useParams();
@@ -22,12 +23,17 @@ const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [showQuantityControls, setShowQuantityControls] = useState(false);
   const [rating, setRating] = useState(0);
+  const [userRating, setUserRating] = useState(0);
+  const [averageRating, setAverageRating] = useState(0);
+  const [totalRatings, setTotalRatings] = useState(0);
+  const [hasUserRated, setHasUserRated] = useState(false);
   const [expandedCard, setExpandedCard] = useState(null);
   const [showZoom, setShowZoom] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef(null);
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [isLoadingRelated, setIsLoadingRelated] = useState(true);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const navigate = useNavigate();
   const [imageError, setImageError] = useState(false);
@@ -38,18 +44,30 @@ const ProductDetailPage = () => {
   const updateTimeout = useRef(null);
 
   useEffect(() => {
-    const getProduct = () => {
+    const getProduct = async () => {
       try {
         if (!productId || !products) return;
         
         const foundProduct = products.find(p => p.id === productId);
         if (foundProduct) {
           setProduct(foundProduct);
+          setAverageRating(foundProduct.rating || 0);
+          setTotalRatings(foundProduct.noOfRatings || 0);
           setIsLoading(false);
+
+          // Check if user has already rated this product
+          if (isUserLoggedIn && currentUserId) {
+            const userRatingRef = doc(fireDB, 'productRatings', `${productId}_${currentUserId}`);
+            const userRatingDoc = await getDoc(userRatingRef);
+            if (userRatingDoc.exists()) {
+              setHasUserRated(true);
+              setUserRating(userRatingDoc.data().rating);
+            }
+          }
         } else {
           console.error('Product not found');
           toast.error('Product not found');
-          navigate('/'); // Redirect to home if product doesn't exist
+          navigate('/');
         }
       } catch (error) {
         console.error('Error finding product:', error);
@@ -59,22 +77,30 @@ const ProductDetailPage = () => {
     };
     
     getProduct();
-  }, [productId, navigate, products]);
+  }, [productId, navigate, products, isUserLoggedIn, currentUserId]);
 
   useEffect(() => {
-    const fetchRelatedProducts = () => {
+    const fetchRelatedProducts = async () => {
+      setIsLoadingRelated(true);
       try {
-        if (!category || !products) return;
+        if (!category || !products || !productId) return;
         
         // Filter products from the same category
-        const categoryProducts = products.filter(p => p.catagory === category);
-        // Filter out the current product and limit to 5 related products
-        const filtered = categoryProducts
-          .filter(p => p.id !== productId)
-          .slice(0, 5);
-        setRelatedProducts(filtered);
+        const categoryProducts = products.filter(p => 
+          p.category?.toLowerCase() === category.toLowerCase() && 
+          p.id !== productId
+        );
+
+        // Randomize and limit to 5 products
+        const shuffled = [...categoryProducts].sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 5);
+        
+        setRelatedProducts(selected);
       } catch (error) {
         console.error('Error finding related products:', error);
+        toast.error('Failed to load related products');
+      } finally {
+        setIsLoadingRelated(false);
       }
     };
     
@@ -204,6 +230,82 @@ const ProductDetailPage = () => {
       });
     } finally {
       setIsUpdating(false);
+    }
+  };
+
+  const handleRatingSubmit = async (newRating) => {
+    if (!isUserLoggedIn) {
+      setShowSignIn(true);
+      return;
+    }
+
+    try {
+      // Get the product document reference
+      const productRef = doc(fireDB, 'products', productId);
+      const productDoc = await getDoc(productRef);
+      
+      if (!productDoc.exists()) {
+        toast.error('Product not found');
+        return;
+      }
+
+      const productData = productDoc.data();
+      const currentRating = productData.rating || 0;
+      const currentTotalRatings = productData.noOfRatings || 0;
+
+      // Check if user has already rated
+      const userRatingRef = doc(fireDB, 'productRatings', `${productId}_${currentUserId}`);
+      const userRatingDoc = await getDoc(userRatingRef);
+
+      let newAverageRating;
+      let newTotalRatings;
+
+      if (userRatingDoc.exists()) {
+        // Update existing rating
+        const oldUserRating = userRatingDoc.data().rating;
+        const totalRatingPoints = currentRating * currentTotalRatings;
+        newAverageRating = (totalRatingPoints - oldUserRating + newRating) / currentTotalRatings;
+        newTotalRatings = currentTotalRatings;
+      } else {
+        // Calculate new rating
+        const totalRatingPoints = currentRating * currentTotalRatings;
+        newAverageRating = (totalRatingPoints + newRating) / (currentTotalRatings + 1);
+        newTotalRatings = currentTotalRatings + 1;
+      }
+
+      // Update product rating in database
+      await updateDoc(productRef, {
+        rating: newAverageRating,
+        noOfRatings: newTotalRatings
+      });
+
+      // Store/update user rating
+      await setDoc(userRatingRef, {
+        userId: currentUserId,
+        productId: productId,
+        rating: newRating,
+        timestamp: new Date().toISOString()
+      });
+
+      // Update local state
+      setAverageRating(newAverageRating);
+      setTotalRatings(newTotalRatings);
+      setUserRating(newRating);
+      setHasUserRated(true);
+
+      toast.success('Rating submitted successfully!', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } catch (error) {
+      console.error('Error updating rating:', error);
+      toast.error('Failed to submit rating. Please try again.');
     }
   };
 
@@ -359,17 +461,62 @@ const ProductDetailPage = () => {
               )}
               
               <div className="border-t pt-4">
-                <h3 className="text-lg font-semibold mb-2">Rate this Product</h3>                 
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
+                <h3 className="text-lg font-semibold mb-2">Product Rating</h3>
+                <div className="flex flex-col gap-4">
+                  {/* Average Rating Display */}
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          className={`text-2xl ${star <= averageRating ? 'text-yellow-400' : 'text-gray-300'}`}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                    <span className="text-sm text-gray-600">
+                      ({averageRating.toFixed(1)}) {totalRatings} {totalRatings === 1 ? 'rating' : 'ratings'}
+                    </span>
+                  </div>
+
+                  {/* User Rating Section */}
+                  {isUserLoggedIn ? (
+                    <div className="mt-2">
+                      <p className="text-sm font-medium mb-2">
+                        {hasUserRated ? 'Your Rating:' : 'Rate this Product:'}
+                      </p>
+                      <div className="flex items-center gap-4">
+                        <div className="flex gap-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                              key={star}
+                              onClick={() => handleRatingSubmit(star)}
+                              className={`text-2xl transition-colors duration-200 
+                                ${star <= (hasUserRated ? userRating : (rating || 0)) ? 'text-yellow-400' : 'text-gray-300'} 
+                                hover:text-yellow-400`}
+                              onMouseEnter={() => !hasUserRated && setRating(star)}
+                              onMouseLeave={() => !hasUserRated && setRating(0)}
+                            >
+                              ★
+                            </button>
+                          ))}
+                        </div>
+                        {hasUserRated && (
+                          <span className="text-sm text-gray-600">
+                            You rated this product {userRating} {userRating === 1 ? 'star' : 'stars'}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
                     <button
-                      key={star}
-                      onClick={() => setRating(star)}
-                      className={`text-2xl ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                      onClick={() => setShowSignIn(true)}
+                      className="text-sm text-green-600 hover:text-green-700 font-medium"
                     >
-                      ★
+                      Sign in to rate this product
                     </button>
-                  ))}
+                  )}
                 </div>
               </div>
             </div>
@@ -620,27 +767,43 @@ const ProductDetailPage = () => {
         {/* Related Products Section */}
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-6">Related Products</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            {relatedProducts.map((product) => (
-              <ProductCard
-              key={product.id}
-              title={product.title}
-              description={product.description}
-              price={product.price}
-              rating={product.rating}
-              catagory={product.category}
-              quantitySold={product.quantitySold}
-              inStock={product.inStock}
-              totalStock={product.totalStock}
-              noOfRatings={product.noOfRatings}
-              image={product.imageUrl}
-              mrp={product.mrp}
-              id={product.id}
-              noOfReviews={product.noOfReviews}
-              reviews={product.reviews}
-              />
-            ))}
-          </div>
+          {isLoadingRelated ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+              {[...Array(5)].map((_, index) => (
+                <div key={index} className="bg-white rounded-lg shadow-md p-4 animate-pulse">
+                  <div className="w-full h-48 bg-gray-200 rounded-lg mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                </div>
+              ))}
+            </div>
+          ) : relatedProducts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+              {relatedProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  title={product.title}
+                  description={product.description}
+                  price={product.price}
+                  rating={product.rating}
+                  category={product.category}
+                  quantitySold={product.quantitySold}
+                  inStock={product.inStock}
+                  totalStock={product.totalStock}
+                  noOfRatings={product.noOfRatings}
+                  image={product.imageUrl}
+                  mrp={product.mrp}
+                  id={product.id}
+                  noOfReviews={product.noOfReviews}
+                  reviews={product.reviews}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-gray-500 py-8">
+              No related products found in this category
+            </div>
+          )}
         </div>
       </div>
     </div>

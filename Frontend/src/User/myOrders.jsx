@@ -1,12 +1,9 @@
-/* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react';
-import { FaClipboardList, FaBox, FaMoneyBillWave, FaShippingFast, FaBoxOpen, FaExclamationTriangle } from 'react-icons/fa';
+import React, { useState, useEffect, useContext } from 'react';
+import { FaClipboardList, FaBox, FaClock, FaMoneyBillWave, FaShippingFast, FaBoxOpen, FaExclamationTriangle, FaShoppingBag } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { fireDB } from "../firebase/firebaseConfig";
-import { useContext } from "react";
 import myContext from "../context/data/myContext";
-import EmptyOrderPage from './emptyOrderPage';
 import Loader from '../Components/Loader';
 
 const formatDate = (timestamp) => {
@@ -60,16 +57,18 @@ const OrderCard = ({ order }) => {
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
-      case 'completed':
-        return 'bg-green-100 text-green-800 border-green-300';
+      case 'delivered':
+        return 'bg-green-500 text-white';
       case 'processing':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+        return 'bg-yellow-500 text-white';
       case 'shipped':
-        return 'bg-blue-100 text-blue-800 border-blue-300';
+        return 'bg-blue-500 text-white';
       case 'cancelled':
-        return 'bg-red-100 text-red-800 border-red-300';
+        return 'bg-red-500 text-white';
+      case 'pending':
+        return 'bg-orange-500 text-white';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-300';
+        return 'bg-gray-500 text-white';
     }
   };
 
@@ -79,7 +78,7 @@ const OrderCard = ({ order }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white border border-gray-200 shadow-lg rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 mt-[-90px]"
+      className="bg-white border border-gray-200 shadow-lg rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 mb-6 mt-[-80px]"
     >
       <div className="p-6">
         <div className="flex justify-between items-center mb-4">
@@ -204,6 +203,26 @@ const OrderCard = ({ order }) => {
   );
 };
 
+const EmptyOrderPage = () => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="text-center py-12"
+  >
+    <div className="bg-gray-100 p-6 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+      <FaShoppingBag className="text-gray-400 text-4xl" />
+    </div>
+    <h2 className="text-2xl font-bold text-gray-800 mb-4">No Orders Yet</h2>
+    <p className="text-gray-600 mb-8">Looks like you haven't placed any orders yet.</p>
+    <a
+      href="/products"
+      className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary-dark transition-colors"
+    >
+      Start Shopping
+    </a>
+  </motion.div>
+);
+
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -211,12 +230,16 @@ const MyOrders = () => {
   const { currentUserId } = useContext(myContext);
 
   useEffect(() => {
+    let isMounted = true;
+    
     const fetchUserOrders = async () => {
       if (!currentUserId) return;
 
       try {
         const userDocRef = doc(fireDB, "users", currentUserId);
         const userDocSnap = await getDoc(userDocRef);
+        
+        if (!isMounted) return;
         
         if (!userDocSnap.exists() || !userDocSnap.data().orders || userDocSnap.data().orders.length === 0) {
           setOrders([]);
@@ -344,16 +367,24 @@ const MyOrders = () => {
           return dateB.getTime() - dateA.getTime();
         });
 
-        setOrders(sortedOrders);
-        setIsLoading(false);
+        if (isMounted) {
+          setOrders(sortedOrders);
+          setIsLoading(false);
+        }
       } catch (err) {
         console.error("Error fetching orders:", err);
-        setError(err.message);
-        setIsLoading(false);
+        if (isMounted) {
+          setError(err.message);
+          setIsLoading(false);
+        }
       }
     };
 
     fetchUserOrders();
+
+    return () => {
+      isMounted = false;
+    };
   }, [currentUserId]);
 
   if (isLoading) {
@@ -390,6 +421,10 @@ const MyOrders = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-20">
       <div className="max-w-5xl mx-auto">
+        <h1 className="text-4xl font-bold text-blue-900 mb-8 text-center animate-fade-in-down relative group">
+          <span className="inline-block">My Orders</span>
+          <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-900 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
+        </h1>
         <motion.div 
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -401,9 +436,6 @@ const MyOrders = () => {
               <div className="bg-white/10 p-3 rounded-lg">
                 <FaClipboardList className="text-white text-3xl" />
               </div>
-              <h1 className="text-3xl font-bold text-white">
-                My Orders
-              </h1>
             </div>
           </div>
 

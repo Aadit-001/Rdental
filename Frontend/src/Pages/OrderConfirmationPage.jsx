@@ -6,6 +6,7 @@ import { FaCheckCircle, FaTruck, FaSpinner, FaExclamationTriangle, FaUser, FaMap
 import { useDispatch } from 'react-redux';
 import { clearCartAsync } from '../Redux/slices/cartSlice';
 import myContext from '../context/data/myContext';
+import Loader from '../Components/Loader';
 
 const OrderConfirmationPage = () => {
   const location = useLocation();
@@ -79,7 +80,10 @@ const OrderConfirmationPage = () => {
           orderDetails,
           paymentMethod,
           userId,
-          userInfo,
+          userInfo: {
+            ...userInfo,
+            email: user?.email // Include email in userInfo
+          },
           orderDate,
           orderTime,
           orderStatus,
@@ -142,9 +146,10 @@ const OrderConfirmationPage = () => {
 
   if (isProcessing) {
     return (
-      <div className="container h-screen w-screen mx-auto my-8 p-6 bg-white rounded-lg shadow-lg text-center">
-        <FaSpinner className="animate-spin text-primary text-5xl mx-auto mb-4" />
-        <h1 className="text-2xl font-bold text-gray-800">Processing Your Order...</h1>
+      <div className="container h-screen w-screen mx-auto flex flex-col items-center justify-center">
+        <Loader />
+        <h2 className="text-2xl font-bold text-gray-800 mt-4">Processing Your Order...</h2>
+        <p className="text-gray-600 mt-2">Please wait while we confirm your payment</p>
       </div>
     );
   }
@@ -239,10 +244,11 @@ const OrderConfirmationPage = () => {
               <p className="text-gray-700 flex items-center bg-gray-50 p-3 rounded-lg">
                 <span className="font-semibold w-28">Status:</span>
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  paymentMethod === 'Cash On Delivery' ? 'bg-yellow-100 text-yellow-800 border border-yellow-300' :
                   paymentDetails?.status === 'completed' ? 'bg-green-100 text-green-800 border border-green-300' :
                   'bg-yellow-100 text-yellow-800 border border-yellow-300'
                 }`}>
-                  {paymentDetails?.status || 'Completed'}
+                  {paymentMethod === 'Cash On Delivery' ? 'Pending' : paymentDetails?.status || 'Completed'}
                 </span>
               </p>
               <p className="text-gray-700 flex items-center bg-gray-50 p-3 rounded-lg">
@@ -337,20 +343,26 @@ const OrderConfirmationPage = () => {
         </div>
       </div>
 
-      <div className="mt-8 text-center">
+      <div className="mt-8 text-center bg-white p-6 rounded-xl shadow-md">
         <p className="text-gray-600 mb-4">
-          A confirmation email has been sent to {userInfo?.email}
+          A confirmation email has been sent to {user?.email}
         </p>
-        <div className="space-x-4">
+        <div className="flex flex-wrap justify-center gap-4">
           <button 
             onClick={() => navigate('/')}
-            className="bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary-dark transition-colors"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
           >
-            Continue Shopping
+            Go to Home
+          </button>
+          <button 
+            onClick={() => navigate('/myOrders')}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+          >
+            My Orders
           </button>
           <button 
             onClick={() => window.print()}
-            className="bg-gray-100 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-200 transition-colors"
+            className="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors font-semibold"
           >
             Print Receipt
           </button>
