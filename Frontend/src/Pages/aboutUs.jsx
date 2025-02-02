@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import indiamap from '../assets/indiamap.png'
 
 const AboutUs = () => {
-  const [teamMembers, setTeamMembers] = useState([
+  const [teamMembers] = useState([
     {
       name: 'Shravan Gupta',
       role: 'Front-End Integration Engineer', 

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from 'react';
 import { collection, query, orderBy, getDocs, updateDoc, doc, getDoc } from 'firebase/firestore';
 import { fireDB } from '../../firebase/firebaseConfig';
@@ -100,9 +101,9 @@ const OrderModal = ({ order, onClose }) => {
         }
     }, [order]);
 
-    const calculateTotal = () => {
-        return orderProducts.reduce((total, item) => total + (item.totalPrice || 0), 0);
-    };
+    // const calculateTotal = () => {
+    //     return orderProducts.reduce((total, item) => total + (item.totalPrice || 0), 0);
+    // };
 
     const handlePrint = () => {
         const printContent = printRef.current;

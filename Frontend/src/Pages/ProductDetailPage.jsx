@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ProductCard from '../Components/ProductCard';
+import ProductCard from '../Components/productCard';
 import {useParams} from 'react-router-dom';
 import {useContext} from 'react';
 import myContext from '../context/data/myContext';
@@ -12,7 +12,6 @@ import { fireDB } from '../firebase/firebaseConfig';
 const ProductDetailPage = () => {
   const { category, productId } = useParams();
   const { 
-    getCategoryProducts, 
     addToCart, 
     currentUserId, 
     isUserLoggedIn, 

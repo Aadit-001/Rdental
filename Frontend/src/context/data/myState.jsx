@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import myContext from './myContext';
 import PropTypes from 'prop-types';
 import { Timestamp } from 'firebase/firestore';
@@ -47,7 +47,7 @@ const MyState = (props) => {
             year: "numeric",
         })
     });
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
 
     //future use
@@ -394,14 +394,14 @@ const MyState = (props) => {
 
     };
 
-    const getBestSellers = () => {
+    const getBestSellers = useCallback(() => {
         const sortedProducts = [...products].sort((a, b) => b.quantitySold - a.quantitySold);
         setBestSellers(sortedProducts.slice(0, 5));
         if(location.pathname === '/products/best-sellers'){
             setBestSellers(sortedProducts);
             console.log(bestSellers);
         }
-    };
+    }, [products]);
 
     const addToWishlist = async (productId,userId) => {    
         const userRef = doc(fireDb,"users",userId);
@@ -530,7 +530,7 @@ const MyState = (props) => {
         if (products.length > 0) {
             getBestSellers();
         }
-    }, [products]);
+    }, [getBestSellers, products]);
 
     return (
         <myContext.Provider value={{

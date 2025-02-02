@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import ProductCard from '../Components/ProductCard';
+import ProductCard from '../Components/productCard';
 import endodentics from '../assets/Endodentics.jpg';
 import equipment from '../assets/equipments.jpg';
 import restoratives from '../assets/restoratives.jpg';

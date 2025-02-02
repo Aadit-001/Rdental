@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { FaClipboardList, FaBox, FaClock, FaMoneyBillWave, FaShippingFast, FaBoxOpen, FaExclamationTriangle, FaShoppingBag } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { collection, onSnapshot, query, where, getDocs, doc, getDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { fireDB } from "../firebase/firebaseConfig";
 import myContext from "../context/data/myContext";
 import Loader from '../Components/Loader';

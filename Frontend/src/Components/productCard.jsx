@@ -53,7 +53,7 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
     };
     
     checkCartStatus();
-  }, [currentUserId, id, isUserLoggedIn, getCart]);
+  }, [currentUserId, id, isUserLoggedIn, getCart, setCartItems]);
 
   const handleLike = async () => {
     if(!isUserLoggedIn){

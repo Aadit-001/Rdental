@@ -8,7 +8,7 @@ import myContext from './context/data/myContext';
 import { useContext, useEffect } from 'react'
 
 function RootLayout() {
-  const { showSignIn, showSignUp , setShowSignIn, setShowSignUp, showProfile, setShowProfile ,isUserLoggedIn, setIsUserLoggedIn} = useContext(myContext);  
+  const { showSignIn, showSignUp , showProfile ,isUserLoggedIn, setIsUserLoggedIn} = useContext(myContext);  
 
 
   useEffect(() => {

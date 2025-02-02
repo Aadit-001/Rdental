@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import ProductSection from './Components/productSection';
-import ProductCard from './Components/ProductCard';
+import ProductCard from './Components/productCard';
 import { useNavigate } from 'react-router-dom';
 import Endodontics from './assets/Endodentics.jpg';
 import myContext from './context/data/myContext';
@@ -177,7 +177,7 @@ const Home = () => {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to <span className="text-green-500">R</span>-DENTAL Supplies</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Discover our comprehensive range of high-quality dental supplies and equipment.
-            We're committed to supporting dental professionals with the best products in the industry.
+            We&apos;re committed to supporting dental professionals with the best products in the industry.
           </p>
 
         </div>
@@ -610,7 +610,7 @@ const Home = () => {
       {/* Contact CTA Section */}
       <div className="max-w-[1400px] mx-auto px-4 py-16 text-left ml-54">
         <h2 className="text-5xl font-inconsolata text-blue-900/90 mb-3">
-          Didn't find what you were looking for?
+          Didn&apos;t find what you were looking for?
         </h2>
         <p className="text-lg text-black-900 mb-8">Let us know</p>
         <button

@@ -106,7 +106,7 @@ const EmptyOrderPage = () => {
                     transition={{ delay: 0.3 }}
                     className="text-gray-600 mb-8"
                 >
-                    It looks like you haven't placed an order. Check out our latest dental products to get started!
+                    It looks like you haven&apos;t placed an order. Check out our latest dental products to get started!
                 </motion.p>
 
                 <motion.div
@@ -123,7 +123,7 @@ const EmptyOrderPage = () => {
                             after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
                             after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
                             transform hover:scale-105 transition-all duration-300 ease-in-out
-                            hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white relative z-10"
+                            hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white z-10"
                     >
                         <span className="relative z-10 text-white">Browse Products</span>
                     </Link>

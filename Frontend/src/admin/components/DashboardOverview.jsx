@@ -82,7 +82,7 @@ const DashboardOverview = () => {
                 <div className="flex items-center justify-between">
                     <div className="space-y-2">
                         <h2 className="text-2xl font-bold text-gray-800">Welcome back, Suresh!</h2>
-                        <p className="text-gray-600">Here's what's happening with your store today.</p>
+                        <p className="text-gray-600">Here&apos;s what&apos;s happening with your store today.</p>
                         <div className="flex items-center space-x-4 mt-4">
                             <div className="flex items-center text-gray-600">
                                 <FiCalendar className="mr-2" />
