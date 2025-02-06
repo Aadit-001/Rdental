@@ -10,7 +10,7 @@ function WishList() {
 
   // const [wishlistItems, setWishlistItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [iswishlistEmpty, setWishlistEmpty] = useState(false);
+  const [, setWishlistEmpty] = useState(false);
 
   const { getWishlist, addToWishlist, removeFromWishlist, wishlistItems, setWishlistItems } = useContext(myContext);
   
@@ -43,10 +43,10 @@ function WishList() {
         animate={{ opacity: 1 }}
         className="min-h-screen flex flex-col relative bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)]"
       >
-        <div className="container mx-auto px-24 pt-28 flex-grow relative">
+        <div className="container mx-auto  md:px-24 pt-28 flex-grow relative">
           <div className="flex">
             {/* Vertical Poster Section - 20% width */}
-            <div className="w-1/5 mr-2 mb-20 mt-10 ">
+            <div className="w-1/5 mr-2 mb-20 mt-10 hidden md:block">
               <div className="relative top-8 bg-gradient-to-b from-green-400 to-green-500 rounded-lg p-6 text-white h-[80vh] flex flex-col justify-between shadow-xl">
                 <div>
                   <h2 className="text-2xl font-bold mb-4 animate-bounce hover:scale-105 transition-transform duration-300">Special Offers</h2>
@@ -74,9 +74,9 @@ function WishList() {
             </div>
 
             {/* Main Content - 80% width */}
-            <div className="w-4/5">
+            <div className="w-screen md:w-4/5 ">
               <h1 className="text-4xl font-bold text-gray-600 mb-8 text-center mr-10 animate-fade-in-down relative group">
-                <span className="inline-block">My WishList</span>
+                <span className="md:inline-block md:pl-0 pl-8">My WishList</span>
                 <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-900 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
               </h1>
 
@@ -101,7 +101,7 @@ function WishList() {
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="inline-flex items-center justify-center h-12 px-6 relative px-6 py-3 rounded-lg shadow-md 
+                      className="inline-flex items-center justify-center h-12 px-6 relative py-3 rounded-lg shadow-md 
                       before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
                       before:transition-all before:duration-500 hover:before:opacity-0
                       after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
@@ -139,7 +139,7 @@ function WishList() {
                       <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="inline-flex items-center justify-center h-12 px-6 relative px-6 py-3 rounded-lg shadow-md 
+                        className="inline-flex items-center justify-center h-12 px-6 relative py-3 rounded-lg shadow-md 
                         before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
                         before:transition-all before:duration-500 hover:before:opacity-0
                         after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500

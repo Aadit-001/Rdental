@@ -1,24 +1,13 @@
 import  { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  Container,
-  Paper,
-  Stepper,
-  Step,
-  StepLabel,
-  Button,
-  Box,
-  Typography,
-  CircularProgress
-} from '@mui/material';
-import UserInfoForm from './userInfoForm';
-import PaymentForm from './PaymentForm';
-import OrderSummary from './OrderSummary';
 import { toast } from 'react-toastify';
 import { doc, getDoc ,setDoc} from 'firebase/firestore';
 import { fireDB } from '../../firebase/firebaseConfig';
 import { useContext } from 'react';
 import myContext from '../../context/data/myContext';
+import OrderSummary from './OrderSummary';
+import PaymentForm from './PaymentForm';
+import UserInfoForm from './userInfoForm';
 
 const steps = ['Shipping Information', 'Payment Information', 'Review Order'];
 
@@ -293,7 +282,7 @@ const CheckoutLayout = () => {
                   orderDetails: orderDetails,
                   paymentMethod: paymentMethodSelected,
                   userId: currentUserId,
-                  userInfo: getUserInfo.data().userInformation,
+                  userInfo: formData,   //ye karne se address wala issue chala gaya
                   orderDate: new Date().toLocaleDateString(),
                   orderTime: new Date().toLocaleTimeString(),
                   orderStatus: 'processing',
@@ -348,7 +337,7 @@ const CheckoutLayout = () => {
             orderDetails: orderDetails,
             paymentMethod: paymentMethodSelected,
             userId: currentUserId,
-            userInfo: getUserInfo.data().userInformation,
+            userInfo: formData,  //ye karne se address wala issue chala gaya
             orderDate: new Date().toLocaleDateString(),
             orderTime: new Date().toLocaleTimeString(),
             orderStatus: 'processing',
@@ -371,7 +360,7 @@ const CheckoutLayout = () => {
         }
       }, { merge: true });
 
-      setUserInfo(getUserInfo.data().userInformation);
+      setUserInfo(formData);
 
     } catch (error) {
       setIsProcessing(false);
@@ -400,61 +389,85 @@ const CheckoutLayout = () => {
         return orderDetails ? <OrderSummary orderDetails={orderDetails} /> : null;
       default:
         return (
-          <Container maxWidth="lg" sx={{ mb: 4 }} className='min-h-screen pt-[9%]'> 
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress /> {/* Display loading spinner */}
-          </Box>
-        </Paper>
-      </Container>
+          <div className="max-w-lg mx-auto min-h-screen pt-24">
+            <div className="border border-gray-300 rounded-lg shadow-md my-6 p-4">
+              <div className="flex justify-center items-center min-h-[60vh]">
+                <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full" />
+              </div>
+            </div>
+          </div>
         );
     }
   };
 
   if (!orderDetails) {
     return (
-      <Container maxWidth="lg" sx={{ mb: 4 }} className='min-h-screen pt-[9%]'>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress /> {/* Display loading spinner */}
-          </Box>
-        </Paper>
-      </Container>
+      <div className="max-w-lg mx-auto min-h-screen pt-24">
+        <div className="border border-gray-300 rounded-lg shadow-md my-6 p-4">
+          <div className="flex justify-center items-center min-h-[60vh]">
+            <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full" />
+          </div>
+        </div>
+      </div>
     );
   }
 
+
+  //better loading screen
+  if(isProcessing){
+    return(
+      <div className="max-w-lg mx-auto min-h-screen pt-24">
+        <div className=" my-6 p-4">
+          <div className="flex flex-col justify-center items-center min-h-[60vh] ">
+            <div className="animate-spin h-10 w-10 border-4 border-green-500 border-t-transparent rounded-full" />
+            <p className="ml-4 mt-2 mb-1 text-black">Processing...</p>
+            <p className="ml-4 mt-2 mb-1 text-black">Please be patient, we are processing your order...</p>
+            <p className="ml-4 mt-2 mb-1 text-black">This may take a few minutes...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  
+
   return (
-    <Container maxWidth="lg" sx={{ mb: 4 }} className='min-h-screen pt-[9%]'>
-      <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-        <Typography component="h1" variant="h4" align="center" sx={{ mb: 4 }}>
-          Checkout
-        </Typography>
-        <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+    <div className="max-w-lg mx-auto min-h-screen pt-24">
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h1 className="text-2xl font-bold text-center mb-4">Checkout</h1>
+        <div className="flex justify-between mb-12">
           {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
+            <div key={label} className="flex items-center flex-col">
+              <div
+                className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                  activeStep >= steps.indexOf(label)
+                    ? 'bg-green-500'
+                    : 'bg-gray-300'
+                }`}
+              >{steps.indexOf(label)+1}</div>
+              {/* <span className="ml-2">{label}</span> */}
+            </div>
           ))}
-        </Stepper>
-        <>
+        </div>
+        <div>
           {getStepContent(activeStep)}
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+          <div className="flex justify-end mt-3">
             {activeStep !== 0 && (
-              <Button onClick={handleBack} sx={{ mr: 1 }}>
+              <button onClick={handleBack} className="mr-1 px-4 py-2 bg-gray-300 rounded">
                 Back
-              </Button>
+              </button>
             )}
-            <Button
-              variant="contained"
+            <button
+              className={`px-4 py-2 rounded ${isProcessing ? 'bg-gray-400' : 'bg-green-500 hover:bg-green-600'} text-white`}
               onClick={handleNext}
               disabled={isProcessing}
             >
               {activeStep === steps.length - 1 ? (isProcessing ? 'Processing...' : 'Place Order') : 'Next'}
-            </Button>
-          </Box>
-        </>
-      </Paper>
-    </Container>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

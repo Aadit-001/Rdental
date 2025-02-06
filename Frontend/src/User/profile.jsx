@@ -59,13 +59,13 @@ const Profile = () => {
   };
 
   return (
-    <div className=" pt-1 mr-6  w-full h-full bg-transparent fixed top-0 z-40 " onClick={() => setShowProfile(false)}>
+    <div className=" lg:pt-1 lg:mr-6  w-full h-full bg-transparent fixed top-0 z-40 " onClick={() => setShowProfile(false)}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="pt-20 mx-auto"
       >
-        <div className="bg-gray-100 text-white rounded-2xl shadow-xl overflow-hidden  w-[20%] fixed right-10">
+        <div className="bg-gray-100 text-white rounded-2xl shadow-xl overflow-hidden  lg:w-[20%] sm:w-[80%] fixed top-16 right-1 lg:right-10">
           <div className="bg-gradient-to-r from-green-600 to-green-700 p-6">
             <div className="flex items-center space-x-6 h-[100%] w-[100%]">
               <motion.img
@@ -76,12 +76,55 @@ const Profile = () => {
               />
               <div>
                 <h1 className="text-2xl font-bold">{user?.providerData?.[0]?.displayName || user?.displayName || "Guest User"}</h1>
-                <p className="opacity-90">{user?.providerData?.[0]?.email || user?.email || "No email available"}</p>
+                <p className="opacity-90 text-sm">{user?.providerData?.[0]?.email || user?.email || "No email available"}</p>
               </div>
             </div>
           </div>
 
           <div className="p-6 space-y-4">
+          <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors lg:hidden"
+            >
+              <Link to="/cart" className="flex items-center w-full">
+                <svg
+                  className="w-6 h-6 text-green-600 mr-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
+                </svg>
+                <span className="text-gray-700 font-medium">Cart</span>
+              </Link>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors lg:hidden"
+            >
+              <Link to="/wishlist" className="flex items-center w-full">
+                <svg
+                  className="w-6 h-6 text-green-600 mr-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
+                </svg>
+                <span className="text-gray-700 font-medium">wishlist</span>
+              </Link>
+            </motion.div>
+
             <motion.div
               whileHover={{ scale: 1.02 }}
               className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"

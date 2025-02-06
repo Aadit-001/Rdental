@@ -53,13 +53,13 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="pt-20 max-w-[1480px] mx-auto ">
+    <div className="pt-20 max-w-[1480px] w-screen mx-auto ">
       {/* Image Carousel Section */}
-      <div className="relative h-[500px] w-full overflow-hidden px-2 py-1 mb-0 mx-auto">
+      <div className="relative lg:h-[500px] sm:h-[40px] w-full overflow-hidden py-1 mb-0 mx-auto">
         {/* Left Arrow Button */}
         <button
           onClick={() => setCurrentSlide(currentSlide === 0 ? slides.length - 1 : currentSlide - 1)}
-          className="absolute left-24 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
+          className="absolute left-24 hidden sm:block top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -69,7 +69,7 @@ const Home = () => {
         {/* Right Arrow Button */}
         <button
           onClick={() => setCurrentSlide(currentSlide === slides.length - 1 ? 0 : currentSlide + 1)}
-          className="absolute right-24 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
+          className="absolute hidden sm:block right-24 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -96,7 +96,7 @@ const Home = () => {
         </div>
 
         {/* Carousel Navigation Dots */}
-        <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="absolute lg:bottom-20 bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-2">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -113,7 +113,7 @@ const Home = () => {
         before:absolute before:inset-0 before:border-2 before:border-green-300/50 before:rounded-2xl
         before:animate-[border-dance_4s_linear_infinite]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-4 gap-4 md:grid-cols-4">
 
             {/* Products Count */}
             <div className="flex items-center justify-center gap-3 group hover:-translate-y-1 transition-all duration-300">
@@ -122,7 +122,7 @@ const Home = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
               </div>
-              <div>
+              <div className='hidden sm:block'>
                 <p className="text-lg font-semibold text-gray-900 group-hover:translate-x-1 transition-transform">150+ Products</p>
                 <p className="text-sm text-gray-600 group-hover:translate-x-1 transition-transform">Extensive Collection</p>
               </div>
@@ -135,7 +135,7 @@ const Home = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <div>
+              <div className='hidden sm:block'>
                 <p className="text-lg font-semibold text-gray-900 group-hover:translate-x-1 transition-transform">100% Original</p>
                 <p className="text-sm text-gray-600 group-hover:translate-x-1 transition-transform">Genuine Products</p>
               </div>
@@ -148,7 +148,7 @@ const Home = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div>
+              <div className='hidden sm:block'>
                 <p className="text-lg font-semibold text-gray-900 group-hover:translate-x-1 transition-transform">Best Prices</p>
                 <p className="text-sm text-gray-600 group-hover:translate-x-1 transition-transform">Guaranteed Savings</p>
               </div>
@@ -161,7 +161,7 @@ const Home = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
-              <div>
+              <div className='hidden sm:block'>
                 <p className="text-lg font-semibold text-gray-900 group-hover:translate-x-1 transition-transform">Expert Support</p>
                 <p className="text-sm text-gray-600 group-hover:translate-x-1 transition-transform">24/7 Assistance</p>
               </div>
@@ -174,8 +174,8 @@ const Home = () => {
       {/* New Welcome Section */}
       <div className="max-w-[1400px] mx-auto mt-16 mb-12 px-4">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to <span className="text-green-500">R</span>-DENTAL Supplies</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to <p><span className="text-green-500">R</span>-DENTAL Supplies</p></h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto hidden sm:block">
             Discover our comprehensive range of high-quality dental supplies and equipment.
             We&apos;re committed to supporting dental professionals with the best products in the industry.
           </p>
@@ -184,7 +184,7 @@ const Home = () => {
       </div>
 
       {/*Best Seller Section */}
-      <div className="flex flex-col gap-4 bg-gradient-to-br from-blue-50 to-blue-10 max-w-[1400px] mx-auto mt-10 mb-10 rounded-3xl p-4 sm:p-10 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm bg-opacity-90 relative overflow-hidden before:absolute before:inset-0 before:bg-blue-200/20 before:animate-pulse">
+      <div className="flex flex-col  gap-2  bg-gradient-to-br from-blue-50 to-blue-10 max-w-[1400px] mx-auto mt-10 mb-10 lg:rounded-3xl p-4 sm:p-10 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm bg-opacity-90 relative overflow-hidden before:absolute before:inset-0 before:bg-blue-200/20 before:animate-pulse">
         {/* Header Section with Title and View All Button */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex flex-col">
@@ -217,7 +217,7 @@ const Home = () => {
             </svg>
           </button> */}
 
-          <div className="flex justify-center items-center overflow-x-auto space-x-[3px]  pb-6 pt-6 pl-4 scrollbar-hide">
+          <div className="flex items-center overflow-x-auto space-x-[3px] md:space-x-[2%]  pb-6 pt-6 pl-0 lg:pl-4 scrollbar-hide">
             {bestSellers.map((product) => (
               <div key={product.id} className="flex-shrink-0 w-[240px] flex items-center justify-center transform hover:scale-10 transition-transform duration-300">
                 <ProductCard
@@ -260,22 +260,23 @@ const Home = () => {
         </h2>
 
         {/* Main Grid */}
-        <div className="grid grid-cols-12 gap-4">
+        <div className="grid grid-cols-12 gap-1 md:gap-4">
           {/* Large Left Panel - Reduced height from 400px to 300px */}
-          <div className="col-span-4 grid gap-4">
+          <div className="col-span-4 grid gap-1 md:gap-4">
             {/* Top Tile - General */}
-            <div className="relative group h-[300px] overflow-hidden rounded-2xl">
+            <div className="relative group h-[80px] md:h-[300px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
+            onClick={() => { navigate('/products/general'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
                 src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99"
                 alt="General Dentistry"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
-                <div className="absolute bottom-6 left-6 text-white">
-                  <span className="text-sm font-medium bg-blue-500 px-3 py-1 rounded-full">Most Popular</span>
-                  <h3 className="text-2xl font-bold mt-2">General Dentistry</h3>
-                  <p className="text-sm mt-1 mb-3 text-gray-200">Essential equipment & supplies</p>
-                  <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
+              <div className="absolute md:flex md:flex-col md:justify-start md:items-start inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
+                <div className="absolute bottom-6  left-6 text-white">
+                  <span className="text-sm font-medium bg-blue-500 px-3 py-1 rounded-full hidden sm:block">Most Popular</span>
+                  <div className="text-sm md:text-2xl font-bold mt-2 absolute -top-6 md:relative md:top-0 ">General Dentistry</div>
+                  <p className="text-sm mt-1 mb-3 text-gray-200 hidden sm:block">Essential equipment & supplies</p>
+                  <button className="hidden sm:block bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
                     onClick={() => { navigate('/products/general'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                     Shop Collection
                   </button>
@@ -284,7 +285,8 @@ const Home = () => {
             </div>
 
             {/* Bottom Tile - Disposables - Reduced height from 200px to 150px */}
-            <div className="relative group h-[150px] overflow-hidden rounded-2xl">
+            <div className="relative group h-[80px] md:h-[150px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
+            onClick={() => { navigate('/products/disposables'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
                 src="https://images.unsplash.com/photo-1583947581924-860bda6a26df"
                 alt="Disposables"
@@ -292,9 +294,9 @@ const Home = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
                 <div className="absolute bottom-6 left-6 text-white">
-                  <h3 className="text-xl font-bold">Disposables</h3>
-                  <p className="text-sm mt-1">Essential daily supplies</p>
-                  <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+                  <h3 className="text-sm md:text-lg  md:font-bold absolute -top-1  md:relative md:top-0 ">Disposables</h3>
+                  <p className="text-sm mt-1 hidden sm:block">Essential daily supplies</p>
+                  <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                     onClick={() => { navigate('/products/disposables'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                     Explore →
                   </button>
@@ -304,21 +306,22 @@ const Home = () => {
           </div>
 
           {/* Center Stack */}
-          <div className="col-span-5 grid gap-4">
+          <div className="col-span-5 grid gap-1 md:gap-4">
             {/* Top Row - Reduced height from 290px to 220px */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-1 md:gap-4">
               {/* Equipment */}
-              <div className="relative group h-[220px] overflow-hidden rounded-2xl">
+              <div className="relative group h-[80px] md:h-[220px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
+              onClick={() => { navigate('/products/equipment'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                 <img
                   src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
                   alt="Equipment"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                  <div className="absolute bottom-6 left-6 text-white">
-                    <h3 className="text-lg font-bold">Equipment</h3>
-                    <p className="text-sm mt-1">Modern tech</p>
-                    <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+                  <div className="absolute bottom-6 left-1 md:left-6 text-white">
+                    <h3 className="text-sm md:text-lg  absolute -top-1  md:relative md:top-0 ">Equipment</h3>
+                    <p className="text-sm mt-1 hidden sm:block">Modern tech</p>
+                    <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                       onClick={() => { navigate('/products/equipment'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                       Explore →
                     </button>
@@ -326,17 +329,18 @@ const Home = () => {
                 </div>
               </div>
               {/* Restoratives */}
-              <div className="relative group h-[220px] overflow-hidden rounded-2xl">
+              <div className="relative group h-[80px] md:h-[220px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
+              onClick={() => { navigate('/products/restoratives'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                 <img
                   src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe"
                   alt="Restoratives"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                  <div className="absolute bottom-6 left-6 text-white">
-                    <h3 className="text-lg font-bold">Restoratives</h3>
-                    <p className="text-sm mt-1">Quality materials</p>
-                    <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors mt-2"
+                  <div className="absolute bottom-6 left-0 md:left-6 text-white">
+                    <h3 className="text-sm md:text-lg  absolute -top-1  md:relative md:top-0 ">Restoratives</h3>
+                    <p className="text-sm mt-1 hidden sm:block">Quality materials</p>
+                    <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                       onClick={() => { navigate('/products/restoratives'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                       Shop Collection
                     </button>
@@ -346,18 +350,19 @@ const Home = () => {
             </div>
 
             {/* Bottom - Wide Endodontics - Reduced height from 310px to 230px */}
-            <div className="relative group h-[230px] overflow-hidden rounded-2xl">
+            <div className="relative group h-[80px] md:h-[230px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
+            onClick={() => { navigate('/products/endodontics'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
                 src={Endodontics}
                 alt="Endodontics"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
-                <div className="absolute bottom-6 left-6 text-white">
-                  <span className="text-sm font-medium bg-green-500 px-3 py-1 rounded-full">New Arrivals</span>
-                  <h3 className="text-2xl font-bold mt-2">Endodontics</h3>
-                  <p className="text-sm mt-1 mb-3">Specialized tools & materials</p>
-                  <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
+                <div className="absolute md:flex md:flex-col md:justify-start  md:items-start bottom-6 left-6 text-white">
+                  <span className="text-sm font-medium hidden sm:block bg-green-500 px-3 py-1 rounded-full">New Arrivals</span>
+                  <h3 className="text-lg md:text-lg font-bold mt-2 absolute -top-4  md:relative md:top-0 ">Endodontics</h3>
+                  <p className="text-sm mt-1 mb-3 hidden sm:block">Specialized tools & materials</p>
+                  <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     onClick={() => { navigate('/products/endodontics'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                     Shop Collection
                   </button>
@@ -367,19 +372,20 @@ const Home = () => {
           </div>
 
           {/* Right Stack */}
-          <div className="col-span-3 grid gap-4">
+          <div className="col-span-3 grid gap-1 md:gap-4">
             {/* Instruments - Reduced height from 190px to 150px */}
-            <div className="relative group h-[150px] overflow-hidden rounded-2xl">
+            <div className="relative group h-[80px] md:h-[150px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
+            onClick={() => { navigate('/products/instruments'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
                 src="https://images.unsplash.com/photo-1571772996211-2f02c9727629"
                 alt="Instruments"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                <div className="absolute bottom-6 left-6 text-white">
-                  <h3 className="text-lg font-bold">Instruments</h3>
-                  <p className="text-sm mt-1">Precision tools</p>
-                  <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+                <div className="absolute bottom-6 left-2 md:left-6 text-white">
+                  <h3 className="text-sm md:text-lg  absolute -top-1  md:relative md:top-0 ">Instruments</h3>
+                  <p className="text-sm mt-1 hidden sm:block">Precision tools</p>
+                  <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                     onClick={() => { navigate('/products/instruments'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                     Explore →
                   </button>
@@ -388,18 +394,19 @@ const Home = () => {
             </div>
 
             {/* Sterilization - Reduced height from 410px to 300px */}
-            <div className="relative group h-[300px] overflow-hidden rounded-2xl">
+            <div className="relative group h-[80px] md:h-[300px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
+            onClick={() => { navigate('/products/sterilization'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
                 src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95"
                 alt="Sterilization"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
-                <div className="absolute bottom-6 left-6 text-white">
-                  <span className="text-sm font-medium bg-purple-500 px-3 py-1 rounded-full">Featured</span>
-                  <h3 className="text-xl font-bold mt-2">Sterilization</h3>
-                  <p className="text-sm mt-1 mb-3">Safety first</p>
-                  <button className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
+                <div className="absolute md:flex md:flex-col md:justify-start  md:items-start bottom-6 left-2 md:left-6 text-white">
+                  <span className="text-sm hidden sm:block  font-medium bg-purple-500 px-3 py-1 rounded-2xl">Featured</span>
+                  <h3 className="text-sm md:text-lg  absolute -top-1  md:relative md:top-0 ">Sterilization</h3>
+                  <p className="text-sm mt-1 hidden sm:block">Safety first</p>
+                  <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     onClick={() => { navigate('/products/sterilization'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                     Shop Collection
                   </button>
@@ -414,7 +421,7 @@ const Home = () => {
       {categories.map((category) => (
         <div
           key={category.id}
-          className="flex flex-col gap-4 mx-4 sm:mx-10 mb-10 rounded-3xl"
+          className="flex flex-col gap-4 mx-0 lg:mx-4 sm:mx-10 mb-10 rounded-3xl"
         >
           <ProductSection
             title={category.name}
@@ -512,7 +519,7 @@ const Home = () => {
                     </div>
 
                     {/* Bulk Orders */}
-                    <div className="flex items-center justify-center gap-3 group">
+                    <div className=" items-center justify-center gap-3 group hidden md:block">
                       <div className="p-2 bg-white rounded-full shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:scale-110">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -525,7 +532,7 @@ const Home = () => {
                     </div>
 
                     {/* Practice Setup */}
-                    <div className="flex items-center justify-center gap-3 group">
+                    <div className=" items-center justify-center gap-3 group hidden md:block">
                       <div className="p-2 bg-white rounded-full shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:scale-110">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
