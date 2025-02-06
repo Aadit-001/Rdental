@@ -30,9 +30,8 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Information</h4>
             <ul className="space-y-2">
-              <li><Link to="/privacy-policy" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Privacy Policy</Link></li>
-              <li><Link to="/terms-of-use" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Terms of Use</Link></li>
-              <li><Link to="/return-policy" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Return Policy</Link></li>
+              <li><Link to="/termsAndCondition" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Terms of Use</Link></li>
+              <li><Link to="/shippingAndDelivery" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Shipping and Delivery</Link></li>
               <li><Link to="/faq" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>FAQ</Link></li>
             </ul>
           </div>
@@ -43,8 +42,6 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Dashboard</Link></li>
               <li><Link to="/myOrders" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>My Orders</Link></li>
-              {/* <li><Link to="/" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Account Details</Link></li> */}
-              <li><Link to="/returns" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Returns</Link></li>
               <li><Link to="/wishlist" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Wishlist</Link></li>
             </ul>
           </div>
