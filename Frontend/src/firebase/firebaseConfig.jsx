@@ -27,6 +27,18 @@ const firebaseConfig = {
 //   measurementId: "G-1LQ1B3VG5S"
 // };
 
+
+//Hosting
+// const firebaseConfig = {
+//   apiKey: "AIzaSyA2o02YKme7kvkvFQFJanTdkNvTKBS7u6c",
+//   authDomain: "rdental-f3a04.firebaseapp.com",
+//   projectId: "rdental-f3a04",
+//   storageBucket: "rdental-f3a04.firebasestorage.app",
+//   messagingSenderId: "925139740906",
+//   appId: "1:925139740906:web:f3cc77f38cb0b68dd04f93",
+//   measurementId: "G-JGV8JDEDJZ"
+// };
+
 // Initialize Firebase 
 const app = initializeApp(firebaseConfig);
 const fireDB = getFirestore(app);

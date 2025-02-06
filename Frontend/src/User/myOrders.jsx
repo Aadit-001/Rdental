@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { FaClipboardList, FaBox, FaClock, FaMoneyBillWave, FaShippingFast, FaBoxOpen, FaExclamationTriangle, FaShoppingBag } from 'react-icons/fa';
+/* eslint-disable react/prop-types */
+import  { useState, useEffect, useContext } from 'react';
+import { FaClipboardList, FaBox, FaMoneyBillWave, FaShippingFast, FaBoxOpen, FaExclamationTriangle, FaShoppingBag } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { fireDB } from "../firebase/firebaseConfig";
@@ -213,7 +214,7 @@ const EmptyOrderPage = () => (
       <FaShoppingBag className="text-gray-400 text-4xl" />
     </div>
     <h2 className="text-2xl font-bold text-gray-800 mb-4">No Orders Yet</h2>
-    <p className="text-gray-600 mb-8">Looks like you haven't placed any orders yet.</p>
+    <p className="text-gray-600 mb-8">Looks like you haven&apos;t placed any orders yet.</p>
     <a
       href="/products"
       className="inline-block bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary-dark transition-colors"

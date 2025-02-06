@@ -1,24 +1,13 @@
 import  { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  Container,
-  Paper,
-  Stepper,
-  Step,
-  StepLabel,
-  Button,
-  Box,
-  Typography,
-  CircularProgress
-} from '@mui/material';
-import UserInfoForm from './userInfoForm';
-import PaymentForm from './PaymentForm';
-import OrderSummary from './OrderSummary';
 import { toast } from 'react-toastify';
 import { doc, getDoc ,setDoc} from 'firebase/firestore';
 import { fireDB } from '../../firebase/firebaseConfig';
 import { useContext } from 'react';
 import myContext from '../../context/data/myContext';
+import OrderSummary from './OrderSummary';
+import PaymentForm from './PaymentForm';
+import UserInfoForm from './userInfoForm';
 
 const steps = ['Shipping Information', 'Payment Information', 'Review Order'];
 
@@ -400,61 +389,60 @@ const CheckoutLayout = () => {
         return orderDetails ? <OrderSummary orderDetails={orderDetails} /> : null;
       default:
         return (
-          <Container maxWidth="lg" sx={{ mb: 4 }} className='min-h-screen pt-[9%]'> 
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress /> {/* Display loading spinner */}
-          </Box>
-        </Paper>
-      </Container>
+          <div className="max-w-lg mx-auto min-h-screen pt-24">
+            <div className="border border-gray-300 rounded-lg shadow-md my-6 p-4">
+              <div className="flex justify-center items-center min-h-[60vh]">
+                <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full" />
+              </div>
+            </div>
+          </div>
         );
     }
   };
 
   if (!orderDetails) {
     return (
-      <Container maxWidth="lg" sx={{ mb: 4 }} className='min-h-screen pt-[9%]'>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-            <CircularProgress /> {/* Display loading spinner */}
-          </Box>
-        </Paper>
-      </Container>
+      <div className="max-w-lg mx-auto min-h-screen pt-24">
+        <div className="border border-gray-300 rounded-lg shadow-md my-6 p-4">
+          <div className="flex justify-center items-center min-h-[60vh]">
+            <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full" />
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mb: 4 }} className='min-h-screen pt-[9%]'>
-      <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-        <Typography component="h1" variant="h4" align="center" sx={{ mb: 4 }}>
-          Checkout
-        </Typography>
-        <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+    <div className="max-w-lg mx-auto min-h-screen pt-24">
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h1 className="text-2xl font-bold text-center mb-4">Checkout</h1>
+        <div className="flex justify-between mb-4">
           {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
+            <div key={label} className="flex items-center">
+              <div className="w-4 h-4 rounded-full bg-blue-500"></div>
+              <span className="ml-2">{label}</span>
+            </div>
           ))}
-        </Stepper>
-        <>
+        </div>
+        <div>
           {getStepContent(activeStep)}
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+          <div className="flex justify-end mt-3">
             {activeStep !== 0 && (
-              <Button onClick={handleBack} sx={{ mr: 1 }}>
+              <button onClick={handleBack} className="mr-1 px-4 py-2 bg-gray-300 rounded">
                 Back
-              </Button>
+              </button>
             )}
-            <Button
-              variant="contained"
+            <button
+              className={`px-4 py-2 rounded ${isProcessing ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
               onClick={handleNext}
               disabled={isProcessing}
             >
               {activeStep === steps.length - 1 ? (isProcessing ? 'Processing...' : 'Place Order') : 'Next'}
-            </Button>
-          </Box>
-        </>
-      </Paper>
-    </Container>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -45,19 +45,19 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md fixed w-full top-0 z-50 " onClick={removeProfile}>
-      <div className="w-full px-4">
+    <nav className="bg-white shadow-md w-screen fixed top-0 z-50 md:pr-4" onClick={removeProfile}>
+      <div className="lg:w-full sm:max-w-screen px-1">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-0 pl-3" onClick={handleLogoClick}>
               <img src={Logoo} alt="R-Dental" className="h-14 w-14" />
-              <img src={name} alt="R-Dental" className="h-10 w-auto" />
+              <img src={name} alt="R-Dental" className=" h-10 w-auto hidden sm:block" />
             </Link>
           </div>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-2xl mx-auto px-4">
+          <div className="flex-1 max-w-2xl mx-auto px-4 ">
             <div className="relative">
               <input
                 type="text"
@@ -105,7 +105,7 @@ const Navbar = () => {
           </div>
 
           {/* Navigation Items */}
-          <div className="flex items-center space-x-4 pr-3">
+          <div className="flex items-center space-x-4 pr-3 ">
             {/* Admin Link */}
             {
               isUserLoggedIn && ((user?.email === import.meta.env.VITE_ADMIN_EMAIL1 || user?.email === import.meta.env.VITE_ADMIN_EMAIL2 || user?.email === import.meta.env.VITE_ADMIN_EMAIL3) || 
@@ -115,7 +115,7 @@ const Navbar = () => {
 
                 <Link
                   to="/adminPage"
-                  className="text-gray-600 hover:text-gray-800 group"
+                  className="text-gray-600 hover:text-gray-800 group "
                   onClick={scrollToTop}
                 >
                   <div className="relative transform transition-transform duration-300 group-hover:scale-110">
@@ -144,16 +144,16 @@ const Navbar = () => {
                 <button className="px-6 py-2 font-medium text-green-600 border-2 border-green-500 rounded-lg 
                 bg-gradient-to-r from-transparent to-transparent hover:from-green-500 hover:to-green-600 
                hover:text-white transition-all duration-300 ease-in-out
-                bg-[length:200%_100%] bg-right hover:bg-left" onClick={handleSignInClick}>
+                bg-[length:200%_100%] bg-right hover:bg-left hidden sm:block" onClick={handleSignInClick}>
                   Sign In
                 </button>
             }
             <Link
               to="/wishlist"
-              className="text-gray-600 hover:text-gray-800 group"
+              className="text-gray-600 hover:text-gray-800 group hidden sm:block"
               onClick={scrollToTop}
             >
-              <div className="relative transform transition-transform duration-300 group-hover:scale-110">
+              <div className="relative transform transition-transform duration-300 group-hover:scale-110 ">
                 <svg
                   className={`h-6 w-6 ${location.pathname === '/wishlist' ? 'text-green-500 fill-current' : ''}`}
                   fill={location.pathname === '/wishlist' ? 'currentColor' : 'none'}
@@ -171,7 +171,7 @@ const Navbar = () => {
             </Link>
             <Link
               to="/cart"
-              className="text-gray-600 hover:text-gray-800 group"
+              className="text-gray-600 hover:text-gray-800 group hidden sm:block"
               onClick={scrollToTop}
             >
               <div className="relative transform transition-transform duration-300 group-hover:scale-110">

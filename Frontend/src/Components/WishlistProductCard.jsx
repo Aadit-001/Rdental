@@ -136,7 +136,7 @@ const WishlistProductCard = ({ productId }) => {
 
   return (
     <div 
-      className="w-full cursor-pointer max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] bg-white mb-4"
+      className="w-screen cursor-pointer max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] bg-white mb-4"
       onClick={handleClick}
     >
       <div className="flex">
@@ -200,7 +200,7 @@ const WishlistProductCard = ({ productId }) => {
               {product.description}
             </p>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-between  md:items-center">
             <div className="flex items-center gap-2">
               <span className="text-base font-bold text-gray-900">&#x20B9;{product.price}</span>
               <span className="text-xs text-gray-400 line-through">&#x20B9;{product.mrp}</span>
@@ -214,7 +214,7 @@ const WishlistProductCard = ({ productId }) => {
                 handleAddToCart(productId);
                 handleRemove(product.id);
               }}
-              className="px-3 py-1.5 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors duration-300"
+              className="px-3 mt-1 md:mt-0 py-2 md:py-1.5 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors duration-300"
             >
               Add to Cart
             </button>
