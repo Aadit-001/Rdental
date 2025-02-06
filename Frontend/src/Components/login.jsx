@@ -70,7 +70,7 @@ const Login = () => {
         // If we're already on home page, no need to navigate
         return;
       }
-      navigate('/');
+      navigate(location.pathname);
 
     } catch (error) {
       console.error(error);
@@ -100,6 +100,7 @@ const Login = () => {
       // Then update app state
       setIsUserLoggedIn(true);
       setShowSignIn(false);
+      window.location.reload();
 
       toast.success('User Logged in successfully', {
         position: "bottom-right",
@@ -117,7 +118,7 @@ const Login = () => {
         // If we're already on home page, no need to navigate
         return;
       }
-      navigate('/');
+      navigate(location.pathname);
       
     } catch (error) {
       console.log(error);

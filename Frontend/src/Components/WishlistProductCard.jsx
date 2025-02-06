@@ -24,7 +24,7 @@ const WishlistProductCard = ({ productId }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getProduct = () => {
+    const getProduct = async () => {
       try {
         if (!productId || !products) return;
         const foundProduct = products.find(p => p.id === productId);
@@ -32,6 +32,9 @@ const WishlistProductCard = ({ productId }) => {
           setProduct(foundProduct);
         } else {
           console.error('Product not found:', productId);
+          // Remove the product from wishlist if not found
+          await removeFromWishlist(productId,currentUserId);
+          // setProduct(null);
         }
       } catch (error) {
         console.error('Error finding product:', error);

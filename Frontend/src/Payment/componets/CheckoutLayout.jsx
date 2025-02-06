@@ -282,7 +282,7 @@ const CheckoutLayout = () => {
                   orderDetails: orderDetails,
                   paymentMethod: paymentMethodSelected,
                   userId: currentUserId,
-                  userInfo: getUserInfo.data().userInformation,
+                  userInfo: formData,   //ye karne se address wala issue chala gaya
                   orderDate: new Date().toLocaleDateString(),
                   orderTime: new Date().toLocaleTimeString(),
                   orderStatus: 'processing',
@@ -337,7 +337,7 @@ const CheckoutLayout = () => {
             orderDetails: orderDetails,
             paymentMethod: paymentMethodSelected,
             userId: currentUserId,
-            userInfo: getUserInfo.data().userInformation,
+            userInfo: formData,  //ye karne se address wala issue chala gaya
             orderDate: new Date().toLocaleDateString(),
             orderTime: new Date().toLocaleTimeString(),
             orderStatus: 'processing',
@@ -360,7 +360,7 @@ const CheckoutLayout = () => {
         }
       }, { merge: true });
 
-      setUserInfo(getUserInfo.data().userInformation);
+      setUserInfo(formData);
 
     } catch (error) {
       setIsProcessing(false);
@@ -412,15 +412,40 @@ const CheckoutLayout = () => {
     );
   }
 
+
+  //better loading screen
+  if(isProcessing){
+    return(
+      <div className="max-w-lg mx-auto min-h-screen pt-24">
+        <div className=" my-6 p-4">
+          <div className="flex flex-col justify-center items-center min-h-[60vh] ">
+            <div className="animate-spin h-10 w-10 border-4 border-green-500 border-t-transparent rounded-full" />
+            <p className="ml-4 mt-2 mb-1 text-black">Processing...</p>
+            <p className="ml-4 mt-2 mb-1 text-black">Please be patient, we are processing your order...</p>
+            <p className="ml-4 mt-2 mb-1 text-black">This may take a few minutes...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  
+
   return (
     <div className="max-w-lg mx-auto min-h-screen pt-24">
       <div className="bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-center mb-4">Checkout</h1>
-        <div className="flex justify-between mb-4">
+        <div className="flex justify-between mb-12">
           {steps.map((label) => (
-            <div key={label} className="flex items-center">
-              <div className="w-4 h-4 rounded-full bg-blue-500"></div>
-              <span className="ml-2">{label}</span>
+            <div key={label} className="flex items-center flex-col">
+              <div
+                className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                  activeStep >= steps.indexOf(label)
+                    ? 'bg-green-500'
+                    : 'bg-gray-300'
+                }`}
+              >{steps.indexOf(label)+1}</div>
+              {/* <span className="ml-2">{label}</span> */}
             </div>
           ))}
         </div>
@@ -433,7 +458,7 @@ const CheckoutLayout = () => {
               </button>
             )}
             <button
-              className={`px-4 py-2 rounded ${isProcessing ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
+              className={`px-4 py-2 rounded ${isProcessing ? 'bg-gray-400' : 'bg-green-500 hover:bg-green-600'} text-white`}
               onClick={handleNext}
               disabled={isProcessing}
             >

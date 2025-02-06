@@ -205,7 +205,7 @@ ProductCard.propTypes = {
   description: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
-  catagory: PropTypes.string.isRequired,
+  catagory: PropTypes.string,
   mrp: PropTypes.number.isRequired,
   rating: PropTypes.number,
   noOfRatings: PropTypes.number,

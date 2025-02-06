@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { doc, collection, addDoc, arrayUnion, getDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { fireDB } from './../firebase/firebaseConfig';
 import { useEffect, useState, useRef, useContext } from 'react';
-import { FaCheckCircle, FaTruck, FaSpinner, FaExclamationTriangle, FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { FaCheckCircle, FaTruck, FaExclamationTriangle, FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { clearCartAsync } from '../Redux/slices/cartSlice';
 import myContext from '../context/data/myContext';
@@ -59,7 +59,7 @@ const OrderConfirmationPage = () => {
         setIsProcessing(true);
         processingRef.current = true;
         setError(null);
-        
+
         const ordersCollection = collection(fireDB, 'orders');
         const q = query(ordersCollection, where('orderId', '==', orderId));
         const querySnapshot = await getDocs(q);
@@ -97,7 +97,7 @@ const OrderConfirmationPage = () => {
         if (userId) {
           const userInfoRef = doc(fireDB, 'users', userId);
           const userDoc = await getDoc(userInfoRef);
-          
+
           if (userDoc.exists()) {
             // Update user document with new order and clear cart
             await updateDoc(userInfoRef, {
@@ -111,7 +111,7 @@ const OrderConfirmationPage = () => {
           // Clear Context cart state
           setCartItems([]);
         }
-        
+
         setIsOrderProcessed(true);
 
       } catch (error) {
@@ -134,7 +134,7 @@ const OrderConfirmationPage = () => {
         <FaExclamationTriangle className="text-red-500 text-5xl mx-auto mb-4" />
         <h1 className="text-2xl font-bold text-red-500 mb-4">Error Processing Order</h1>
         <p className="text-gray-700 mb-4">{error}</p>
-        <button 
+        <button
           onClick={() => navigate('/')}
           className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
         >
@@ -161,17 +161,16 @@ const OrderConfirmationPage = () => {
         <h1 className="text-4xl font-bold text-green-500 mb-2">Thank You for Your Order!</h1>
         <p className="text-gray-600 text-lg font-medium">Order #{orderId}</p>
         <div className="mt-4">
-          <span className={`inline-block px-6 py-2 rounded-full text-sm font-semibold ${
-            orderStatus === 'completed' ? 'bg-green-100 text-green-800 border border-green-300' :
+          <span className={`inline-block px-6 py-2 rounded-full text-sm font-semibold ${orderStatus === 'completed' ? 'bg-green-100 text-green-800 border border-green-300' :
             orderStatus === 'processing' ? 'bg-blue-100 text-blue-800 border border-blue-300' :
-            'bg-gray-100 text-gray-800 border border-gray-300'
-          }`}>
+              'bg-gray-100 text-gray-800 border border-gray-300'
+            }`}>
             {orderStatus?.charAt(0).toUpperCase() + orderStatus?.slice(1)}
           </span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8" id="order-details">
         <div className="bg-white p-6 rounded-xl shadow-md">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
             <FaTruck className="mr-3 text-primary" /> Order Details
@@ -181,8 +180,8 @@ const OrderConfirmationPage = () => {
               <div key={item.id} className="flex items-start border-b border-gray-200 pb-6 transition-all hover:bg-gray-50 p-4 rounded-lg">
                 <div className="w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden mr-4 shadow-md">
                   {item.imageUrl ? (
-                    <img 
-                      src={item.imageUrl} 
+                    <img
+                      src={item.imageUrl}
                       alt={item.title}
                       className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300"
                       onError={(e) => {
@@ -231,23 +230,22 @@ const OrderConfirmationPage = () => {
           </div>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6" id="payment-details">
           <div className="bg-white p-6 rounded-xl shadow-md">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
               <span className="text-primary mr-3">💳</span> Payment Information
             </h2>
             <div className="space-y-4">
               <p className="text-gray-700 flex items-center bg-gray-50 p-3 rounded-lg">
-                <span className="font-semibold w-28">Method:</span> 
+                <span className="font-semibold w-28">Method:</span>
                 <span className="text-primary font-medium">{paymentMethod}</span>
               </p>
               <p className="text-gray-700 flex items-center bg-gray-50 p-3 rounded-lg">
                 <span className="font-semibold w-28">Status:</span>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  paymentMethod === 'Cash On Delivery' ? 'bg-yellow-100 text-yellow-800 border border-yellow-300' :
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${paymentMethod === 'Cash On Delivery' ? 'bg-yellow-100 text-yellow-800 border border-yellow-300' :
                   paymentDetails?.status === 'completed' ? 'bg-green-100 text-green-800 border border-green-300' :
-                  'bg-yellow-100 text-yellow-800 border border-yellow-300'
-                }`}>
+                    'bg-yellow-100 text-yellow-800 border border-yellow-300'
+                  }`}>
                   {paymentMethod === 'Cash On Delivery' ? 'Pending' : paymentDetails?.status || 'Completed'}
                 </span>
               </p>
@@ -264,7 +262,7 @@ const OrderConfirmationPage = () => {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-md">
+          <div className="bg-white p-6 rounded-xl shadow-md" id="delivery-details">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
               <span className="text-primary mr-3">📍</span> Delivery Details
             </h2>
@@ -348,27 +346,73 @@ const OrderConfirmationPage = () => {
           A confirmation email has been sent to {user?.email}
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <button 
+          <button
             onClick={() => navigate('/')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold"
           >
             Go to Home
           </button>
-          <button 
+          <button
             onClick={() => navigate('/myOrders')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold"
           >
             My Orders
           </button>
-          <button 
-            onClick={() => window.print()}
+          <button
+            onClick={() => {
+              // Select the three divs you want to print
+              const orderDetails = document.getElementById('order-details').innerHTML;
+              const paymentDetails = document.getElementById('payment-details').innerHTML;
+              const deliveryDetails = document.getElementById('delivery-details').innerHTML;
+
+              // Create a new document for printing
+              const printWindow = window.open('', '', 'width=600,height=800');
+
+              // Construct the print content with some basic styling
+              printWindow.document.write(`
+                <html>
+                  <head>
+                    <title>Order Receipt</title>
+                    <style>
+                      body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+                      .print-section { 
+                        border: 1px solid #e0e0e0; 
+                        margin-bottom: 20px; 
+                        padding: 20px; 
+                        page-break-inside: avoid; 
+                      }
+                      h2 { color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+                    </style>
+                  </head>
+                  <body>
+                    <div class="print-section">
+                      <h2>Order Details</h2>
+                      ${orderDetails}
+                    </div>
+                    <div class="print-section">
+                      <h2>Payment Information</h2>
+                      ${paymentDetails}
+                    </div>
+                    <div class="print-section">
+                      <h2>Delivery Details</h2>
+                      ${deliveryDetails}
+                    </div>
+                  </body>
+                </html>
+              `);
+
+              // Trigger print
+              printWindow.document.close();
+              printWindow.print();
+              printWindow.close();
+            }}
             className="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors font-semibold"
           >
             Print Receipt
           </button>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

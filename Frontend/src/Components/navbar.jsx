@@ -192,7 +192,7 @@ const Navbar = () => {
             </Link>
 
             {isUserLoggedIn ?
-              <Link className="text-gray-600 hover:text-gray-800 group" onClick={handleProfileClick}>
+              <div className="text-gray-600 hover:text-gray-800 group" onClick={handleProfileClick}>
                 <div className="relative transform transition-transform duration-300 group-hover:scale-110">
                   <svg
                     className={`h-6 w-6 ${showProfile ? 'text-green-500 fill-current' : ''}`}
@@ -208,7 +208,7 @@ const Navbar = () => {
                     />
                   </svg>
                 </div>
-              </Link> : null}
+              </div> : null}
 
           </div>
         </div>

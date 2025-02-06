@@ -76,7 +76,7 @@ const Profile = () => {
               />
               <div>
                 <h1 className="text-2xl font-bold">{user?.providerData?.[0]?.displayName || user?.displayName || "Guest User"}</h1>
-                <p className="opacity-90">{user?.providerData?.[0]?.email || user?.email || "No email available"}</p>
+                <p className="opacity-90 text-sm">{user?.providerData?.[0]?.email || user?.email || "No email available"}</p>
               </div>
             </div>
           </div>
