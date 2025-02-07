@@ -29,16 +29,16 @@ const Navbar = () => {
     }
   };
 
-  const handleLogoClick = () => {
-    if (location.pathname !== '/') {
-      window.location.href = '/';
-    } else {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
-  };
+  // const handleLogoClick = () => {
+  //   if (location.pathname !== '/') {
+  //     window.location.href = '/';
+  //   } else {
+  //     window.scrollTo({
+  //       top: 0,
+  //       behavior: 'smooth'
+  //     });
+  //   }
+  // };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -50,7 +50,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="flex items-center space-x-0 pl-3" onClick={handleLogoClick}>
+            <Link to="/" className="flex items-center space-x-0 pl-3">
               <img src={Logoo} alt="R-Dental" className="h-14 w-14" />
               <img src={name} alt="R-Dental" className=" h-10 w-auto hidden sm:block" />
             </Link>

@@ -1,6 +1,7 @@
 import { Link, useLocation, Outlet } from 'react-router-dom';
 import { FiGrid, FiPackage, FiShoppingBag, FiUsers, FiMessageSquare } from 'react-icons/fi';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { useState } from 'react';
 
 const AdminLayout = () => {
     const location = useLocation();
@@ -15,18 +16,21 @@ const AdminLayout = () => {
         { path: '/adminPage/messages', icon: <FiMessageSquare />, label: 'Messages' },
     ];
 
+    const [showSidebar, setShowSidebar] = useState(true);
+
     return (
         <div className="min-h-screen bg-gray-100">
             <div className="flex">
                 {/* Sidebar */}
-                <div className="w-60">
-                    <div className="bg-gradient-to-b from-teal-50 via-teal-100/80 to-teal-50 h-fit shadow-lg flex flex-col mt-28 rounded-xl mx-4 border border-teal-100">
+                <div className={`w-60 fixed z-10 lg:relative ${!showSidebar ? 'hidden ' : 'sm:block'}`}>
+                    <div className="bg-gradient-to-b from-teal-50 via-teal-100 to-teal-50 h-fit shadow-lg flex flex-col mt-28 rounded-xl mx-4 border border-teal-100">
                         <nav className="flex-1 py-5 px-4">
                             <ul className="space-y-3">
                                 {menuItems.map((item) => (
                                     <li key={item.path}>
                                         <Link
                                             to={item.path}
+                                            // onClick={() => setShowSidebar(!showSidebar)}
                                             className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 ${
                                                 location.pathname === item.path
                                                     ? 'bg-teal-600/10 text-teal-800 shadow-sm transform scale-[1.02]'
@@ -54,9 +58,15 @@ const AdminLayout = () => {
                     </div>
                 </div>
 
+                <button className="lg:hidden fixed top-16 text-2xl text-white flex w-full items-center z-10 bg-green-500 p-1 pl-6 " onClick={() => setShowSidebar(!showSidebar)}>
+                    {showSidebar ? <FiGrid /> : <FiGrid />}
+                    <p className='pl-3'>Menu</p>
+                    
+                </button>
+
                 {/* Main Content */}
                 <div className="flex-1">
-                    <div className="p-8 max-w-7xl mx-auto mt-28">
+                    <div className="pb-10 max-w-7xl mx-auto mt-28 pr-0 lg:pr-5">
                         <Outlet />
                     </div>
                 </div>

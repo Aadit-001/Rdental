@@ -5,52 +5,47 @@ import { useNavigate } from 'react-router-dom';
 import Endodontics from './assets/Endodentics.jpg';
 import myContext from './context/data/myContext';
 import { useContext } from 'react';
+import slide1 from './assets/slide1.jpg';
+import slide2 from './assets/slide2.jpg';
+import slide3 from './assets/slide3.jpg';
+import slide4 from './assets/slide4.jpg';
+import slide5 from './assets/slide5.jpg';
+import category1 from './assets/category1.jpg';
+import category2 from './assets/category2.jpg';
+import category3 from './assets/category3.jpg';
+import category4 from './assets/category4.jpg';
+import category6 from './assets/category6.jpg';
+import category7 from './assets/category7.jpg';
+
 
 
 const Home = () => {
   const {categories,bestSellers} = useContext(myContext);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [restorativeSlide, setRestorativeSlide] = useState(0);
+  // const [restorativeSlide, setRestorativeSlide] = useState(0);
   const navigate = useNavigate();
 
 
   //ye bhi database se uthana hoga ******************************************************************************************************************
   const slides = [
-    'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80', // Dental office
-    'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80', // Dental equipment
-    'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80', // Dental tools
-    'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80', // Dental chair
-    'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80', // Replacing broken dental hygiene image
-    'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80'  // Dental examination
+    slide1,
+    slide2,
+    slide3,
+    slide4,
+    slide5
   ];
   //**************************************************************************************************************************************************** */
-
-  const restorativeImages = [
-    'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80', // Dental equipment
-    'https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80', // Dental office
-    'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80',  // Dental examination
-    'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?q=80', // Dental tools
-  ];
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) =>
         prevSlide === slides.length - 1 ? 0 : prevSlide + 1
       );
-    }, 2000);
+    }, 10000);
 
     return () => clearInterval(timer);
   }, []); // Added dependency array
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setRestorativeSlide((prevSlide) =>
-        prevSlide === restorativeImages.length - 1 ? 0 : prevSlide + 1
-      );
-    }, 1500);
-
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <div className="pt-20 max-w-[1480px] w-screen mx-auto ">
@@ -89,7 +84,7 @@ const Home = () => {
               <img
                 src={slide}
                 alt={`Slide ${index + 1}`}
-                className="w-full h-full object-cover rounded-[2rem] shadow-lg"
+                className={`w-full h-full ${index < 3 ? "object-cover" : "object-stretch"} rounded-[1rem] lg:rounded-[2rem] shadow-lg`}
               />
             </div>
           ))}
@@ -109,8 +104,8 @@ const Home = () => {
       </div>
 
       {/* Info Strip */}
-      <div className="bg-gradient-to-r from-green-50 to-green-100/20 py-2 mt-1 max-w-[1400px] mx-auto rounded-2xl shadow-sm relative overflow-hidden
-        before:absolute before:inset-0 before:border-2 before:border-green-300/50 before:rounded-2xl
+      <div className="bg-gradient-to-r from-green-50 to-green-100/20 py-2 mt-1  max-w-[1400px] mx-auto rounded-xl shadow-sm relative overflow-hidden
+        before:absolute before:inset-0 before:border-2 before:border-green-300/50 before:rounded-xl
         before:animate-[border-dance_4s_linear_infinite]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-4 gap-4 md:grid-cols-4">
@@ -223,18 +218,18 @@ const Home = () => {
                 <ProductCard
                   title={product.title}
                   description={product.description}
-                  price={product.price}
-                  rating={product.rating}
+                  price={Number(product.price) || 0}
+                  rating={Number(product.rating) || 0}
                   catagory={product.category}
-                  quantitySold={product.quantitySold}
+                  quantitySold={Number(product.quantitySold) || 0}
                   inStock={product.inStock}
-                  totalStock={product.totalStock}
-                  noOfRatings={product.noOfRatings}
+                  totalStock={Number(product.totalStock) || 0}
+                  noOfRatings={Number(product.noOfRatings) || 0}
                   image={product.imageUrl}
-                  mrp={product.mrp}
+                  mrp={Number(product.mrp) || 0}
                   id={product.id}
-                  noOfReviews={product.noOfReviews}
-                  reviews={product.reviews}
+                  noOfReviews={Number(product.noOfReviews) || 0}
+                  reviews={product.reviews || []}
                 />
               </div>
             ))}
@@ -267,14 +262,14 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[300px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/general'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99"
+                src={category1}
                 alt="General Dentistry"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute md:flex md:flex-col md:justify-start md:items-start inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
                 <div className="absolute bottom-6  left-6 text-white">
                   <span className="text-sm font-medium bg-blue-500 px-3 py-1 rounded-full hidden sm:block">Most Popular</span>
-                  <div className="text-sm md:text-2xl font-bold mt-2 absolute -top-6 md:relative md:top-0 ">General Dentistry</div>
+                  <div className="text-sm md:text-2xl font-bold mt-2 absolute -top-6  md:relative md:top-0 ">General Dentistry</div>
                   <p className="text-sm mt-1 mb-3 text-gray-200 hidden sm:block">Essential equipment & supplies</p>
                   <button className="hidden sm:block bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
                     onClick={() => { navigate('/products/general'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -288,7 +283,7 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[150px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/disposables'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src="https://images.unsplash.com/photo-1583947581924-860bda6a26df"
+                src={category2}
                 alt="Disposables"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
@@ -313,7 +308,7 @@ const Home = () => {
               <div className="relative group h-[80px] md:h-[220px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
               onClick={() => { navigate('/products/equipment'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                 <img
-                  src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5"
+                  src={category3}
                   alt="Equipment"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
@@ -332,13 +327,13 @@ const Home = () => {
               <div className="relative group h-[80px] md:h-[220px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
               onClick={() => { navigate('/products/restoratives'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                 <img
-                  src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe"
+                  src={category4}
                   alt="Restoratives"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
                   <div className="absolute bottom-6 left-0 md:left-6 text-white">
-                    <h3 className="text-sm md:text-lg  absolute -top-1  md:relative md:top-0 ">Restoratives</h3>
+                    <h3 className="text-sm md:text-lg  md:font-bold absolute -top-1  md:relative md:top-0 ">Restoratives</h3>
                     <p className="text-sm mt-1 hidden sm:block">Quality materials</p>
                     <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                       onClick={() => { navigate('/products/restoratives'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -377,13 +372,13 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[150px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/instruments'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src="https://images.unsplash.com/photo-1571772996211-2f02c9727629"
+                src={category6}
                 alt="Instruments"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
                 <div className="absolute bottom-6 left-2 md:left-6 text-white">
-                  <h3 className="text-sm md:text-lg  absolute -top-1  md:relative md:top-0 ">Instruments</h3>
+                  <h3 className="text-sm md:text-lg  md:font-bold absolute -top-1  md:relative md:top-0 ">Instruments</h3>
                   <p className="text-sm mt-1 hidden sm:block">Precision tools</p>
                   <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                     onClick={() => { navigate('/products/instruments'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -397,7 +392,7 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[300px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/sterilization'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95"
+                src={category7}
                 alt="Sterilization"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
@@ -430,182 +425,92 @@ const Home = () => {
             buttonStyle="View all >>"
           />
 
-          {/* Add Carousel after Restoratives category */}
-          {category.name === 'Restoratives' && (
-            <>
-              <div className="relative h-[260px] w-[90%] mx-auto overflow-hidden mt-8 mb-5">
-                {/* Left Arrow */}
-                <button
-                  onClick={() => setRestorativeSlide(restorativeSlide === 0 ? restorativeImages.length - 1 : restorativeSlide - 1)}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                  </svg>
-                </button>
-
-                {/* Right Arrow */}
-                <button
-                  onClick={() => setRestorativeSlide(restorativeSlide === restorativeImages.length - 1 ? 0 : restorativeSlide + 1)}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/50 hover:bg-white/80 p-2 rounded-full shadow-lg"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                  </svg>
-                </button>
-
-                {/* Carousel Container */}
-                <div
-                  className="flex transition-transform duration-1000 h-full"
-                  style={{ transform: `translateX(-${restorativeSlide * 100}%)` }}
-                >
-                  {restorativeImages.map((image, index) => (
-                    <div
-                      key={index}
-                      className="min-w-full px-2"
-                    >
-                      <img
-                        src={image}
-                        alt={`Restorative Slide ${index + 1}`}
-                        className="w-full h-full object-cover rounded-[2rem]"
-                      />
-                    </div>
-                  ))}
-                </div>
-
-                {/* Navigation Dots */}
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                  {restorativeImages.map((_, index) => (
-                    <button
-                      key={index}
-                      className={`w-2 h-2 rounded-full ${index === restorativeSlide ? 'bg-green-500' : 'bg-white/50'}`}
-                      onClick={() => setRestorativeSlide(index)}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Updated Info Strip */}
-              <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 py-2 mt-8 w-[90%] mx-auto rounded-2xl shadow-sm relative overflow-hidden
-        before:absolute before:inset-0 before:border-2 before:border-blue-300/30 before:rounded-2xl
-        before:animate-[border-dance_4s_linear_infinite] ">
-                <div className="w-full px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-                    
-                    {/* Fast Shipping */}
-                    <div className="flex items-center justify-center gap-3 group">
-                      <div className="p-2 bg-white rounded-full shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:scale-110">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                      </div>
-                      <div className="transition-all duration-300 group-hover:translate-x-2">
-                        <p className="text-base font-semibold text-gray-900">Fast Shipping</p>
-                        <p className="text-xs text-gray-600">Quick Delivery</p>
-                      </div>
-                    </div>
-
-                    {/* Price Match */}
-                    <div className="flex items-center justify-center gap-3 group">
-                      <div className="p-2 bg-white rounded-full shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:scale-110">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      </div>
-                      <div className="transition-all duration-300 group-hover:translate-x-2">
-                        <p className="text-base font-semibold text-gray-900">Price Match</p>
-                        <p className="text-xs text-gray-600">Guaranteed Best Rates</p>
-                      </div>
-                    </div>
-
-                    {/* Bulk Orders */}
-                    <div className=" items-center justify-center gap-3 group hidden md:block">
-                      <div className="p-2 bg-white rounded-full shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:scale-110">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
-                      </div>
-                      <div className="transition-all duration-300 group-hover:translate-x-2">
-                        <p className="text-base font-semibold text-gray-900">Bulk Orders</p>
-                        <p className="text-xs text-gray-600">Special Discounts</p>
-                      </div>
-                    </div>
-
-                    {/* Practice Setup */}
-                    <div className=" items-center justify-center gap-3 group hidden md:block">
-                      <div className="p-2 bg-white rounded-full shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:scale-110">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                      </div>
-                      <div className="transition-all duration-300 group-hover:translate-x-2">
-                        <p className="text-base font-semibold text-gray-900">Practice Setup</p>
-                        <p className="text-xs text-gray-600">Complete Solutions</p>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
 
           {/* Add Poster Section after Instruments category */}
           {category.name === 'Instruments' && (
-            <div className="grid grid-cols-2 gap-6 mt-12 mb-12 w-[90%] mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-12 mb-12 w-[90%] mx-auto">
               {/* Left Side - Two Posters */}
-              <div className="flex flex-col gap-6">
-                {/* Top Poster - reduced from h-[200px] to h-[180px] */}
-                <div className="relative h-[180px] group overflow-hidden rounded-2xl">
-                  <img
-                    src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80"
-                    alt="Special Offer"
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
-                    <div className="absolute bottom-6 left-6 text-white">
-                      <h3 className="text-2xl font-bold mb-2">Special Offer</h3>
-                      <p className="text-sm mb-4">Get 20% off on all instruments</p>
-                      <button className="px-4 py-2 bg-white text-black rounded-lg text-sm hover:bg-opacity-90">
-                        Shop Now
-                      </button>
+              <div className="flex flex-col gap-3">
+                {/* Top Poster - Precision Instruments */}
+                <div className="relative h-[180px] bg-white border-2 border-cyan-100 rounded-xl overflow-hidden shadow-md group hover:shadow-xl transition-all duration-300">
+                  <div className="absolute inset-0 bg-cyan-50/50 z-10"></div>
+                  <div className="relative z-20 p-6 text-gray-800 h-full flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold mb-2 text-cyan-800 transform group-hover:translate-x-2 transition-transform">
+                        Precision Instruments
+                      </h3>
+                      <p className="text-xs md:text-sm text-cyan-700 opacity-80 transform group-hover:translate-x-1 transition-transform">
+                        Advanced Surgical Tools
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold bg-cyan-100 text-cyan-800 px-2 py-1 rounded-full">
+                        Quality Guaranteed
+                      </span>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 md:h-8 w-6 md:w-8 text-cyan-600 opacity-70 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
                     </div>
                   </div>
                 </div>
 
-                {/* Bottom Poster - reduced from h-[200px] to h-[180px] */}
-                <div className="relative h-[180px] group overflow-hidden rounded-2xl">
-                  <img
-                    src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80"
-                    alt="New Arrivals"
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
-                    <div className="absolute bottom-6 left-6 text-white">
-                      <h3 className="text-2xl font-bold mb-2">New Arrivals</h3>
-                      <p className="text-sm mb-4">Check out our latest collection</p>
-                      <button className="px-4 py-2 bg-white text-black rounded-lg text-sm hover:bg-opacity-90">
-                        Explore
-                      </button>
+                {/* Bottom Poster - Modern Equipment */}
+                <div className="relative h-[180px] bg-white border-2 border-teal-100 rounded-xl overflow-hidden shadow-md group hover:shadow-xl transition-all duration-300">
+                  <div className="absolute inset-0 bg-teal-50/50 z-10"></div>
+                  <div className="relative z-20 p-6 text-gray-800 h-full flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold mb-2 text-teal-800 transform group-hover:translate-x-2 transition-transform">
+                        Modern Equipment
+                      </h3>
+                      <p className="text-xs md:text-sm text-teal-700 opacity-80 transform group-hover:translate-x-1 transition-transform">
+                        Advanced Dental Technology
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold bg-teal-100 text-teal-800 px-2 py-1 rounded-full">
+                        Latest Innovation
+                      </span>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 md:h-8 w-6 md:w-8 text-teal-600 opacity-70 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      </svg>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Right Side - Single Tall Poster - reduced from h-[420px] to h-[380px] */}
-              <div className="relative h-[380px] group overflow-hidden rounded-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80"
-                  alt="Premium Equipment"
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
-                  <div className="absolute bottom-6 left-6 text-white">
-                    <h3 className="text-3xl font-bold mb-2">Premium Equipment</h3>
-                    <p className="text-lg mb-4">Discover our high-end dental solutions</p>
-                    <button className="px-6 py-3 bg-white text-black rounded-lg text-base hover:bg-opacity-90">
-                      Learn More
-                    </button>
+              {/* Right Side - Comprehensive Solutions */}
+              <div className="relative h-auto md:h-[370px] bg-white border-2 border-indigo-100 rounded-xl overflow-hidden shadow-md group hover:shadow-xl transition-all duration-300">
+                <div className="absolute inset-0 bg-indigo-50/50 z-10"></div>
+                <div className="relative z-20 p-6 md:p-8 text-gray-800 h-full flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-2xl md:text-3xl font-bold mb-2 md:mb-4 text-indigo-800 transform group-hover:translate-x-2 transition-transform">
+                      Complete Dental Solutions
+                    </h3>
+                    <p className="text-sm md:text-lg text-indigo-700 opacity-80 transform group-hover:translate-x-1 transition-transform">
+                      Professional Equipment & Support
+                    </p>
+                  </div>
+                  <div className="flex flex-col space-y-2 md:space-y-3 mt-3 md:mt-0">
+                    <div className="flex items-center space-x-2 md:space-x-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 md:h-6 w-4 md:w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span className="text-xs md:text-sm">Comprehensive Range</span>
+                    </div>
+                    <div className="flex items-center space-x-2 md:space-x-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 md:h-6 w-4 md:w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span className="text-xs md:text-sm">Competitive Pricing</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between mt-3 md:mt-4">
+                    <span className="text-xs font-semibold bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
+                      Professional Grade
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 md:h-8 w-6 md:w-8 text-indigo-600 opacity-70 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 01-4.176-3.97L9.99 7.51a2 2 0 00-1.522-1.39L5.268 5.235a2 2 0 00-2.4 1.595l-.546 2.916a28.058 28.058 0 00.199 11.154A19.882 19.882 0 007.5 19.5a20.07 20.07 0 005.814 2.707 19.821 19.821 0 006.358.419 20.065 20.065 0 005.733-1.874 19.834 19.834 0 004.545-3.222 20.08 20.08 0 003.138-4.229 19.906 19.906 0 001.334-4.644l.667-3.577a2 2 0 00-1.874-2.33l-2.298-.135a2 2 0 00-1.911 1.59l-.505 2.535a6 6 0 01-3.495 4.471z" />
+                    </svg>
                   </div>
                 </div>
               </div>
@@ -636,19 +541,3 @@ const Home = () => {
 };
 
 export default Home;
-
-
-
-
-{/* Featured Categories Grid */ }
-/*
-<div className="container mx-auto px-4 py-8">
-<div className="text-3xl font-bold mb-6 text-gray-900 flex justify-center">Categories</div>
-<div className="flex flex-row justify-between gap-4 overflow-x-auto">
-  {categories.map((category) => (
-    <Categories key={category.id} path={category.path} image={category.image} name={category.name} />
-  ))}
-</div>
-</div>
-
-*/

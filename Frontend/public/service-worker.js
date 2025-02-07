@@ -1,9 +1,6 @@
 const CACHE_NAME = 'r-dental-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
   '/manifest.json',
-  '/src/app.jsx'
 
 ];
 
@@ -27,3 +24,4 @@ self.addEventListener('fetch', event => {
       })
   );
 });
+

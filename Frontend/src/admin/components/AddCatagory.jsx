@@ -18,16 +18,16 @@ const AddCatagory = () => {
     return (
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-6xl mx-auto">
             {/* Header Section */}
-            <div className="mb-8 flex justify-between items-center">
+            <div className="mb-8 flex flex-col md:flex-row justify-between items-center">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-800 mb-2">Category Management</h1>
+                <h1 className="text-3xl font-bold text-gray-800 mb-2">Category Management</h1>
                     <p className="text-gray-600">Organize your products by managing categories</p>
                 </div>
                 <button
                     onClick={handleAddCategory}
-                    className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg 
-                             hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-200
-                             shadow-md hover:shadow-lg flex items-center gap-2"
+                    className="bg-gradient-to-r from-green-500 to-green-600 text-white px-12 lg:px-6 py-3 rounded-lg 
+                    hover:from-green-600 hover:to-green-700 transition-colors duration-200
+                    flex items-center gap-2 mt-4 md:mt-0"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
