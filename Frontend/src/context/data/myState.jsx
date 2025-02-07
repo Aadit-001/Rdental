@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import myContext from './myContext';
 import PropTypes from 'prop-types';
 import { Timestamp } from 'firebase/firestore';
-import { collection, addDoc, query, orderBy, getDocs, deleteDoc, doc, updateDoc,arrayUnion, arrayRemove ,getDoc, setDoc} from 'firebase/firestore';
-// import { getDoc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, getDocs, deleteDoc, doc, updateDoc, arrayUnion, arrayRemove, getDoc, setDoc } from 'firebase/firestore';
 import { fireDB as fireDb } from '../../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
 import { deleteObject, ref } from 'firebase/storage';
@@ -376,7 +375,7 @@ const MyState = (props) => {
 
     const getCategoryProducts = (category) => {
         // Ensure category is a string and handle potential undefined
-        if (!category) return [];
+        if (!category || !products) return [];
         
         return products.filter((product) => 
             product.category && 
