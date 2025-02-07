@@ -132,9 +132,9 @@ const Cart = () => {
         {cartItems?.length === 0 ? (
           <EmptyCart />
         ) : (
-          <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">  
             <div className="lg:w-2/3">
-              <div className="space-y-4">
+              <div className="space-y-8 lg:space-y-4">
                 {cartItems.map((item, index) => (
                   <HorizontalProductCard
                     key={`${item.productId}-${index}`}

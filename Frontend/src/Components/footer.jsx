@@ -32,7 +32,6 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link to="/termsAndCondition" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Terms of Use</Link></li>
               <li><Link to="/shippingAndDelivery" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Shipping and Delivery</Link></li>
-              <li><Link to="/faq" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>FAQ</Link></li>
             </ul>
           </div>
 

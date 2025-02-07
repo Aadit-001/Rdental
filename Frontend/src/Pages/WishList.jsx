@@ -129,10 +129,11 @@ function WishList() {
               ) : (
                   <div>
                     {wishlistItems.map((productId) => (
-                      <WishlistProductCard
-                        key={productId}
-                        productId={productId}
-                      />
+                      <div key={productId} className="mb-10 md:mb-0 px-4 md:px-0">
+                        <WishlistProductCard
+                          productId={productId}
+                        />
+                      </div>
                     ))}
                   <div className="flex justify-center mt-10 mb-10">
                     <Link to="/">

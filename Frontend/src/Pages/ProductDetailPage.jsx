@@ -369,8 +369,8 @@ const ProductDetailPage = () => {
 
   // Only calculate these if product.price exists
   const subtotal = product.price ? product.price * quantity : 0;
-  const shipping = 15.0;
-  const tax = subtotal ? (subtotal * 0.1).toFixed(2) : "0.00";
+  const shipping = 50.0;
+  const tax = subtotal ? (subtotal * 0.18).toFixed(2) : "0.00";
   const total = subtotal + shipping + Number(tax);
 
   const handleCheckout = () => {
@@ -382,7 +382,7 @@ const ProductDetailPage = () => {
           quantity,
           subtotal: Number(subtotal),
           shipping: Number(shipping),
-          tax: Number((subtotal * 0.1).toFixed(2)),
+          tax: Number((subtotal * 0.18).toFixed(2)),
           total: Number(total)
         }
       }
