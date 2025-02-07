@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import myContext from './myContext';
 import PropTypes from 'prop-types';
 import { Timestamp } from 'firebase/firestore';
-import { collection, addDoc, query, orderBy, onSnapshot, deleteDoc, doc, updateDoc,arrayUnion, arrayRemove ,getDoc, setDoc} from 'firebase/firestore';
-// import { getDoc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, query, orderBy, getDocs, deleteDoc, doc, updateDoc, arrayUnion, arrayRemove, getDoc, setDoc } from 'firebase/firestore';
 import { fireDB as fireDb } from '../../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
 import { deleteObject, ref } from 'firebase/storage';
@@ -258,56 +257,70 @@ const MyState = (props) => {
     };
 
     const getProductData = () => {
+        // Check if products are already loaded to prevent unnecessary fetches
+        if (products.length > 0) {
+            setIsLoading(false);
+            return;
+        }
+
         setIsLoading(true);
         try {
             const q = query(
                 collection(fireDb, "products"),
                 orderBy("time")
             );
-            const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
+            
+            // Use getDocs instead of onSnapshot to fetch once
+            getDocs(q).then((QuerySnapshot) => {
                 let productsArray = [];
                 QuerySnapshot.forEach((doc) => {
-                   const data = doc.data();
-                    productsArray.push({
-                        ...data,
-                        price: Number(data.price),
-                        mrp: Number(data.mrp),
-                        rating: Number(data.rating),
-                        id: doc.id
-                    });
+                    productsArray.push({ ...doc.data(), id: doc.id });
                 });
-                setProducts(productsArray);
+                
+                // Only update if the array is different
+                if (productsArray.length !== products.length) {
+                    setProducts(productsArray);
+                }
                 setIsLoading(false);
-            }, (error) => {
+            }).catch((error) => {
                 console.error("Error fetching products:", error);
                 toast.error("Error fetching products");
                 setIsLoading(false);
             });
-
-            return unsubscribe;
         } catch (error) {
-            console.error("Error setting up products listener:", error);
-            toast.error("Error setting up products listener");
+            console.error("Error setting up products fetch:", error);
+            toast.error("Error setting up products fetch");
             setIsLoading(false);
-            return () => { }; // Return empty cleanup function if setup fails
         }
     };
 
-    useEffect(() => {
-        let unsubscribe = () => { };
+    const getCategories = () => {
+        setIsLoading(true);
         try {
-            unsubscribe = getProductData() || (() => { });
+            const q = query(
+                collection(fireDb, "categories"),
+                orderBy("time")
+            );
+            
+            // Replace onSnapshot with getDocs
+            getDocs(q).then((QuerySnapshot) => {
+                let categoriesArray = [];
+                QuerySnapshot.forEach((doc) => {
+                    categoriesArray.push({ ...doc.data(), id: doc.id });
+                });
+                setCategories(categoriesArray);
+                setIsLoading(false);
+            }).catch((error) => {
+                console.error("Error fetching categories:", error);
+                toast.error("Error fetching categories");
+                setIsLoading(false);
+            });
         } catch (error) {
-            console.error("Error in useEffect:", error);
+            console.error("Error setting up categories fetch:", error);
+            toast.error("Error setting up categories fetch");
+            setIsLoading(false);
         }
-        return () => {
-            try {
-                unsubscribe();
-            } catch (error) {
-                console.error("Error unsubscribing:", error);
-            }
-        };
-    }, []);
+    };
 
     const addCategory = async () => {
         setIsLoading(true);
@@ -337,35 +350,6 @@ const MyState = (props) => {
         setIsLoading(false);
     }
 
-    const getCategories = () => {
-        setIsLoading(true);
-        try {
-            const q = query(
-                collection(fireDb, "categories"),
-                orderBy("time")
-            );
-            const unsubscribe = onSnapshot(q, (QuerySnapshot) => {
-                let categoriesArray = [];
-                QuerySnapshot.forEach((doc) => {
-                    categoriesArray.push({ ...doc.data(), id: doc.id });
-                });
-                setCategories(categoriesArray);
-                setIsLoading(false);
-            }, (error) => {
-                console.error("Error fetching categories:", error);
-                toast.error("Error fetching categories");
-                setIsLoading(false);
-            });
-
-            return unsubscribe;
-        } catch (error) {
-            console.error("Error setting up categories listener:", error);
-            toast.error("Error setting up categories listener");
-            setIsLoading(false);
-            return () => { }; // Return empty cleanup function if setup fails
-        }
-    };
-
     const deleteCategory = async (categoryId) => {
         try {
             setIsLoading(true);
@@ -390,9 +374,12 @@ const MyState = (props) => {
     };
 
     const getCategoryProducts = (category) => {
+        // Ensure category is a string and handle potential undefined
         if (!category || !products) return [];
+        
         return products.filter((product) => 
-            product?.category?.toLowerCase() === category.toLowerCase()
+            product.category && 
+            product.category.toLowerCase() === category.toLowerCase()
         );
     };
 
