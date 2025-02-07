@@ -6,14 +6,16 @@ const AboutUs = () => {
   const [teamMembers] = useState([
     {
       name: 'Adit Jha',
-      role: 'Front-End Integration Engineer', 
-      description: 'Develops user-facing components while ensuring seamless interaction with back-end APIs.',
+      role: 'Lead Developer & Team Leader', 
+      description: 'Developed the fully functioanl frontend and backend for R-dental.',
+      contact: 'Contact Adit',
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR48kgQNS7jHuRO0_X6Qv5PCh-chkE0_E8uRA&s'
     },
     {
       name: 'Kaif Shaikh',
-      role: 'Back-End Functionality Specialist',
+      role: 'Frontend Developer',
       description: 'Builds robust server-side logic and ensures smooth communication with front-end frameworks.',
+      contact: 'Contact Kaif',
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR48kgQNS7jHuRO0_X6Qv5PCh-chkE0_E8uRA&s'
     }
   ]);

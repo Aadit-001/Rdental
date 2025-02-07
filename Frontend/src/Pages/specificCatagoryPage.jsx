@@ -146,6 +146,7 @@ const SpecificCategoryPage = () => {
                     radioButtons.forEach(radio => {
                       radio.checked = false;
                     });
+                    // eslint-disable-next-line no-undef
                     setIsSorting(false);
                   }}
                   className="text-sm px-2 py-1 text-green-600 hover:text-white border border-green-500 hover:bg-green-500 rounded transition-colors duration-300"
@@ -230,7 +231,7 @@ const SpecificCategoryPage = () => {
           {/* Right Content - 80% */}
           <div className="w-4/5">
             {/* Products Grid - Fixed heights for different screen sizes */}
-            <div className="h-[calc(120vh)]">
+            <div className="h-[calc(120vh)] overflow-y-auto">
               {/* Products Count */}
               <div className="mb-6 flex justify-between items-center h-14 bg-slate-50 py-4 px-6 rounded-lg shadow-lg hover:shadow-xl border-2 border-green-400 transform  transition-all duration-300 animate-fadeIn">
                 <h2 className="text-[clamp(1rem,2vw,1.25rem)] ml-[-10px] py-0 font-bold text-emerald-600 drop-shadow-[0_8px_8px_rgba(0,0,0,0.2)] tracking-wider bg-gradient-to-r from-emerald-200/70 to-transparent p-2 rounded-lg animate-pulse transition-all duration-300">
