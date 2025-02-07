@@ -5,7 +5,7 @@ import indiamap from '../assets/indiamap.png'
 const AboutUs = () => {
   const [teamMembers] = useState([
     {
-      name: 'Shravan Gupta',
+      name: 'Adit Jha',
       role: 'Front-End Integration Engineer', 
       description: 'Develops user-facing components while ensuring seamless interaction with back-end APIs.',
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR48kgQNS7jHuRO0_X6Qv5PCh-chkE0_E8uRA&s'
@@ -22,17 +22,17 @@ const AboutUs = () => {
   return (
     <div className="pt-24">
       {/* Hero Poster Section */}
-      <div className="relative max-w-6xl mx-auto h-[450px] rounded-2xl overflow-hidden">
+      <div className="relative max-w-6xl mx-4 sm:mx-6 md:mx-auto h-[200px] sm:h-[250px] md:h-[450px] rounded-2xl overflow-hidden">
         <img 
           src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
           alt="Dental Equipment"
           className="w-full h-full object-cover rounded-lg"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-blue-500 opacity-70 flex flex-col items-center justify-center">
-          <h1 className="text-white text-6xl font-bold text-center mb-8 drop-shadow-md">
+        <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-blue-500 opacity-70 flex flex-col items-center justify-center px-4">
+          <h1 className="text-white text-2xl sm:text-4xl md:text-6xl font-bold text-center mb-4 md:mb-8 drop-shadow-md">
             Empowering the Future of Dental Care
           </h1>
-          <p className="text-white text-2xl text-center drop-shadow-md">
+          <p className="text-white text-sm sm:text-xl md:text-2xl text-center drop-shadow-md">
             Providing High-Quality Dental Equipment and Supplies with Unparalleled Customer Service
           </p>
         </div>
@@ -64,7 +64,7 @@ const AboutUs = () => {
               to their patients by providing reliable, innovative, and cost-effective dental solutions.
             </p>
           </div>
-          <div className="w-96">
+          <div className="hidden md:block w-96">
             <img 
               src={indiamap} 
               alt="India Map"
@@ -80,15 +80,15 @@ const AboutUs = () => {
 
       {/* New Section 1 */}
       <div className="container mx-auto px-6 py-16">
-        <div className="flex items-center justify-between max-w-6xl mx-auto">
-          <div className="w-96">
+        <div className="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto">
+          <div className="w-full max-w-[300px] md:w-[1000px] lg:w-[1200px] order-2 md:order-1 mt-8 md:mt-0">
             <img 
               src="https://images.unsplash.com/photo-1629909615184-74f495363b67"
               alt="Dental Technology"
               className="w-full h-auto rounded-lg shadow-lg"
             />
           </div>
-          <div className="max-w-2xl">
+          <div className="max-w-2xl order-1 md:order-2">
             <h2 className="text-3xl font-bold mb-6 text-center">About us</h2>
             <p className="text-gray-600 mb-6">
               <span className='text-green-500'>R</span>-DENTAL was founded in 2020, At Mumbai. With the commitment to deliver the best quality 
@@ -105,9 +105,8 @@ const AboutUs = () => {
 
       {/* New Section 2 */}
       <div className="container mx-auto px-6 py-16">
-        <div className="flex items-center justify-between max-w-6xl mx-auto">
-          
-          <div className="max-w-2xl">
+        <div className="flex flex-col md:flex-row items-center justify-between max-w-6xl mx-auto">
+          <div className="max-w-2xl order-1">
             <h2 className="text-3xl font-bold mb-6 text-center">Our Mission</h2>
             <p className="text-gray-600 mb-6">
               To achieve excellence in all areas of service, so that we help our beloved dentist to 
@@ -118,7 +117,7 @@ const AboutUs = () => {
               and established us as a reliable partner in dental care delivery.
             </p>
           </div>
-          <div className="w-96">
+          <div className="w-full max-w-[300px] md:w-96 order-2 mt-8 md:mt-0">
             <img 
               src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95"
               alt="Quality Assurance"
@@ -173,6 +172,40 @@ const AboutUs = () => {
                   Striving for excellence in every aspect of our service and product delivery.
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Founder Section */}
+      <div className="relative max-w-6xl mx-auto h-auto bg-gray-100 py-16 mb-16">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">Meet Our Founder</h2>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+            <div className="relative w-64 h-64 md:w-80 md:h-80 ml-8">
+              <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-blue-500 rounded-full transform -rotate-6 opacity-20"></div>
+              <div className="absolute inset-0 bg-white rounded-full transform rotate-3 shadow-lg">
+                <img 
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR48kgQNS7jHuRO0_X6Qv5PCh-chkE0_E8uRA&s" 
+                  alt="Founder Name"
+                  className="w-full h-full object-cover rounded-full p-2"
+                />
+              </div>
+            </div>
+            <div className="max-w-2xl text-center md:text-left">
+              <h3 className="text-4xl font-bold mb-2">Suresh Gupta</h3>
+              <p className="text-green-500 text-xl mb-6">Founder & CEO</p>
+              <div className="w-20 h-1 bg-gradient-to-r from-green-500 to-blue-500 mb-6 mx-auto md:mx-0"></div>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                With over [X] years of experience in the dental industry, our founder established R-DENTAL 
+                with a vision to revolutionize dental equipment distribution in India. Their commitment 
+                to quality and customer service has been the driving force behind our company's success.
+              </p>
+              <p className="text-gray-600 leading-relaxed">
+                "Our mission is to empower dental professionals with the finest equipment and 
+                supplies, enabling them to provide exceptional care to their patients. We believe 
+                in building lasting relationships based on trust, quality, and innovation."
+              </p>
             </div>
           </div>
         </div>

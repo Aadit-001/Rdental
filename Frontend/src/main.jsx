@@ -32,6 +32,8 @@ import PaymentFailed from "./Payment/componets/PaymentFailed.jsx";
 import CheckoutLayout from './Payment/componets/CheckoutLayout.jsx';
 import { Provider } from 'react-redux';
 import { store } from './Redux/Store';
+import TermsAndCondition from "./Pages/TermsAndCondition.jsx";
+import ShippingAndDelivery from "./Pages/ShippingAndDelivery.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -43,6 +45,8 @@ createRoot(document.getElementById("root")).render(
             <Route path="/" element={<RootLayout />}>
               <Route index element={<Home />} />
               <Route path="aboutUs" element={<AboutUs />} />
+              <Route path="termsAndCondition" element={<TermsAndCondition />} />
+              <Route path="shippingAndDelivery" element={<ShippingAndDelivery />} />
               <Route path="products/:category" element={<SpecificCatagoryPage />} />
               <Route path="products/:category/:productId" element={<ProductDetailPage />} />
               <Route
