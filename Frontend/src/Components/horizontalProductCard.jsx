@@ -167,7 +167,7 @@ const HorizontalProductCard = ({ id, quantity }) => {
         )
       }
       <div className="flex">
-        <div className="relative w-40 h-40">
+        <div className="relative w-40 h-40 sm:h-40 h-52">
           <img 
             src={productData.imageUrl} 
             alt={productData.title}
@@ -226,7 +226,7 @@ const HorizontalProductCard = ({ id, quantity }) => {
               {productData.description}
             </p>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center flex-col sm:flex-row gap-2 sm:gap-0">
             <div className="flex items-center gap-2">
               <span className="text-lg font-bold text-gray-900">&#x20B9;{productData.price}</span>
               <span className="text-sm text-gray-400 line-through">&#x20B9;{productData.mrp}</span>
@@ -234,14 +234,14 @@ const HorizontalProductCard = ({ id, quantity }) => {
                 Save {savingsPercentage}%
               </span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleQuantityChange(id, localQuantity - 1);
                 }}
                 disabled={localQuantity <= 1 || isUpdating}
-                className={`px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors duration-300 ${
+                className={`px-4 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors duration-300 ${
                   (localQuantity <= 1 || isUpdating) ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
               >
@@ -254,7 +254,7 @@ const HorizontalProductCard = ({ id, quantity }) => {
                   handleQuantityChange(id, localQuantity + 1);
                 }}
                 disabled={isUpdating}
-                className={`px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors duration-300 ${
+                className={`px-4 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors duration-300 ${
                   isUpdating ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
               >

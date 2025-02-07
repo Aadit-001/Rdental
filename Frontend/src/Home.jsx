@@ -16,7 +16,10 @@ import category3 from './assets/category3.jpg';
 import category4 from './assets/category4.jpg';
 import category6 from './assets/category6.jpg';
 import category7 from './assets/category7.jpg';
-
+import GeneralDentistry from './assets/GeneralDentistry.jpg';
+import equip from './assets/equip.jpg';
+import resto from './assets/resto.png';
+import instru from './assets/instru.jpg';
 
 
 const Home = () => {
@@ -50,7 +53,7 @@ const Home = () => {
   return (
     <div className="pt-20 max-w-[1480px] w-screen mx-auto ">
       {/* Image Carousel Section */}
-      <div className="relative lg:h-[500px] sm:h-[40px] w-full overflow-hidden py-1 mb-0 mx-auto">
+      <div className="relative h-[200px] lg:h-[500px] w-full overflow-hidden py-1 mb-0 mx-auto">
         {/* Left Arrow Button */}
         <button
           onClick={() => setCurrentSlide(currentSlide === 0 ? slides.length - 1 : currentSlide - 1)}
@@ -73,25 +76,30 @@ const Home = () => {
 
         {/* Updated Carousel Container */}
         <div
-          className="flex transition-transform duration-1000 h-[95%]"
+          className="flex transition-transform duration-1000 h-full"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
           {slides.map((slide, index) => (
             <div
               key={index}
-              className="min-w-full px-4" // Added px-2 for gap between slides
+              className="min-w-full px-4"
             >
               <img
                 src={slide}
                 alt={`Slide ${index + 1}`}
-                className={`w-full h-full ${index < 3 ? "object-cover" : "object-stretch"} rounded-[1rem] lg:rounded-[2rem] shadow-lg`}
+                className={`w-full h-full ${
+                  index < 3 ? "object-cover" : "object-stretch"
+                } rounded-[0.5rem] sm:rounded-[1rem] lg:rounded-[2rem] shadow-lg 
+                sm:transform-none transform scale-[1.02]
+                object-center`}
+                loading="eager"
               />
             </div>
           ))}
         </div>
 
         {/* Carousel Navigation Dots */}
-        <div className="absolute lg:bottom-20 bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-2 lg:bottom-20 left-1/2 transform -translate-x-1/2 flex space-x-2">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -104,7 +112,7 @@ const Home = () => {
       </div>
 
       {/* Info Strip */}
-      <div className="bg-gradient-to-r from-green-50 to-green-100/20 py-2 mt-1  max-w-[1400px] mx-auto rounded-xl shadow-sm relative overflow-hidden
+      <div className="bg-gradient-to-r from-green-50 to-green-100/20 py-2 mt-8  max-w-[1400px] mx-auto rounded-xl shadow-sm relative overflow-hidden
         before:absolute before:inset-0 before:border-2 before:border-green-300/50 before:rounded-xl
         before:animate-[border-dance_4s_linear_infinite]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -262,7 +270,7 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[300px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/general'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={category1}
+                src={GeneralDentistry}
                 alt="General Dentistry"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
@@ -308,11 +316,12 @@ const Home = () => {
               <div className="relative group h-[80px] md:h-[220px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
               onClick={() => { navigate('/products/equipment'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                 <img
-                  src={category3}
+                  src={equip}
                   alt="Equipment"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+
                   <div className="absolute bottom-6 left-1 md:left-6 text-white">
                     <h3 className="text-sm md:text-lg  absolute -top-1  md:relative md:top-0 ">Equipment</h3>
                     <p className="text-sm mt-1 hidden sm:block">Modern tech</p>
@@ -327,7 +336,7 @@ const Home = () => {
               <div className="relative group h-[80px] md:h-[220px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
               onClick={() => { navigate('/products/restoratives'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                 <img
-                  src={category4}
+                  src={resto}
                   alt="Restoratives"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
@@ -372,10 +381,11 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[150px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/instruments'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={category6}
+                src={instru}
                 alt="Instruments"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
+
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
                 <div className="absolute bottom-6 left-2 md:left-6 text-white">
                   <h3 className="text-sm md:text-lg  md:font-bold absolute -top-1  md:relative md:top-0 ">Instruments</h3>
