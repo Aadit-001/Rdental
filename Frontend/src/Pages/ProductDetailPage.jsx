@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ProductCard from '../Components/productCard';
+import RelatedProductCard from '../Components/RelatedProductCard';
 import {useParams} from 'react-router-dom';
 import {useContext} from 'react';
 import myContext from '../context/data/myContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { doc, updateDoc, getDoc, setDoc, collection } from 'firebase/firestore';
+import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
 import { fireDB } from '../firebase/firebaseConfig';
 
 const ProductDetailPage = () => {
@@ -51,8 +51,12 @@ const ProductDetailPage = () => {
         const foundProduct = products.find(p => p.id === productId);
         if (foundProduct) {
           setProduct(foundProduct);
-          setAverageRating(foundProduct.rating || 0);
-          setTotalRatings(foundProduct.noOfRatings || 0);
+          // Safely convert to number, defaulting to 0 if not a valid number
+          const safeRating = Number(foundProduct.rating) || 0;
+          const safeTotalRatings = Number(foundProduct.noOfRatings) || 0;
+          
+          setAverageRating(safeRating);
+          setTotalRatings(safeTotalRatings);
           setIsLoading(false);
 
           // Check if user has already rated this product
@@ -476,7 +480,9 @@ const ProductDetailPage = () => {
                       ))}
                     </div>
                     <span className="text-sm text-gray-600">
-                      ({averageRating.toFixed(1)}) {totalRatings} {totalRatings === 1 ? 'rating' : 'ratings'}
+                      {averageRating !== undefined && !isNaN(averageRating) 
+                        ? `(${averageRating.toFixed(1)})` 
+                        : '(N/A)'} {totalRatings} {totalRatings === 1 ? 'rating' : 'ratings'}
                     </span>
                   </div>
 
@@ -768,7 +774,7 @@ const ProductDetailPage = () => {
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-6">Related Products</h2>
           {isLoadingRelated ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 ">
               {[...Array(5)].map((_, index) => (
                 <div key={index} className="bg-white rounded-lg shadow-md p-4 animate-pulse">
                   <div className="w-full h-48 bg-gray-200 rounded-lg mb-4"></div>
@@ -778,9 +784,9 @@ const ProductDetailPage = () => {
               ))}
             </div>
           ) : relatedProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1">
               {relatedProducts.map((product) => (
-                <ProductCard
+                <RelatedProductCard
                   key={product.id}
                   title={product.title}
                   description={product.description}

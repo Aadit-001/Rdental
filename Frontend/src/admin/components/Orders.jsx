@@ -429,15 +429,16 @@ const Orders = () => {
     }
 
     return (
-        <div className="bg-white rounded-lg shadow-sm p-6 min-h-[calc(100vh-16rem)]">
-            <h2 className="text-2xl font-bold mb-6">Orders ({orders.length})</h2>
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-h-[calc(100vh-16rem)]">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Orders ({orders.length})</h2>
             {orders.length === 0 ? (
                 <div className="text-center text-gray-500 py-8">
                     No orders found
                 </div>
             ) : (
                 <>
-                    <div className="overflow-x-auto">
+                    {/* Desktop/Tablet View */}
+                    <div className="hidden md:block overflow-x-auto">
                         <div className="inline-block min-w-full align-middle">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
@@ -518,6 +519,70 @@ const Orders = () => {
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+
+                    {/* Mobile View */}
+                    <div className="md:hidden space-y-4">
+                        {currentOrders.map((order) => (
+                            <div 
+                                key={order.id} 
+                                className="bg-white border border-gray-200 rounded-lg shadow-sm p-4 hover:bg-gray-50 transition-colors"
+                            >
+                                <div className="flex justify-between items-center mb-2">
+                                    <div className="text-sm font-semibold text-gray-900">
+                                        Order #{order.orderId || 'N/A'}
+                                    </div>
+                                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(order.orderStatus)}`}>
+                                        {order.orderStatus?.charAt(0).toUpperCase() + order.orderStatus?.slice(1) || 'Pending'}
+                                    </span>
+                                </div>
+
+                                <div className="text-sm text-gray-700 mb-2">
+                                    {order.userInfo?.firstName || 'Unknown'} {order.userInfo?.lastName || ''}
+                                </div>
+
+                                <div className="text-sm text-gray-700 mb-2">
+                                    <strong>Items:</strong>
+                                    {Array.isArray(order?.orderDetails?.items) ? (
+                                        <div className="space-y-1 mt-1">
+                                            {order.orderDetails.items.map((item, index) => (
+                                                <div key={index} className="flex justify-between">
+                                                    <span>{item.title}</span>
+                                                    <span>x {item.quantity}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        'No items'
+                                    )}
+                                </div>
+
+                                <div className="flex justify-between items-center mt-2">
+                                    <div className="text-sm font-semibold text-gray-900">
+                                        Total: {formatCurrency(order.orderDetails?.total || 0)}
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <button
+                                            onClick={() => handleViewOrder(order)}
+                                            className="text-blue-600 hover:text-blue-900 text-sm"
+                                        >
+                                            View
+                                        </button>
+                                        <select
+                                            value={order.orderStatus || ''}
+                                            onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                                            className="block w-24 text-xs border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        >
+                                            <option value="pending">Pending</option>
+                                            <option value="processing">Processing</option>
+                                            <option value="shipped">Shipped</option>
+                                            <option value="delivered">Delivered</option>
+                                            <option value="cancelled">Cancelled</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
 
                     {/* Pagination */}
