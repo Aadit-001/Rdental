@@ -4,11 +4,11 @@ import { useContext, useRef, useState, useEffect } from 'react';
 import myContext from '../context/data/myContext';
 import PropTypes from 'prop-types';
 
-const ProductSection = ({ title }) => {
+const ProductSection = ({ title = 'general' }) => {
     const scrollContainerRef = useRef(null);
     const { getCategoryProducts } = useContext(myContext);
-    const products = getCategoryProducts(title);
-    let path = "/products/" + title;
+    const products = getCategoryProducts(title) || [];
+    let path = "/products/" + (title || 'general');
     const [showLeftButton, setShowLeftButton] = useState(false);
     const [showRightButton, setShowRightButton] = useState(true);
     const checkScrollButtons = () => {
@@ -166,7 +166,11 @@ const ProductSection = ({ title }) => {
 };
 
 ProductSection.propTypes = {
-    title: PropTypes.string.isRequired
+    title: PropTypes.string
+};
+
+ProductSection.defaultProps = {
+    title: 'general'
 };
 
 export default ProductSection;

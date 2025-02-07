@@ -390,8 +390,10 @@ const MyState = (props) => {
     };
 
     const getCategoryProducts = (category) => {
-        return products.filter((product) => product.category.toLowerCase() === category.toLowerCase());
-
+        if (!category || !products) return [];
+        return products.filter((product) => 
+            product?.category?.toLowerCase() === category.toLowerCase()
+        );
     };
 
     const getBestSellers = useCallback(() => {
