@@ -383,14 +383,10 @@ const MyState = (props) => {
         );
     };
 
-    const getBestSellers = useCallback(() => {
+    const getBestSellers = () => {
         const sortedProducts = [...products].sort((a, b) => b.quantitySold - a.quantitySold);
         setBestSellers(sortedProducts.slice(0, 5));
-        if(location.pathname === '/products/best-sellers'){
-            setBestSellers(sortedProducts);
-            console.log(bestSellers);
-        }
-    }, [products]);
+    };
 
     const addToWishlist = async (productId,userId) => {    
         const userRef = doc(fireDb,"users",userId);
@@ -519,7 +515,7 @@ const MyState = (props) => {
         if (products.length > 0) {
             getBestSellers();
         }
-    }, [getBestSellers, products]);
+    }, [products]);
 
     return (
         <myContext.Provider value={{

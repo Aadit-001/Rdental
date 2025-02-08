@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, query, orderBy, onSnapshot, doc, updateDoc } from 'firebase/firestore';
+import { collection, query, orderBy, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { fireDB } from '../../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
 
@@ -11,18 +11,23 @@ const Messages = () => {
     // Create a query to get messages ordered by timestamp
     const q = query(collection(fireDB, "messages"), orderBy("timestamp", "desc"));
 
-    // Set up real-time listener
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const messagesData = [];
-      querySnapshot.forEach((doc) => {
-        messagesData.push({ id: doc.id, ...doc.data() });
-      });
-      setMessages(messagesData);
-      setLoading(false);
-    });
+    // Fetch messages once
+    const fetchMessages = async () => {
+      try {
+        const querySnapshot = await getDocs(q);
+        const messagesData = [];
+        querySnapshot.forEach((doc) => {
+          messagesData.push({ id: doc.id, ...doc.data() });
+        });
+        setMessages(messagesData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+        setLoading(false);
+      }
+    };
 
-    // Cleanup subscription
-    return () => unsubscribe();
+    fetchMessages();
   }, []);
 
   const markAsRead = async (messageId) => {

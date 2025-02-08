@@ -108,7 +108,7 @@ const RelatedProductCard = ({ id,title, description, price, image, catagory, mrp
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {savings > 0 && (
-          <span className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
+          <span className="absolute top-2 right-2 bg-green-300 text-white text-xs px-2 py-1 rounded">
             {savings}% OFF
           </span>
         )}
@@ -147,7 +147,7 @@ const RelatedProductCard = ({ id,title, description, price, image, catagory, mrp
               handleLike();
             }}
             className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-200 ${
-              isLiked ? 'bg-red-100 text-red-500' : 'bg-gray-100 text-gray-500'
+              isLiked ? 'bg-green-100 text-green-500' : 'bg-gray-100 text-gray-500'
             }`}
           >
             {isLiked ? '♥' : '♡'}
@@ -160,8 +160,8 @@ const RelatedProductCard = ({ id,title, description, price, image, catagory, mrp
             }}
             className={`flex-1 text-xs py-2 rounded transition-colors duration-200 ${
               isAddedToCart 
-                ? 'bg-green-100 text-green-600' 
-                : 'bg-blue-500 text-white hover:bg-blue-600'
+                ? 'bg-gray-600 text-white hover:bg-gray-600' 
+                : 'bg-green-500 text-white hover:bg-green-600'
             }`}
           >
             {isAddedToCart ? 'Added' : 'Add to Cart'}

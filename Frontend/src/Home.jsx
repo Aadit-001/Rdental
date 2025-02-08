@@ -10,16 +10,17 @@ import slide2 from './assets/slide2.jpg';
 import slide3 from './assets/slide3.jpg';
 import slide4 from './assets/slide4.jpg';
 import slide5 from './assets/slide5.jpg';
-import category1 from './assets/category1.jpg';
+// import category1 from './assets/category1.jpg';
 import category2 from './assets/category2.jpg';
-import category3 from './assets/category3.jpg';
-import category4 from './assets/category4.jpg';
-import category6 from './assets/category6.jpg';
+// import category3 from './assets/category3.jpg';
+// import category4 from './assets/category4.jpg';
+// import category6 from './assets/category6.jpg';
 import category7 from './assets/category7.jpg';
 import GeneralDentistry from './assets/GeneralDentistry.jpg';
-import equip from './assets/equip.jpg';
-import resto from './assets/resto.png';
-import instru from './assets/instru.jpg';
+import equipments from './assets/equipments.jpg';
+import restoratives from './assets/restoratives.png';
+import instruments from './assets/instruments.jpg';
+
 
 
 const Home = () => {
@@ -316,7 +317,7 @@ const Home = () => {
               <div className="relative group h-[80px] md:h-[220px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
               onClick={() => { navigate('/products/equipment'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                 <img
-                  src={equip}
+                  src={equipments}
                   alt="Equipment"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
@@ -336,7 +337,7 @@ const Home = () => {
               <div className="relative group h-[80px] md:h-[220px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
               onClick={() => { navigate('/products/restoratives'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                 <img
-                  src={resto}
+                  src={restoratives}
                   alt="Restoratives"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
@@ -381,7 +382,7 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[150px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/instruments'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={instru}
+                src={instruments}
                 alt="Instruments"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
