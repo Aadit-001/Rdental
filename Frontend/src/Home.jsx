@@ -179,7 +179,7 @@ const Home = () => {
       </div>
 
       {/* New Welcome Section */}
-      <div className="max-w-[1400px] mx-auto mt-16 mb-12 px-4">
+      <div className="max-w-[1400px] mx-auto mt-8 sm:mt-16 mb-12 px-4">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to <p><span className="text-green-500">R</span>-DENTAL Supplies</p></h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto hidden sm:block">
@@ -189,7 +189,6 @@ const Home = () => {
 
         </div>
       </div>
-
       {/*Best Seller Section */}
       <div className="flex flex-col  gap-2  bg-gradient-to-br from-blue-50 to-blue-10 max-w-[1400px] mx-auto mt-10 mb-10 lg:rounded-3xl p-4 sm:p-10 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm bg-opacity-90 relative overflow-hidden before:absolute before:inset-0 before:bg-blue-200/20 before:animate-pulse">
         {/* Header Section with Title and View All Button */}
