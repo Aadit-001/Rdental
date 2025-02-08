@@ -1,59 +1,97 @@
-import { useState, useEffect, useCallback } from 'react';
-import myContext from './myContext';
-import PropTypes from 'prop-types';
-import { Timestamp } from 'firebase/firestore';
-import { collection, addDoc, query, orderBy, getDocs, deleteDoc, doc, updateDoc, arrayUnion, arrayRemove, getDoc, setDoc } from 'firebase/firestore';
-import { fireDB as fireDb } from '../../firebase/firebaseConfig';
-import { toast } from 'react-toastify';
+import React, { 
+    useState, 
+    useEffect, 
+    useMemo, 
+    useCallback, 
+    useRef 
+} from 'react';
+import { 
+    collection, 
+    addDoc, 
+    query, 
+    orderBy, 
+    getDocs, 
+    deleteDoc, 
+    doc, 
+    updateDoc, 
+    arrayUnion, 
+    arrayRemove, 
+    getDoc, 
+    setDoc,
+    Timestamp 
+} from 'firebase/firestore';
 import { deleteObject, ref } from 'firebase/storage';
-import { storage } from '../../firebase/firebaseConfig';
+import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
+
+import myContext from './myContext';
+import { fireDB as fireDb, storage } from '../../firebase/firebaseConfig';
+
+// Utility function for logging
+const logError = (context, error) => {
+    console.error(`[${context}] Error:`, {
+        message: error.message,
+        code: error.code,
+        stack: error.stack
+    });
+    toast.error(`${context}: ${error.message}`, {
+        position: "bottom-right",
+        autoClose: 3000,
+    });
+};
+
+// Default product structure
+const DEFAULT_PRODUCT = {
+    title: null,
+    imageUrl: null,
+    description: null,
+    price: null,
+    mrp: null,
+    category: null,
+    rating: 0,
+    noOfRatings: 0,
+    quantitySold: 0,
+    inStock: true,
+    totalStock: 0,
+    time: Timestamp.now(),
+    date: new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+    })
+};
 
 const MyState = (props) => {
+    // Optimized state initialization with lazy loading
     const [currentUserId, setCurrentUserId] = useState(() => {
         const userStr = localStorage.getItem('user');
         return userStr ? JSON.parse(userStr).uid : null;
     });
+
     const [user, setUser] = useState(() => {
         const userStr = localStorage.getItem('user');
         return userStr ? JSON.parse(userStr) : null;
     });
+
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(() => 
+        localStorage.getItem('user') !== null
+    );
+
+    // State for UI and data management
     const [showSignIn, setShowSignIn] = useState(false);
     const [showSignUp, setShowSignUp] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
-    const [isUserLoggedIn, setIsUserLoggedIn] = useState(() => {
-        return localStorage.getItem('user') !== null;
-    });
     const [isLoading, setIsLoading] = useState(false);
+
+    // Memoized state for performance
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [currentProductId, setCurrentProductId] = useState(null);
-    const [product, setProduct] = useState({
-        title: null,
-        imageUrl: null,
-        description: null,
-        price: null,
-        mrp: null,
-        category: null,
-        rating: 0,
-        noOfRatings: 0,
-        quantitySold: 0,
-        inStock: true,
-        totalStock: 0,
-        time: Timestamp.now(),
-        date: new Date().toLocaleString("en-US", {
-            month: "short",
-            day: "2-digit",
-            year: "numeric",
-        })
-    });
-    const [searchQuery] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
-
-    //future use
-    const [cartItems, setCartItems] = useState([]);
-    // const [orders, setOrders] = useState([]);
-    const [wishlistItems, setWishlistItems] = useState([]);
     const [bestSellers, setBestSellers] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+    const [product, setProduct] = useState(DEFAULT_PRODUCT);
+    const [currentProductId, setCurrentProductId] = useState(null);
+    const [cartItems, setCartItems] = useState([]);
+    const [wishlistItems, setWishlistItems] = useState([]);
     const [userInfo, setUserInfo] = useState({
         firstName: null,
         lastName: null, 
@@ -66,47 +104,83 @@ const MyState = (props) => {
         country: "India",
     });
 
-    // Combined authentication check effect
-    useEffect(() => {
-        const userStr = localStorage.getItem('user');
-        if (userStr) {
-            const userData = JSON.parse(userStr);
-            setCurrentUserId(userData.uid);
-            setUser(userData);
-            setIsUserLoggedIn(true);
-            setShowSignIn(false);
-        } else {
-            setCurrentUserId(null);
-            setUser(null);
-            setIsUserLoggedIn(false);
-            // Don't automatically show sign in here
-        }
+    // Refs for tracking previous states
+    const prevProductsLength = useRef(0);
+
+    // Memoized selectors
+    const getCategoryProducts = useCallback((category) => {
+        if (!category || !products) return [];
         
-        // Get initial data
-        getCategories();
-        getProductData();
-    }, []); // Only run once on mount
+        return products.filter((product) => 
+            product.category && 
+            product.category.toLowerCase() === category.toLowerCase()
+        );
+    }, [products]);
 
-    // Handle sign in popup visibility
-    useEffect(() => {
-        if (isUserLoggedIn) {
-            setShowSignIn(false);
+    const getBestSellers = useCallback(() => {
+        const sortedProducts = [...products]
+            .sort((a, b) => b.quantitySold - a.quantitySold)
+            .slice(0, 5);
+        
+        setBestSellers(sortedProducts);
+    }, [products]);
+
+    // Optimized data fetching methods
+    const getProductData = useCallback(async () => {
+        if (products.length > 0) return;
+
+        setIsLoading(true);
+        try {
+            const q = query(
+                collection(fireDb, "products"),
+                orderBy("time")
+            );
+            
+            const querySnapshot = await getDocs(q);
+            const productsArray = querySnapshot.docs.map(doc => ({
+                ...doc.data(), 
+                id: doc.id 
+            }));
+            
+            setProducts(productsArray);
+        } catch (error) {
+            logError('Product Fetch', error);
+        } finally {
+            setIsLoading(false);
         }
-    }, [isUserLoggedIn]);
+    }, []);
 
+    const getCategories = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const q = query(
+                collection(fireDb, "categories"),
+                orderBy("time")
+            );
+            
+            const querySnapshot = await getDocs(q);
+            const categoriesArray = querySnapshot.docs.map(doc => ({
+                ...doc.data(), 
+                id: doc.id 
+            }));
+            
+            setCategories(categoriesArray);
+        } catch (error) {
+            logError('Categories Fetch', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
-    const addProduct = async () => {
+    const addProduct = useCallback(async () => {
         if (!product.title || !product.price || !product.mrp || !product.imageUrl || !product.category || !product.description) {
             return toast.error('Please fill all fields');
         }
         setIsLoading(true);
         try {
-            //firestore mai ek collections banaya products ka
             const productRef = collection(fireDb, "products");
-
-            //abb product ko add kiya useing addDoc
             await addDoc(productRef, {
-                ...product,   // Spread the product object , matlab spread operator jo hai wo ye object ke andar ka sara kuch bass ...se le aata hai
+                ...product,   
                 time: Timestamp.now(),
                 date: new Date().toLocaleString("en-US", {
                     month: "short",
@@ -126,59 +200,33 @@ const MyState = (props) => {
                 theme: "colored",
               });
 
-            //product ke fields ko empty kardia
-            setProduct({
-                title: null,
-                imageUrl: null,
-                description: null,
-                price: null,
-                mrp: null,
-                category: null,
-                rating: 0,
-                noOfRatings: 0,
-                quantitySold: 0,
-                inStock: true,
-                totalStock: 0,
-                time: Timestamp.now(),
-                date: new Date().toLocaleString("en-US", {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
-                })
-            });
-
+            setProduct(DEFAULT_PRODUCT);
         } catch (error) {
             console.error(error);
             toast.error("Error adding product");
         }
         setIsLoading(false);
-    };
+    }, [product]);
 
-    const deleteProduct = async (productId) => {
+    const deleteProduct = useCallback(async (productId) => {
         try {
             setIsLoading(true);
 
-            // First get the product to get the image URL
             const productRef = doc(fireDb, "products", productId);
             const productSnap = await getDoc(productRef);
             
             if (productSnap.exists()) {
                 const productData = productSnap.data();
                 
-                // If there's an image URL and it's from Firebase Storage
                 if (productData.imageUrl && productData.imageUrl.includes('firebase')) {
-                    // Extract the path from the URL
                     const imageRef = ref(storage, productData.imageUrl);
                     try {
-                        // Delete the image from storage
                         await deleteObject(imageRef);
                     } catch (error) {
                         console.error("Error deleting image:", error);
-                        // Continue with product deletion even if image deletion fails
                     }
                 }
                 
-                // Delete the product document
                 await deleteDoc(productRef);
                 toast.success("Product deleted successfully", {
                     position: "bottom-right",
@@ -190,41 +238,36 @@ const MyState = (props) => {
                     progress: undefined,
                     theme: "colored",
                   });
-                getProductData(); // Refresh the product list
+                getProductData(); 
             }
         } catch (error) {
             console.error(error);
             toast.error("Error deleting product");
         }
         setIsLoading(false);
-    };
+    }, []);
 
-    const updateProduct = async (productId, updatedData) => {
+    const updateProduct = useCallback(async (productId, updatedData) => {
         try {
             setIsLoading(true);
 
-              // Get the current product data
             const productRef = doc(fireDb, "products", productId);
-             const productSnap = await getDoc(productRef);
+            const productSnap = await getDoc(productRef);
             
             if (productSnap.exists()) {
                 const currentProduct = productSnap.data();
                 
-                // If image URL has changed and old image is from Firebase Storage
                 if (updatedData.imageUrl !== currentProduct.imageUrl && 
                     currentProduct.imageUrl && 
                     currentProduct.imageUrl.includes('firebase')) {
                     try {
-                        // Delete the old image
                         const imageRef = ref(storage, currentProduct.imageUrl);
                         await deleteObject(imageRef);
                     } catch (error) {
                         console.error("Error deleting old image:", error);
-                        // Continue with update even if image deletion fails
                     }
                 }
                 
-                // Update the product document
                 await updateDoc(productRef, {
                     ...updatedData,
                     time: Timestamp.now(),
@@ -235,7 +278,7 @@ const MyState = (props) => {
                     })
                 });
 
-             toast.success("Product updated successfully", {
+                toast.success("Product updated successfully", {
                     position: "bottom-right",
                     autoClose: 1000,
                     hideProgressBar: false,
@@ -246,83 +289,16 @@ const MyState = (props) => {
                     theme: "colored",
                 });
                 
-            //product ka data phir fetch kiya database se
-              getProductData(); // Refresh the product list
+                getProductData(); 
             }   
         } catch (error) {
             console.error(error);
             toast.error("Error updating product");
         }
         setIsLoading(false);
-    };
+    }, []);
 
-    const getProductData = () => {
-        // Check if products are already loaded to prevent unnecessary fetches
-        if (products.length > 0) {
-            setIsLoading(false);
-            return;
-        }
-
-        setIsLoading(true);
-        try {
-            const q = query(
-                collection(fireDb, "products"),
-                orderBy("time")
-            );
-            
-            // Use getDocs instead of onSnapshot to fetch once
-            getDocs(q).then((QuerySnapshot) => {
-                let productsArray = [];
-                QuerySnapshot.forEach((doc) => {
-                    productsArray.push({ ...doc.data(), id: doc.id });
-                });
-                
-                // Only update if the array is different
-                if (productsArray.length !== products.length) {
-                    setProducts(productsArray);
-                }
-                setIsLoading(false);
-            }).catch((error) => {
-                console.error("Error fetching products:", error);
-                toast.error("Error fetching products");
-                setIsLoading(false);
-            });
-        } catch (error) {
-            console.error("Error setting up products fetch:", error);
-            toast.error("Error setting up products fetch");
-            setIsLoading(false);
-        }
-    };
-
-    const getCategories = () => {
-        setIsLoading(true);
-        try {
-            const q = query(
-                collection(fireDb, "categories"),
-                orderBy("time")
-            );
-            
-            // Replace onSnapshot with getDocs
-            getDocs(q).then((QuerySnapshot) => {
-                let categoriesArray = [];
-                QuerySnapshot.forEach((doc) => {
-                    categoriesArray.push({ ...doc.data(), id: doc.id });
-                });
-                setCategories(categoriesArray);
-                setIsLoading(false);
-            }).catch((error) => {
-                console.error("Error fetching categories:", error);
-                toast.error("Error fetching categories");
-                setIsLoading(false);
-            });
-        } catch (error) {
-            console.error("Error setting up categories fetch:", error);
-            toast.error("Error setting up categories fetch");
-            setIsLoading(false);
-        }
-    };
-
-    const addCategory = async () => {
+    const addCategory = useCallback(async () => {
         setIsLoading(true);
         const category = prompt("Enter category name");
         try {  
@@ -331,7 +307,6 @@ const MyState = (props) => {
                 name: category,
                 time: Timestamp.now(),
             });
-            // setCategories([...categories, category]);
             getCategories();
             toast.success("Category added successfully", {
                 position: "bottom-right",
@@ -348,9 +323,9 @@ const MyState = (props) => {
             console.log(e);
         }
         setIsLoading(false);
-    }
+    }, []);
 
-    const deleteCategory = async (categoryId) => {
+    const deleteCategory = useCallback(async (categoryId) => {
         try {
             setIsLoading(true);
             const categoryRef = doc(fireDb, "categories", categoryId);
@@ -365,52 +340,35 @@ const MyState = (props) => {
                 progress: undefined,
                 theme: "colored",
               });
-            getCategories(); // Refresh the category list
+            getCategories(); 
         } catch (error) {
             console.error(error);
             toast.error("Error deleting category");
         }
         setIsLoading(false);
-    };
+    }, []);
 
-    const getCategoryProducts = (category) => {
-        // Ensure category is a string and handle potential undefined
-        if (!category || !products) return [];
-        
-        return products.filter((product) => 
-            product.category && 
-            product.category.toLowerCase() === category.toLowerCase()
-        );
-    };
-
-    const getBestSellers = () => {
-        const sortedProducts = [...products].sort((a, b) => b.quantitySold - a.quantitySold);
-        setBestSellers(sortedProducts.slice(0, 5));
-    };
-
-    const addToWishlist = async (productId,userId) => {    
-        const userRef = doc(fireDb,"users",userId);
-        // const productRef = doc(fireDb,"products",productId);
-        await updateDoc(userRef,{
-            wishlist: arrayUnion(productId)   //arrayunion is used to add an element to an array
-        });
-    }
-
-    const removeFromWishlist = async (productId,userId) => {
+    const addToWishlist = useCallback(async (productId,userId) => {    
         const userRef = doc(fireDb,"users",userId);
         await updateDoc(userRef,{
-            wishlist: arrayRemove(productId)  //arrayremove is used to remove an element from an array
+            wishlist: arrayUnion(productId)   
         });
-    }
+    }, []);
 
-    const getWishlist = async (userId) => {
+    const removeFromWishlist = useCallback(async (productId,userId) => {
+        const userRef = doc(fireDb,"users",userId);
+        await updateDoc(userRef,{
+            wishlist: arrayRemove(productId)  
+        });
+    }, []);
+
+    const getWishlist = useCallback(async (userId) => {
         try {
             const userRef = doc(fireDb, "users", userId);
             const userDoc = await getDoc(userRef);
             if (userDoc.exists()) {
                 return userDoc.data()?.wishlist || [];
             }
-            // If user document doesn't exist, create it with empty wishlist
             await setDoc(userRef, {
                 wishlist: [],
                 carts: [],
@@ -422,9 +380,9 @@ const MyState = (props) => {
             console.error("Error getting wishlist:", error);
             return [];
         }
-    }
+    }, []);
 
-    const addToCart = async (productId,userId) => {
+    const addToCart = useCallback(async (productId,userId) => {
         const userRef = doc(fireDb,"users",userId);
         await updateDoc(userRef,{
             carts: arrayUnion(
@@ -433,11 +391,11 @@ const MyState = (props) => {
                     quantity: 1,
                     lastUpdated: Date.now()
                 }
-            )   //arrayunion is used to add an element to an array
+            )   
         });
-    }
+    }, []);
 
-    const removeFromCart = async (productId,userId) => {
+    const removeFromCart = useCallback(async (productId,userId) => {
         const userRef = doc(fireDb,"users",userId);
         const cart = await getCart(userId);
         const itemToRemove = cart.find(item => item.productId === productId);
@@ -446,16 +404,15 @@ const MyState = (props) => {
         await updateDoc(userRef,{
             carts: arrayRemove(itemToRemove)
         });
-    }
+    }, []);
 
-    const getCart = async (userId) => {
-         try {
+    const getCart = useCallback(async (userId) => {
+        try {
             const userRef = doc(fireDb, "users", userId);
             const userDoc = await getDoc(userRef);
             if (userDoc.exists()) {
                 return userDoc.data()?.carts || [];
             }
-            // If user document doesn't exist, create it with empty cart
             await setDoc(userRef, {
                 wishlist: [],
                 carts: [],
@@ -467,26 +424,24 @@ const MyState = (props) => {
             console.error("Error getting cart:", error);
             return [];
         }
-    }
+    }, []);
 
-    const getOrders = async (userId) => {
+    const getOrders = useCallback(async (userId) => {
         const userRef = doc(fireDb,"users",userId);
         const userDoc = await getDoc(userRef);
         return userDoc.data().orders || [];
-    }
+    }, []);
 
-    const updatequantity = async (productId, userId, quantity) => {
-        if (quantity < 1) return; // Don't allow quantity less than 1
+    const updatequantity = useCallback(async (productId, userId, quantity) => {
+        if (quantity < 1) return; 
         
         const userRef = doc(fireDb, "users", userId);
         const userDoc = await getDoc(userRef);
         const currentCarts = userDoc.data().carts || [];
         
-        // Find the index of the item to update
         const itemIndex = currentCarts.findIndex(item => item.productId === productId);
         if (itemIndex === -1) return;
         
-        // Create new array with updated quantity
         const updatedCarts = [...currentCarts];
         updatedCarts[itemIndex] = {
             ...updatedCarts[itemIndex],
@@ -494,13 +449,12 @@ const MyState = (props) => {
             lastUpdated: Date.now()
         };
         
-        // Update the entire carts array
         await updateDoc(userRef, {
             carts: updatedCarts
         });
-    }
+    }, []);
 
-    const handleSearch = (query) => {
+    const handleSearch = useCallback((query) => {
         const searchTerm = query.toLowerCase();
         const filteredProducts = products.filter(product =>
             product.title.toLowerCase().includes(searchTerm) ||
@@ -509,64 +463,108 @@ const MyState = (props) => {
         );
         setSearchResults(filteredProducts);
         setCurrentProductId(filteredProducts.length > 0 ? filteredProducts[0].id : null);
-    };
-
-    useEffect(() => {
-        if (products.length > 0) {
-            getBestSellers();
-        }
     }, [products]);
 
+    // Authentication and Initial Data Load Effect
+    useEffect(() => {
+        let isMounted = true;
+        
+        const initializeApp = async () => {
+            if (isMounted) {
+                await getCategories();
+                await getProductData();
+            }
+        };
+
+        initializeApp();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [getCategories, getProductData]);
+
+    // Best Sellers Update Effect
+    useEffect(() => {
+        let isMounted = true;
+        
+        if (isMounted && products.length > 0) {
+            getBestSellers();
+        }
+
+        return () => {
+            isMounted = false;
+        };
+    }, [products, getBestSellers]);
+
+    // Memoized context value to prevent unnecessary re-renders
+    const contextValue = useMemo(() => ({
+        currentUserId,
+        setCurrentUserId,
+        showSignIn,
+        setShowSignIn,
+        showSignUp,
+        setShowSignUp,
+        showProfile,
+        setShowProfile,
+        isUserLoggedIn,
+        setIsUserLoggedIn,
+        isLoading,
+        setIsLoading,
+        products,
+        product, 
+        setProduct,
+        addProduct,
+        deleteProduct,
+        updateProduct,
+        getProductData,
+        addCategory,
+        categories,
+        setCategories,
+        deleteCategory,
+        getCategories,
+        getCategoryProducts,
+        bestSellers,
+        addToWishlist,
+        removeFromWishlist,
+        getWishlist,
+        addToCart,
+        removeFromCart,
+        getCart,
+        getOrders,
+        updatequantity,
+        searchResults,
+        handleSearch,
+        wishlistItems,
+        setWishlistItems,
+        cartItems,
+        setCartItems,
+        setCurrentProductId,
+        currentProductId,
+        user,
+        setUser,
+        userInfo,
+        setUserInfo
+    }), [
+        currentUserId, 
+        showSignIn, 
+        showSignUp, 
+        showProfile, 
+        isUserLoggedIn, 
+        isLoading, 
+        products, 
+        product, 
+        categories, 
+        bestSellers, 
+        searchResults,
+        wishlistItems,
+        cartItems,
+        currentProductId,
+        user,
+        userInfo
+    ]);
+
     return (
-        <myContext.Provider value={{
-            currentUserId,
-            setCurrentUserId,
-            showSignIn,
-            setShowSignIn,
-            showSignUp,
-            setShowSignUp,
-            showProfile,
-            setShowProfile,
-            isUserLoggedIn,
-            setIsUserLoggedIn,
-            isLoading,
-            setIsLoading,
-            products,
-            product, 
-            setProduct,
-            addProduct,
-            deleteProduct,
-            updateProduct,
-            getProductData,
-            addCategory,
-            categories,
-            setCategories,
-            deleteCategory,
-            getCategories,
-            getCategoryProducts,
-            bestSellers,
-            addToWishlist,
-            removeFromWishlist,
-            getWishlist,
-            addToCart,
-            removeFromCart,
-            getCart,
-            getOrders,
-            updatequantity,
-            searchQuery,
-            searchResults,
-            handleSearch,
-            wishlistItems,
-            setWishlistItems,
-            cartItems,
-            setCartItems,
-            setCurrentProductId,
-            currentProductId,
-            user,
-            setUser,
-            userInfo,
-            setUserInfo
-        }}>
+        <myContext.Provider value={contextValue}>
             {props.children}
         </myContext.Provider>
     );
@@ -576,4 +574,4 @@ MyState.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-export default MyState;
+export default React.memo(MyState);

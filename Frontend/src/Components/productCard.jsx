@@ -5,7 +5,8 @@ import {useContext} from 'react';
 import myContext from '../context/data/myContext';
 import toast from 'react-hot-toast'; // Assuming you have react-hot-toast installed
 
-const ProductCard = ({ id,title, description, price, image, catagory, mrp, rating ,noOfRatings}) => {
+const ProductCard = ({ id, title, description, price, image, catagory, mrp, rating, noOfRatings }) => {
+  const numericRating = Number(rating);
   const {addToWishlist, removeFromWishlist, currentUserId, isUserLoggedIn, getWishlist,addToCart,removeFromCart,getCart,setCartItems} = useContext(myContext);
   const [isLiked, setIsLiked] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
@@ -20,6 +21,24 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
     }, 300);
   };
 
+  // Render rating stars
+  const renderStars = () => {
+    const fullStars = Math.floor(numericRating);
+    const halfStar = numericRating % 1 >= 0.5 ? 1 : 0;
+    const emptyStars = 5 - fullStars - halfStar;
+
+    return (
+      <div className="flex">
+        {[...Array(fullStars)].map((_, index) => (
+          <span key={`full-${index}`} className="text-yellow-500">★</span>
+        ))}
+        {halfStar === 1 && <span className="text-yellow-500">½</span>}
+        {[...Array(emptyStars)].map((_, index) => (
+          <span key={`empty-${index}`} className="text-gray-300">★</span>
+        ))}
+      </div>
+    );
+  };
 
   //lets understand the logic of this part
   //ye use ho raha hai taki agar page refresh hoye toh bhi jo liked product hai wo liked hi rahe
@@ -37,7 +56,7 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
     };
     
     checkWishlistStatus();
-  }, [currentUserId, id, isUserLoggedIn, getWishlist]);
+  }, [ getWishlist]);
 
   useEffect(() => {
     const checkCartStatus = async () => {
@@ -53,7 +72,7 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
     };
     
     checkCartStatus();
-  }, [currentUserId, id, isUserLoggedIn, getCart, setCartItems]);
+  }, [getCart, setCartItems]);
 
   const handleLike = async () => {
     if(!isUserLoggedIn){
@@ -145,24 +164,9 @@ const ProductCard = ({ id,title, description, price, image, catagory, mrp, ratin
           </h2>
           <div className="flex items-center mb-2">
             <div className="flex items-center">
-              {[...Array(5)].map((_, index) => (
-                <svg
-                  key={index}
-                  className={`w-4 h-4 ${
-                    index < Math.floor(rating || 0)
-                      ? 'text-yellow-400'
-                      : index < (rating || 0)
-                      ? 'text-yellow-200'
-                      : 'text-gray-300'
-                  }`}
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
+              {renderStars()}
               <span className="ml-2 text-sm text-gray-600">
-                {rating ? Number(rating).toFixed(1) : 'No rating'} {noOfRatings ? `(${noOfRatings})` : ''}
+                {numericRating.toFixed(1)} {noOfRatings ? `(${noOfRatings})` : ''}
               </span>
             </div>
           </div>
@@ -205,12 +209,13 @@ ProductCard.propTypes = {
   description: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
-  catagory: PropTypes.string,
+  catagory: PropTypes.string.isRequired,
   mrp: PropTypes.number.isRequired,
-  rating: PropTypes.number,
-  noOfRatings: PropTypes.number,
-  noOfReviews: PropTypes.number,
-  reviews: PropTypes.array,
+  rating: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]).isRequired,
+  noOfRatings: PropTypes.number.isRequired
 };
 
 export default ProductCard;
