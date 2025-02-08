@@ -194,8 +194,15 @@ const Home = () => {
         {/* Header Section with Title and View All Button */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex flex-col">
-            <h2 className="text-3xl font-bold relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-green-500 to-teal-500 animate-gradient-x drop-shadow-lg tracking-wide">Best Sellers</h2>
-            <p className="text-black-900 text-sm mt-1">Our most popular dental products</p>
+            <div className="flex items-center gap-3">
+              <h2 className="text-3xl font-bold relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-green-500 to-teal-500 animate-gradient-x drop-shadow-lg tracking-wide ">
+                Best Sellers
+              </h2>
+              <span className="hidden sm:inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
+                Top Picks
+              </span>
+            </div>
+            <p className="text-gray-600 text-sm mt-2 font-medium">Our most popular dental products</p>
           </div>
           {/* <button
             onClick={() => navigate('/products/best-sellers')}
