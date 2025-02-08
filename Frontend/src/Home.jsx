@@ -48,7 +48,7 @@ const Home = () => {
       setCurrentSlide((prevSlide) =>
         prevSlide === slides.length - 1 ? 0 : prevSlide + 1
       );
-    }, 10000);
+    }, 4000);
 
     return () => clearInterval(timer);
   }, []); // Added dependency array
@@ -195,7 +195,7 @@ const Home = () => {
         {/* Header Section with Title and View All Button */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex flex-col">
-            <h2 className="text-3xl font-bold relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-green-500 to-teal-500 animate-gradient-x drop-shadow-lg tracking-wide  animate-pulse">Best Sellers</h2>
+            <h2 className="text-3xl font-bold relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-green-500 to-teal-500 animate-gradient-x drop-shadow-lg tracking-wide">Best Sellers</h2>
             <p className="text-black-900 text-sm mt-1">Our most popular dental products</p>
           </div>
           {/* <button
