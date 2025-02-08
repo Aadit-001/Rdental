@@ -20,6 +20,9 @@ import GeneralDentistry from './assets/GeneralDentistry.jpg';
 import equipments from './assets/equipments.jpg';
 import restoratives from './assets/restoratives.png';
 import instruments from './assets/instruments.jpg';
+import endo from './assets/endo.png';
+import steri from './assets/steri.png';
+import dispo from './assets/dispo.png';
 
 
 
@@ -292,7 +295,7 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[150px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/disposables'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={category2}
+                src={dispo}
                 alt="Disposables"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
@@ -358,7 +361,7 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[230px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/endodontics'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={Endodontics}
+                src={endo}
                 alt="Endodontics"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
@@ -403,7 +406,7 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[300px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/sterilization'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={category7}
+                src={steri}
                 alt="Sterilization"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
