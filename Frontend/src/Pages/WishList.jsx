@@ -12,7 +12,7 @@ function WishList() {
   const [isLoading, setIsLoading] = useState(true);
   const [, setWishlistEmpty] = useState(false);
 
-  const { getWishlist, addToWishlist, removeFromWishlist, wishlistItems, setWishlistItems } = useContext(myContext);
+  const { getWishlist, addToWishlist, removeFromWishlist, wishlistItems, setWishlistItems,addToCart,removeFromCart } = useContext(myContext);
   
   useEffect(() => {
     const fetchWishlist = async () => {
@@ -34,7 +34,7 @@ function WishList() {
     };
     
     fetchWishlist();
-  }, [getWishlist, addToWishlist,removeFromWishlist]);
+  }, [getWishlist, addToWishlist,removeFromWishlist,addToCart]);
 
   return (
     <>

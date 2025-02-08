@@ -33,7 +33,7 @@ const RelatedProductCard = ({ id,title, description, price, image, catagory, mrp
     };
     
     checkWishlistStatus();
-  }, [currentUserId, id, isUserLoggedIn, getWishlist]);
+  }, [ getWishlist]);
 
   useEffect(() => {
     const checkCartStatus = async () => {
@@ -49,7 +49,7 @@ const RelatedProductCard = ({ id,title, description, price, image, catagory, mrp
     };
     
     checkCartStatus();
-  }, [currentUserId, id, isUserLoggedIn, getCart, setCartItems]);
+  }, [ getCart, setCartItems]);
 
   const handleLike = async () => {
     if(!isUserLoggedIn){
@@ -97,7 +97,7 @@ const RelatedProductCard = ({ id,title, description, price, image, catagory, mrp
 
   return (
     <div 
-      className="relative w-full bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 overflow-hidden group"
+      className="relative w-full cursor-pointer bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 overflow-hidden group"
       onClick={handleClick}
     >
       {/* Image Container - More Compact */}
