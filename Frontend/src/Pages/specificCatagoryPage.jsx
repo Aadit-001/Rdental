@@ -2,11 +2,11 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import RelatedProductCard from '../Components/RelatedProductCard';
 import endodentics from '../assets/Endodentics.jpg';
-import equipment from '../assets/equipments.jpg';
-import restoratives from '../assets/restoratives.jpg';
-import instruments from '../assets/instruments.webp';
+import equipments from '../assets/equipments.jpg';
+import restoratives from '../assets/restoratives.png';
+import instruments from '../assets/instruments.jpg';
 import sterilization from '../assets/sterilization.webp';
-import general from '../assets/general.jpg';
+import GeneralDentistry from '../assets/GeneralDentistry.jpg';
 import {useContext} from 'react';
 import myContext from '../context/data/myContext';
 
@@ -30,15 +30,15 @@ const SpecificCategoryPage = () => {
       case 'endodentics':
         return endodentics;
       case 'equipment':
-        return equipment;
+        return equipments;
       case 'restoratives':
         return restoratives;
       case 'instruments':
         return instruments;
       case 'sterilization':
         return sterilization;
-      case 'general dentistry':
-        return general;
+      case 'general':
+        return GeneralDentistry;
       default:
         return endodentics; // Default fallback image
     }
