@@ -82,7 +82,7 @@ const OrderCard = ({ order }) => {
       className="bg-white border border-gray-200 shadow-lg rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 mb-6 mt-[-80px]"
     >
       <div className="p-6">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
           <div className="flex items-center space-x-3">
             <div className="bg-primary/10 p-2 rounded-lg">
               <FaClipboardList className="text-primary text-2xl" />
@@ -94,11 +94,11 @@ const OrderCard = ({ order }) => {
               </p>
             </div>
           </div>
-          <div className="flex flex-col items-end">
+          <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start w-full sm:w-auto">
             <span className={`px-4 py-2 rounded-full text-sm font-semibold border ${getStatusColor(safeOrder.status)}`}>
               {safeOrder.status}
             </span>
-            <div className="mt-2 text-right">
+            <div className="sm:mt-2 text-right">
               <p className="text-sm text-gray-600 mb-1">Total Amount</p>
               <p className="font-bold text-lg text-primary">₹{safeOrder.total.toLocaleString('en-IN')}</p>
             </div>

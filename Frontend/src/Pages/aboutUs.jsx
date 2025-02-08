@@ -291,7 +291,7 @@ const AboutUs = () => {
               <p className="text-gray-600">Dental Clinics Served</p>
             </div>
             <div>
-              <h3 className="text-4xl font-bold text-green-500 mb-2 transform transition duration-300 hover:scale-105">300+</h3>
+              <h3 className="text-4xl font-bold text-green-500 mb-2 transform transition duration-300 hover:scale-105">150+</h3>
               <p className="text-gray-600">Products Available</p>
             </div>
             <div>

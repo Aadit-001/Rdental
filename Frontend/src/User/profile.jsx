@@ -118,10 +118,10 @@ const Profile = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                   />
                 </svg>
-                <span className="text-gray-700 font-medium">wishlist</span>
+                <span className="text-gray-700 font-medium">Wishlist</span>
               </Link>
             </motion.div>
 
@@ -151,7 +151,7 @@ const Profile = () => {
               whileHover={{ scale: 1.02 }}
               className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
             >
-              <Link to="/privacy-policy" className="flex items-center w-full">
+              <Link to="/TermsAndCondition" className="flex items-center w-full">
                 <svg
                   className="w-6 h-6 text-green-600 mr-3"
                   fill="none"
@@ -166,7 +166,7 @@ const Profile = () => {
                   />
                 </svg>
                 <span className="text-gray-700 font-medium">
-                  Privacy Policy
+                  Terms and Conditions
                 </span>
               </Link>
             </motion.div>
