@@ -7,7 +7,7 @@ const AboutUs = () => {
   const [teamMembers] = useState([
     {
       name: 'Adit Jha',
-      role: 'Lead Developer & Team Leader', 
+      role: 'Lead Developer & Team Leader',
       description: 'Developed the fully functioanl frontend and backend for R-dental.',
       contact: 'Contact Adit',
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR48kgQNS7jHuRO0_X6Qv5PCh-chkE0_E8uRA&s'
@@ -250,7 +250,6 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
-
       {/* Services Section */}
       
       <div className="relative max-w-6xl mx-auto h-auto bg-gray-50 py-16 mb-16 mt-16">
@@ -311,7 +310,7 @@ const AboutUs = () => {
         </div>
 
         <div className="relative container mx-auto px-6">
-          {/* Header remains the same */}
+          {/* Header */}
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-green-300 mb-4">
               Technical Innovation Team
@@ -319,7 +318,7 @@ const AboutUs = () => {
             <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto"></div>
           </div>
 
-          {/* Adjusted Team Grid */}
+          {/* Team Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {teamMembers.slice(0, 2).map((member, index) => (
               <div 
@@ -371,7 +370,7 @@ const AboutUs = () => {
             ))}
           </div>
 
-          {/* Bottom line remains the same */}
+          {/* Bottom line */}
           <div className="mt-16 w-full h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-20"></div>
         </div>
       </div>

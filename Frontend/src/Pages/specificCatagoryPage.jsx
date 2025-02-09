@@ -225,7 +225,6 @@ const SpecificCategoryPage = () => {
               </div>
             </div>
           </div>
-
           {/* Right Content - 80% */}
           <div className="w-full md:w-4/5 relative">
             {/* Products Grid - Fixed heights for different screen sizes */}

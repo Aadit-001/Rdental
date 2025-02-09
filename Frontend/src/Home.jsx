@@ -23,6 +23,10 @@ import instruments from './assets/instruments.jpg';
 import endo from './assets/endo.png';
 import steri from './assets/steri.png';
 import dispo from './assets/dispo.png';
+import endo from './assets/endo.png';
+import steri from './assets/steri.png';
+import dispo from './assets/dispo.png';
+
 
 
 const Home = () => {
@@ -188,7 +192,6 @@ const Home = () => {
 
         </div>
       </div>
-
       {/*Best Seller Section */}
       <div className="flex flex-col gap-2 bg-gradient-to-br from-blue-50 via-white to-blue-50 max-w-[1400px] mx-auto mt-10 mb-10 lg:rounded-3xl p-4 sm:p-10 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm bg-opacity-90 relative overflow-hidden before:absolute before:inset-0 before:bg-blue-200/20 before:animate-pulse">
         {/* Header Section with Title and View All Button */}
