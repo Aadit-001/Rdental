@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import WishlistProductCard from '../Components/WishlistProductCard';
@@ -10,31 +10,152 @@ function WishList() {
 
   // const [wishlistItems, setWishlistItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [, setWishlistEmpty] = useState(false);
+  const [wishlistEmpty, setWishlistEmpty] = useState(false);
 
-  const { getWishlist, addToWishlist, removeFromWishlist, wishlistItems, setWishlistItems,addToCart,removeFromCart } = useContext(myContext);
+  const context = useContext(myContext);
+  const { getWishlist, addToWishlist, removeFromWishlist, wishlistItems, setWishlistItems, addToCart, removeFromCart } = context;
   
-  useEffect(() => {
-    const fetchWishlist = async () => {
-      try {
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user) {
-          setIsLoading(false);
-          return;
-        }
-        const items = await getWishlist(user.uid);
+  // Memoize the user to prevent unnecessary re-renders
+  const user = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem('user'));
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const fetchWishlist = useCallback(async () => {
+    if (!user?.uid) {
+      setWishlistItems([]);
+      setWishlistEmpty(true);
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const items = await getWishlist(user.uid);
+      
+      if (Array.isArray(items)) {
+        setWishlistItems(items);
         setWishlistEmpty(items.length === 0);
-        setWishlistItems(items || []);
-      } catch (error) {
-        console.error("Error fetching wishlist:", error);
-        toast.error("Failed to load wishlist");
-      } finally {
-        setIsLoading(false);
+      } else {
+        setWishlistItems([]);
+        setWishlistEmpty(true);
       }
-    };
-    
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+      toast.error("Failed to load wishlist");
+      setWishlistItems([]);
+      setWishlistEmpty(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user?.uid, getWishlist, setWishlistItems]);
+
+  // Single useEffect to handle both initial load and user changes
+  useEffect(() => {
     fetchWishlist();
-  }, [getWishlist, addToWishlist,removeFromWishlist,addToCart]);
+  }, [fetchWishlist]);
+
+  // Memoize the rendered content to prevent unnecessary re-renders
+  const renderContent = useMemo(() => {
+    if (isLoading) {
+      return (
+        <div className="flex justify-center items-center h-40">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
+        </div>
+      );
+    }
+
+    if (wishlistItems.length === 0) {
+      return (
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="text-center py-12 bg-white/90 backdrop-blur-sm rounded-lg shadow-md border border-gray-200/50"
+        >
+          <div className="text-gray-500 mb-4">
+            <svg className="w-24 h-24 mx-auto animate-pulse text-green-400 hover:text-red-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">Your wishlist is empty</h2>
+          <p className="text-gray-600 mb-6">Add items you love to your wishlist. Review them anytime and easily move them to the cart.</p>
+          <Link to="/">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center justify-center h-12 px-6 relative py-3 rounded-lg shadow-md 
+              before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
+              before:transition-all before:duration-500 hover:before:opacity-0
+              after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
+              after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
+              transform hover:scale-105 transition-all duration-300 ease-in-out
+              hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white"
+            >
+              <span className="mr-2 relative z-10">Browse Items</span>
+              <svg
+                className="w-5 h-5 relative z-10"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </motion.div>
+          </Link>
+        </motion.div>
+      );
+    }
+
+    return (
+      <div>
+        {wishlistItems.map((productId) => (
+          <div key={productId} className="mb-10 md:mb-0 md:px-0">
+            <WishlistProductCard
+              productId={productId}
+            />
+          </div>
+        ))}
+        <div className="flex justify-center mt-10 mb-10">
+          <Link to="/">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center justify-center h-12 px-6 relative py-3 rounded-lg shadow-md 
+              before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
+              before:transition-all before:duration-500 hover:before:opacity-0
+              after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
+              after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
+              transform hover:scale-105 transition-all duration-300 ease-in-out
+              hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white" 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              <span className="mr-2 relative z-10">Add more to wishlist</span>
+              <svg
+                className="w-5 h-5 relative z-10"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </motion.div>
+          </Link>
+        </div>
+      </div>
+    );
+  }, [isLoading, wishlistItems]);
 
   return (
     <>
@@ -80,94 +201,7 @@ function WishList() {
                 <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-900 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
               </h1>
 
-              {isLoading ? (
-                <div className="flex justify-center items-center h-40">
-                  <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-green-500"></div>
-                </div>
-              ) : wishlistItems.length === 0 ? (
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  className="text-center py-12 bg-white/90 backdrop-blur-sm rounded-lg shadow-md border border-gray-200/50"
-                >
-                  <div className="text-gray-500 mb-4">
-                    <svg className="w-24 h-24 mx-auto animate-pulse text-green-400 hover:text-red-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                  </div>
-                  <h2 className="text-2xl font-semibold mb-4 text-gray-800">Your wishlist is empty</h2>
-                  <p className="text-gray-600 mb-6">Add items you love to your wishlist. Review them anytime and easily move them to the cart.</p>
-                  <Link to="/">
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="inline-flex items-center justify-center h-12 px-6 relative py-3 rounded-lg shadow-md 
-                      before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
-                      before:transition-all before:duration-500 hover:before:opacity-0
-                      after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
-                      after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
-                      transform hover:scale-105 transition-all duration-300 ease-in-out
-                      hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white"
-                    >
-                      <span className="mr-2 relative z-10">Browse Items</span>
-                      <svg
-                        className="w-5 h-5 relative z-10"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </motion.div>
-                  </Link>
-                </motion.div>
-              ) : (
-                  <div>
-                    {wishlistItems.map((productId) => (
-                      <div key={productId} className="mb-10 md:mb-0 md:px-0">
-                        <WishlistProductCard
-                          productId={productId}
-                        />
-                      </div>
-                    ))}
-                  <div className="flex justify-center mt-10 mb-10">
-                    <Link to="/">
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="inline-flex items-center justify-center h-12 px-6 relative py-3 rounded-lg shadow-md 
-                        before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
-                        before:transition-all before:duration-500 hover:before:opacity-0
-                        after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
-                        after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
-                        transform hover:scale-105 transition-all duration-300 ease-in-out
-                        hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white" 
-                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                        >
-                        <span className="mr-2 relative z-10">Add more to wishlist</span>
-                        <svg
-                          className="w-5 h-5 relative z-10"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          >
-                          <path
-                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            />
-                        </svg>
-                      </motion.div>
-                    </Link>
-                  </div>
-                </div>
-              )}
+              {renderContent}
             </div>
           </div>
         </div>
