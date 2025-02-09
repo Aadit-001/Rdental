@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import indiamap from '../assets/indiamap.png'
+import indiamap from '../assets/indiamap.png';
+import suresh from '../assets/suresh.jpeg';
 
 const AboutUs = () => {
   const [teamMembers] = useState([
@@ -180,34 +181,71 @@ const AboutUs = () => {
       </div>
 
       {/* Founder Section */}
-      <div className="relative max-w-6xl mx-auto h-auto bg-gray-100 py-16 mb-16">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Meet Our Founder</h2>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="relative w-64 h-64 md:w-80 md:h-80 ml-8">
-              <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-blue-500 rounded-full transform -rotate-6 opacity-20"></div>
-              <div className="absolute inset-0 bg-white rounded-full transform rotate-3 shadow-lg">
-                <img 
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR48kgQNS7jHuRO0_X6Qv5PCh-chkE0_E8uRA&s" 
-                  alt="Founder Name"
-                  className="w-full h-full object-cover rounded-full p-2"
-                />
+      <div className="relative max-w-6xl mx-auto py-20">
+        {/* Simplified background decorative elements - removed corner blobs */}
+        <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-blue-50"></div>
+        <div className="absolute bottom-0 left-1/2 w-32 h-32 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        
+        <div className="relative max-w-6xl mx-auto px-4">
+          {/* Added top border with gradient */}
+          <div className="h-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-t-lg mb-16"></div>
+          
+          <h2 className="text-4xl font-bold text-center mb-16">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-blue-600">
+              Meet Our Visionary Leader
+            </span>
+          </h2>
+          
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
+            {/* Image Container with adjusted positioning */}
+            <div className="relative flex-shrink-0 lg:ml-8">  {/* Added lg:ml-8 for right margin on larger screens */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-green-400 to-blue-500 rounded-full animate-spin-slow opacity-20"></div>
+              <div className="absolute -inset-4 bg-gradient-to-r from-blue-500 to-green-400 rounded-full animate-reverse-spin opacity-20"></div>
+              
+              <div className="relative w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80">
+                <div className="w-full h-full bg-white rounded-full p-3 shadow-2xl">
+                  <div className="w-full h-full rounded-full overflow-hidden ring-4 ring-white">
+                    <img 
+                      src={suresh} 
+                      alt="Suresh Gupta - Founder & CEO"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="max-w-2xl text-center md:text-left">
-              <h3 className="text-4xl font-bold mb-2">Suresh Gupta</h3>
-              <p className="text-green-500 text-xl mb-6">Founder & CEO</p>
-              <div className="w-20 h-1 bg-gradient-to-r from-green-500 to-blue-500 mb-6 mx-auto md:mx-0"></div>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                With over [X] years of experience in the dental industry, our founder established R-DENTAL 
-                with a vision to revolutionize dental equipment distribution in India. Their commitment 
-                to quality and customer service has been the driving force behind our company's success.
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                "Our mission is to empower dental professionals with the finest equipment and 
-                supplies, enabling them to provide exceptional care to their patients. We believe 
-                in building lasting relationships based on trust, quality, and innovation."
-              </p>
+
+            {/* Content Container remains the same */}
+            <div className="flex-1 max-w-2xl">
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-xl">
+                <h3 className="text-5xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-blue-600">
+                  Suresh Gupta
+                </h3>
+                <p className="text-2xl font-semibold text-green-600 mb-6">Founder & CEO</p>
+                <div className="w-32 h-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-full mb-8"></div>
+                
+                <div className="space-y-6">
+                  <p className="text-gray-700 text-lg leading-relaxed">
+                    With over <span className="font-semibold text-green-600">[X] years</span> of experience 
+                    in the dental industry, our founder established R-DENTAL with a vision to revolutionize 
+                    dental equipment distribution in India. Their commitment to quality and customer service 
+                    has been the driving force behind our company's success.
+                  </p>
+                  
+                  <blockquote className="relative p-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl">
+                    <div className="absolute top-0 left-0 transform -translate-x-4 -translate-y-4">
+                      <svg className="h-8 w-8 text-green-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                      </svg>
+                    </div>
+                    <p className="text-gray-700 italic text-lg leading-relaxed pl-6">
+                      "Our mission is to empower dental professionals with the finest equipment and 
+                      supplies, enabling them to provide exceptional care to their patients. We believe 
+                      in building lasting relationships based on trust, quality, and innovation."
+                    </p>
+                  </blockquote>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -215,24 +253,24 @@ const AboutUs = () => {
 
       {/* Services Section */}
       
-      <div className="relative max-w-6xl mx-auto h-auto bg-gray-50 py-16 mb-16">
+      <div className="relative max-w-6xl mx-auto h-auto bg-gray-50 py-16 mb-16 mt-16">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-12">Our Comprehensive Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { title: "Prime Dental Products" },
-              { title: "GC", desc: "Innovating braces and orthodontic accessories for confident smiles." },
-              { title: "Ivoclar - Vivadent", desc: "Pioneering diagnostic tools for superior dental care." },
-              { title: "Shofu", desc: "Delivering premium materials for dental prosthetics and restorations." },
-              { title: "GDC", desc: "Crafting high-precision tools for efficient dental procedures." },
-              { title: "Mani - Japan", desc: "Leading in root canal treatment technologies and solutions." },
-              { title: "Dentsply", desc: "Trusted for cements, composites, and reliable filling materials." },
-              { title: "SS White Products", desc: "Redefining comfort with ergonomic dental chairs." },
+              { title: "Prime Dental Products",desc: "Manufacturer of Restorite Composites, Prosthodontic Products & Conservative Products offered by Prime Dental Products."},
+              { title: "GC", desc: "GC offers a wide range of products, including restorative materials, preventive products, adhesives, cements, and dental equipment." },
+              { title: "Ivoclar - Vivadent", desc: "Discover our revolutionary dental product range. From direct restoratives, zirconia restorations and digital denture to metal ceramics and more." },
+              { title: "Shofu", desc: "Shofu Dental India provides the best dental products and equipment, from adhesives to porcelain restoratives." },
+              { title: "GDC", desc: "GDC Marketing is renowned all over the world for it's ergonomics, design, precision, performance and uncompromising quality." },
+              { title: "Mani - Japan", desc: "Shop a wide range mani burs, mani k files, mani dental burs, mani files, mani diamond burs, mani fiber post." },
+              { title: "Dentsply", desc: "Manufacturer of Carbide Burs, Impression Paste & Complete Composite Finishing." },
+              { title: "SS White Products", desc: "Adhesives, Bonding Agents & Etchants · Cement and Liners · Composites · Endodontics · Finishing & Polishing · Tooth Whitening · Auxiliaries." },
               { title: "Prevest Denpro", desc: "Illuminating clinics with cutting-edge operatory lighting." },
-              { title: "ORO Products", desc: "Ensuring hygiene with effective sterilization solutions." },
-              { title: "Oracraft", desc: "Specialized in fluoride treatments and dental sealants." },
+              { title: "ORO Products", desc: "HEALTHCARE. STERILIZATION PACKAGING · STERILITY MONITORING · SAFETY WEAR. DENTAL CARE. ENDODONTIC · DISPOSABLES · INSTRUMENTS." },
+              { title: "Oracraft", desc: "Leading Dental Instruments Company who offers the best, high-quality & 100% genuine dental products, instruments." },
               { title: "3M", desc: "Offering durable crown and bridge restorative materials." },
-              { title: "MAARC", desc: "Revolutionizing dentistry with laser tools and accessories." },
+              { title: "MAARC", desc: "Company catering a wide range of products such as Dental Consumables incl. Endo, Prostho, Restorative, Lab range, dental alloys, jewellery waxes, etc…" },
               { title: "API Instruments", desc: "Supplying essential lab equipment for dental excellence." },
               { title: "Waldent", desc: "Enhancing smiles with cosmetic dentistry essentials." },
             ].map((service, index) => (
@@ -258,27 +296,83 @@ const AboutUs = () => {
       </div>
 
       {/* Technical Team Section */}
-      <div className="relative max-w-6xl mx-auto h-auto bg-gray-100 py-16">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12">Meet Our Technical Team</h2>
-          <div className="flex items-center justify-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {teamMembers.slice(0, 2).map((member, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center justify-center">
-                  <div className="relative w-48 h-48 rounded-full overflow-hidden mb-6">
-                    <img 
-                      src={member.image} 
-                      alt={member.name}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  </div>
-                  <h3 className="text-2xl font-semibold mb-2">{member.name}</h3>
-                  <p className="text-blue-600 mb-2 text-center">{member.role}</p>
-                  <p className="text-gray-600 text-center">{member.description}</p>
-                </div>
-              ))}
+      <div className="relative max-w-6xl mx-auto py-16 mb-6">
+        {/* Background elements remain the same */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-blue-900 opacity-95 rounded-3xl"></div>
+        <div className="absolute inset-0">
+          <div className="absolute w-full h-full">
+            <div className="absolute inset-0 opacity-10">
+              <div className="h-full w-full" style={{
+                backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)`,
+                backgroundSize: '24px 24px'
+              }}></div>
             </div>
           </div>
+        </div>
+
+        <div className="relative container mx-auto px-6">
+          {/* Header remains the same */}
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-green-300 mb-4">
+              Technical Innovation Team
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto"></div>
+          </div>
+
+          {/* Adjusted Team Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {teamMembers.slice(0, 2).map((member, index) => (
+              <div 
+                key={index} 
+                className="relative w-full"
+              >
+                {/* Glow effect */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-green-500 rounded-2xl blur-md opacity-90"></div>
+                
+                {/* Card content - increased padding */}
+                <div className="relative bg-slate-800/90 rounded-2xl p-8 ring-1 ring-gray-700/50 h-full">
+                  <div className="flex flex-col md:flex-row items-center gap-8 h-full">
+                    {/* Larger Image Container */}
+                    <div className="relative w-36 h-36 md:w-40 md:h-40 flex-shrink-0">
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-green-500 rounded-xl animate-pulse opacity-20"></div>
+                      <img 
+                        src={member.image} 
+                        alt={member.name}
+                        className="relative w-full h-full object-cover rounded-xl ring-2 ring-green-500/50"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900/50 rounded-xl">
+                        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-slate-900/50 to-transparent rounded-b-xl"></div>
+                      </div>
+                    </div>
+
+                    {/* Content - adjusted spacing */}
+                    <div className="flex-1 text-center md:text-left">
+                      <h3 className="text-2xl font-bold text-blue-300 mb-3">{member.name}</h3>
+                      <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-900/70 text-blue-200 mb-4">
+                        {member.role}
+                      </div>
+                      <p className="text-gray-200 text-sm leading-relaxed mb-5">
+                        {member.description}
+                      </p>
+                      
+                      {/* Technical tags */}
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-2 py-1 text-xs rounded-md bg-green-900/50 text-green-300 border border-green-500/40">
+                          Technical Expert
+                        </span>
+                        <span className="px-2 py-1 text-xs rounded-md bg-blue-900/50 text-blue-300 border border-blue-500/40">
+                          Innovation Lead
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom line remains the same */}
+          <div className="mt-16 w-full h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-20"></div>
         </div>
       </div>
 

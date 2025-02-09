@@ -56,7 +56,7 @@ const ProductSection = ({ title = 'general' }) => {
         <div className="max-w-[1350px] w-screen mx-auto py-8 px-4 ">
             <div className="flex justify-between items-center mb-0 lg:mb-4 bg-gradient-to-r from-white to-gray-50 p-4 rounded-xl border-l-4 border-green-500 transition-all duration-300">
                 <div className="flex items-center gap-4">
-                    <h2 className="text-2xl md:text-3xl font-bold text-gray-800 relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-500 animate-pulse">
+                    <h2 className="text-2xl md:text-3xl font-bold text-gray-800 relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-500">
                         {title}
                         <span className="absolute -bottom-2 left-0 w-1/2 h-1 bg-gradient-to-r from-green-500/50 to-transparent rounded-full"></span>
                     </h2>
@@ -167,10 +167,6 @@ const ProductSection = ({ title = 'general' }) => {
 
 ProductSection.propTypes = {
     title: PropTypes.string
-};
-
-ProductSection.defaultProps = {
-    title: 'general'
 };
 
 export default ProductSection;

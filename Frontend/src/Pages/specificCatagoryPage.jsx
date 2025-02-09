@@ -191,38 +191,36 @@ const SpecificCategoryPage = () => {
             </div>
 
             {/* Mini Category Banner */}
-            <div className="relative hidden sm:block h-[600px] rounded-lg overflow-hidden bg-white border-2 border-purple-100 shadow-md group hover:shadow-xl transition-all duration-300">
-              <div className="absolute inset-0 bg-purple-50/50 z-10"></div>
+            <div className="relative hidden sm:block h-[600px] rounded-lg overflow-hidden bg-white border-2 border-blue-100 shadow-md group hover:shadow-xl transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50/50 z-10"></div>
               <div className="relative z-20 p-8 text-gray-800 h-full flex flex-col justify-between">
                 <div>
-                  <h3 className="text-4xl font-bold mb-4 text-purple-800 transform group-hover:translate-x-2 transition-transform">
+                  <h3 className="text-4xl font-bold mb-4 text-blue-800 transform group-hover:translate-x-2 transition-transform bg-gradient-to-r from-blue-700 to-blue-900 text-transparent bg-clip-text">
                     Special Offers
                   </h3>
-                  <p className="text-lg text-purple-700 opacity-80 transform group-hover:translate-x-1 transition-transform">
+                  <p className="text-lg text-blue-700 opacity-80 transform group-hover:translate-x-1 transition-transform">
                     Exclusive Deals on Dental Products
                   </p>
                 </div>
                 <div className="flex flex-col space-y-4">
                   <div className="flex items-center space-x-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-sm">Limited Time Offers</span>
+                    <span className="text-sm text-blue-700">Limited Time Offers</span>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span className="text-sm">Up to 20% Off</span>
+                    <span className="text-sm text-blue-700">Up to 20% Off</span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between mt-4">
-                  <span className="text-sm font-semibold bg-purple-100 text-purple-800 px-3 py-1 rounded-full">
-                    Shop Now
+                  <span className="text-sm font-semibold bg-gradient-to-r from-blue-600 to-blue-800 text-white px-6 py-2 rounded-full hover:from-blue-700 hover:to-blue-900 transition-all duration-300 w-auto shadow-md hover:shadow-lg">
+                    Don't Miss The Chance
                   </span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-purple-600 opacity-70 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+
                 </div>
               </div>
             </div>
@@ -250,13 +248,13 @@ const SpecificCategoryPage = () => {
                     catagory={product.category}
                     title={product.title}
                     description={product.description}
-                    price={product.price}
-                    rating={product.rating}
+                    price={Number(product.price)}
+                    rating={Number(product.rating)}
                     quantitySold={product.quantitySold}
                     inStock={product.inStock}
                     totalStock={product.totalStock}
                     noOfRatings={product.noOfRatings}
-                    mrp={product.mrp}
+                    mrp={Number(product.mrp)}
                     id={product.id}
                     noOfReviews={product.noOfReviews}
                     reviews={product.reviews}

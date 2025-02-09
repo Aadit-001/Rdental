@@ -82,8 +82,8 @@ const Cart = () => {
       },
       0
     ) || 0;
-    const shipping = cartItems?.length > 0 ? 15.0 : 0;
-    const tax = subtotal * 0.1;
+    const shipping = cartItems?.length > 0 ? 50.0 : 0;
+    const tax = subtotal * 0.18;
     const total = subtotal + shipping + tax;
 
     return { subtotal, shipping, tax, total };

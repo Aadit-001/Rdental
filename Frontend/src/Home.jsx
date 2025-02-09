@@ -20,7 +20,9 @@ import GeneralDentistry from './assets/GeneralDentistry.jpg';
 import equipments from './assets/equipments.jpg';
 import restoratives from './assets/restoratives.png';
 import instruments from './assets/instruments.jpg';
-
+import endo from './assets/endo.png';
+import steri from './assets/steri.png';
+import dispo from './assets/dispo.png';
 
 
 const Home = () => {
@@ -45,7 +47,7 @@ const Home = () => {
       setCurrentSlide((prevSlide) =>
         prevSlide === slides.length - 1 ? 0 : prevSlide + 1
       );
-    }, 10000);
+    }, 4000);
 
     return () => clearInterval(timer);
   }, []); // Added dependency array
@@ -176,7 +178,7 @@ const Home = () => {
       </div>
 
       {/* New Welcome Section */}
-      <div className="max-w-[1400px] mx-auto mt-16 mb-12 px-4">
+      <div className="max-w-[1400px] mx-auto mt-8 sm:mt-16 mb-12 px-4">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Welcome to <p><span className="text-green-500">R</span>-DENTAL Supplies</p></h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto hidden sm:block">
@@ -188,12 +190,19 @@ const Home = () => {
       </div>
 
       {/*Best Seller Section */}
-      <div className="flex flex-col  gap-2  bg-gradient-to-br from-blue-50 to-blue-10 max-w-[1400px] mx-auto mt-10 mb-10 lg:rounded-3xl p-4 sm:p-10 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm bg-opacity-90 relative overflow-hidden before:absolute before:inset-0 before:bg-blue-200/20 before:animate-pulse">
+      <div className="flex flex-col gap-2 bg-gradient-to-br from-blue-50 via-white to-blue-50 max-w-[1400px] mx-auto mt-10 mb-10 lg:rounded-3xl p-4 sm:p-10 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm bg-opacity-90 relative overflow-hidden before:absolute before:inset-0 before:bg-blue-200/20 before:animate-pulse">
         {/* Header Section with Title and View All Button */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex flex-col">
-            <h2 className="text-3xl font-bold relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-green-500 to-teal-500 animate-gradient-x drop-shadow-lg tracking-wide  animate-pulse">Best Sellers</h2>
-            <p className="text-black-900 text-sm mt-1">Our most popular dental products</p>
+            <div className="flex items-center gap-3">
+              <h2 className="text-3xl font-bold relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-green-500 to-teal-500 animate-gradient-x drop-shadow-lg tracking-wide ">
+                Best Sellers
+              </h2>
+              <span className="hidden sm:inline-block px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
+                Top Picks
+              </span>
+            </div>
+            <p className="text-gray-600 text-sm mt-2 font-medium">Our most popular dental products</p>
           </div>
           {/* <button
             onClick={() => navigate('/products/best-sellers')}
@@ -221,25 +230,33 @@ const Home = () => {
             </svg>
           </button> */}
 
-          <div className="flex items-center overflow-x-auto space-x-[3px] md:space-x-[2%]  pb-6 pt-6 pl-0 lg:pl-4 scrollbar-hide">
+          <div className="flex items-center overflow-x-auto space-x-[3px] md:space-x-[2%] pb-6 pt-6 pl-0 lg:pl-4 scrollbar-hide 
+                        [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']
+                        before:absolute before:left-0 before:w-8 before:h-full before:bg-gradient-to-r before:from-white/50 before:to-transparent before:z-10
+                        after:absolute after:right-0 after:w-8 after:h-full after:bg-gradient-to-l after:from-white/50 after:to-transparent after:z-10">
             {bestSellers.map((product) => (
-              <div key={product.id} className="flex-shrink-0 w-[240px] flex items-center justify-center transform hover:scale-10 transition-transform duration-300">
-                <ProductCard
-                  title={product.title}
-                  description={product.description}
-                  price={Number(product.price) || 0}
-                  rating={Number(product.rating) || 0}
-                  catagory={product.category}
-                  quantitySold={Number(product.quantitySold) || 0}
-                  inStock={product.inStock}
-                  totalStock={Number(product.totalStock) || 0}
-                  noOfRatings={Number(product.noOfRatings) || 0}
-                  image={product.imageUrl}
-                  mrp={Number(product.mrp) || 0}
-                  id={product.id}
-                  noOfReviews={Number(product.noOfReviews) || 0}
-                  reviews={product.reviews || []}
-                />
+              <div 
+                key={product.id} 
+                className="flex-shrink-0 w-[240px] flex items-center justify-center transform hover:scale-105 transition-transform duration-300 hover:z-10"
+              >
+                <div className="w-full p-2 rounded-2xl hover:shadow-xl transition-all duration-300">
+                  <ProductCard
+                    title={product.title}
+                    description={product.description}
+                    price={Number(product.price) || 0}
+                    rating={Number(product.rating) || 0}
+                    catagory={product.category}
+                    quantitySold={Number(product.quantitySold) || 0}
+                    inStock={product.inStock}
+                    totalStock={Number(product.totalStock) || 0}
+                    noOfRatings={Number(product.noOfRatings) || 0}
+                    image={product.imageUrl}
+                    mrp={Number(product.mrp) || 0}
+                    id={product.id}
+                    noOfReviews={Number(product.noOfReviews) || 0}
+                    reviews={product.reviews || []}
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -257,7 +274,7 @@ const Home = () => {
       {/* Featured Categories Grid - Thinner Layout */}
       <div className="max-w-[1400px] mx-auto px-4 py-8">
         <h2 className="text-2xl font-extrabold mb-6 text-gray-900 relative">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-500 animate-pulse">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-500">
             Shop By Category
           </span>
           <div className="absolute -bottom-2 left-0 w-20 h-1 bg-gradient-to-r from-blue-600 to-green-500 rounded-full animate-[pulse_2s_ease-in-out_infinite]"></div>
@@ -280,7 +297,7 @@ const Home = () => {
                   <span className="text-sm font-medium bg-blue-500 px-3 py-1 rounded-full hidden sm:block">Most Popular</span>
                   <div className="text-sm md:text-2xl font-bold mt-2 absolute -top-6  md:relative md:top-0 ">General Dentistry</div>
                   <p className="text-sm mt-1 mb-3 text-gray-200 hidden sm:block">Essential equipment & supplies</p>
-                  <button className="hidden sm:block bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
+                  <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                     onClick={() => { navigate('/products/general'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                     Shop Collection
                   </button>
@@ -292,7 +309,7 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[150px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/disposables'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={category2}
+                src={dispo}
                 alt="Disposables"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
@@ -358,7 +375,7 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[230px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/endodontics'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={Endodontics}
+                src={endo}
                 alt="Endodontics"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
@@ -403,7 +420,7 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[300px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/sterilization'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={category7}
+                src={steri}
                 alt="Sterilization"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />

@@ -364,21 +364,38 @@ const MyState = (props) => {
 
     const getWishlist = useCallback(async (userId) => {
         try {
+            if (!userId) {
+                console.error('No userId provided to getWishlist');
+                return [];
+            }
+
             const userRef = doc(fireDb, "users", userId);
             const userDoc = await getDoc(userRef);
+            
+            console.log('Fetching wishlist for user:', userId);
+            
             if (userDoc.exists()) {
-                return userDoc.data()?.wishlist || [];
+                const userData = userDoc.data();
+                const wishlist = userData.wishlist || [];
+                console.log('Retrieved wishlist:', wishlist);
+                return wishlist;
             }
-            await setDoc(userRef, {
+            
+            // Initialize user document if it doesn't exist
+            const initialData = {
                 wishlist: [],
                 carts: [],
                 orders: [],
                 createdAt: Timestamp.now()
-            });
+            };
+            
+            console.log('Creating new user document with initial data');
+            await setDoc(userRef, initialData, { merge: true });
+            
             return [];
         } catch (error) {
-            console.error("Error getting wishlist:", error);
-            return [];
+            console.error("Error in getWishlist:", error);
+            throw error;
         }
     }, []);
 

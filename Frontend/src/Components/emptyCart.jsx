@@ -122,9 +122,9 @@ const EmptyCart = () => {
                   after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
                   transform hover:scale-105 transition-all duration-300 ease-in-out
                   hover:shadow-lg hover:shadow-green-200 overflow-hidden text-white z-10"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             <span className="relative z-10 text-white">Browse Products</span>
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           </Link>
 
           <div className="flex justify-center gap-4 mt-6">
