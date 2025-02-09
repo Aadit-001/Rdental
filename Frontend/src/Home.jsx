@@ -23,9 +23,6 @@ import instruments from './assets/instruments.jpg';
 import endo from './assets/endo.png';
 import steri from './assets/steri.png';
 import dispo from './assets/dispo.png';
-import endo from './assets/endo.png';
-import steri from './assets/steri.png';
-import dispo from './assets/dispo.png';
 
 
 
