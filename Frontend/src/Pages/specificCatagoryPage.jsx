@@ -1,14 +1,15 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import RelatedProductCard from '../Components/RelatedProductCard';
-import endodentics from '../assets/Endodentics.jpg';
-import equipments from '../assets/equipments.jpg';
-import restoratives from '../assets/restoratives.png';
-import instruments from '../assets/instruments.jpg';
-import sterilization from '../assets/sterilization.webp';
-import GeneralDentistry from '../assets/GeneralDentistry.jpg';
 import {useContext} from 'react';
 import myContext from '../context/data/myContext';
+import Disposables from '../assets/Disposables.png';
+import EndodonticsHome from '../assets/EndodonticsHome.jpg'; 
+import Equipments from '../assets/Equipments.jpg';
+import General from '../assets/General.jpg';
+import Instrument from '../assets/Instrument.jpg';
+import Restorative from '../assets/Restorative.png';
+import Sterilization from '../assets/Sterilization.jpg';
 
 const SpecificCategoryPage = () => {
   const { getCategoryProducts } = useContext(myContext);
@@ -27,20 +28,24 @@ const SpecificCategoryPage = () => {
   // Get poster image based on category
   const getPosterImage = useCallback(() => {
     switch(category.toLowerCase()) {
-      case 'endodentics':
-        return endodentics;
+      case 'endodontics':
+        return EndodonticsHome;
       case 'equipment':
-        return equipments;
+        return Equipments;
+
       case 'restoratives':
-        return restoratives;
+        return Restorative;
       case 'instruments':
-        return instruments;
+        return Instrument;
+
       case 'sterilization':
-        return sterilization;
+        return Sterilization;
       case 'general':
-        return GeneralDentistry;
+        return General;
+
       default:
-        return endodentics; // Default fallback image
+        return Disposables; // Default fallback image
+
     }
   }, [category]);
 

@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import indiamap from '../assets/indiamap.png';
 import suresh from '../assets/suresh.jpeg';
-import KaifTestimonail from '../assets/KaifTestimonail.jpg';
+import KaifTestimonial from '../assets/KaifTestimonial.jpg';
+import aditTestimonial from '../assets/aditTestimonial.jpeg';
+
 
 
 
@@ -12,13 +14,15 @@ const AboutUs = () => {
       name: 'Adit Jha',
       role: 'Lead Developer & Team Leader',
       description: 'Developed the fully functioanl frontend and backend for R-dental.',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR48kgQNS7jHuRO0_X6Qv5PCh-chkE0_E8uRA&s'
+      image: aditTestimonial
     },
+
+
     {
       name: 'Kaif Shaikh',
       role: 'Frontend Developer',
       description: 'Builds robust server-side logic and ensures smooth communication with front-end frameworks.',
-      image: KaifTestimonail
+      image: KaifTestimonial
     }
   ]);
 
@@ -228,12 +232,13 @@ const AboutUs = () => {
                 
                 <div className="space-y-6">
                   <p className="text-gray-700 text-lg leading-relaxed">
-                    With over <span className="font-semibold text-green-600">[X] years</span> of experience 
+                    With over <span className="font-semibold text-green-600">5 years</span> of experience 
                     in the dental industry, our founder established R-DENTAL with a vision to revolutionize 
-                    dental equipment distribution in India. Their commitment to quality and customer service 
+                    dental equipment, instruments and endodontics products distribution in India. Their commitment to quality and customer service 
                     has been the driving force behind our company's success.
                   </p>
                   
+
                   <blockquote className="relative p-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl">
                     <div className="absolute top-0 left-0 transform -translate-x-4 -translate-y-4">
                       <svg className="h-8 w-8 text-green-400" fill="currentColor" viewBox="0 0 24 24">
