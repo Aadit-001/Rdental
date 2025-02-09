@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import ProductSection from './Components/productSection';
 import ProductCard from './Components/productCard';
 import { useNavigate } from 'react-router-dom';
-import Endodontics from './assets/Endodentics.jpg';
 import myContext from './context/data/myContext';
 import { useContext } from 'react';
 import slide1 from './assets/slide1.jpg';
@@ -10,19 +9,13 @@ import slide2 from './assets/slide2.jpg';
 import slide3 from './assets/slide3.jpg';
 import slide4 from './assets/slide4.jpg';
 import slide5 from './assets/slide5.jpg';
-// import category1 from './assets/category1.jpg';
-import category2 from './assets/category2.jpg';
-// import category3 from './assets/category3.jpg';
-// import category4 from './assets/category4.jpg';
-// import category6 from './assets/category6.jpg';
-import category7 from './assets/category7.jpg';
-import GeneralDentistry from './assets/GeneralDentistry.jpg';
-import equipments from './assets/equipments.jpg';
-import restoratives from './assets/restoratives.png';
-import instruments from './assets/instruments.jpg';
-import endo from './assets/endo.png';
-import steri from './assets/steri.png';
-import dispo from './assets/dispo.png';
+import DisposablesHome from './assets/DisposablesHome.jpg';
+import EndodonticsHome from './assets/EndodonticsHome.jpg';
+import EquipmentHome from './assets/EquipmentHome.jpg';
+import GeneralHome from './assets/GeneralHome.jpg';
+import InstrumentHome from './assets/InstrumentHome.jpg';
+import RestorativeHome from './assets/RestorativeHome.jpg';
+import SterilizationHome from './assets/SterilizationHome.jpg';
 
 
 
@@ -288,10 +281,11 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[300px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/general'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={GeneralDentistry}
+                src={GeneralHome}
                 alt="General Dentistry"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
+
               <div className="absolute md:flex md:flex-col md:justify-start md:items-start inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
                 <div className="absolute bottom-6  left-6 text-white">
                   <span className="text-sm font-medium bg-blue-500 px-3 py-1 rounded-full hidden sm:block">Most Popular</span>
@@ -309,9 +303,10 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[150px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/disposables'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={dispo}
+                src={DisposablesHome}
                 alt="Disposables"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
                 <div className="absolute bottom-6 left-6 text-white">
@@ -334,9 +329,10 @@ const Home = () => {
               <div className="relative group h-[80px] md:h-[220px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
               onClick={() => { navigate('/products/equipment'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                 <img
-                  src={equipments}
+                  src={EquipmentHome}
                   alt="Equipment"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
 
@@ -354,9 +350,10 @@ const Home = () => {
               <div className="relative group h-[80px] md:h-[220px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
               onClick={() => { navigate('/products/restoratives'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                 <img
-                  src={restoratives}
+                  src={RestorativeHome}
                   alt="Restoratives"
                   className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
                   <div className="absolute bottom-6 left-0 md:left-6 text-white">
@@ -375,9 +372,10 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[230px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/endodontics'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={endo}
+                src={EndodonticsHome}
                 alt="Endodontics"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
                 <div className="absolute md:flex md:flex-col md:justify-start  md:items-start bottom-6 left-6 text-white">
@@ -399,9 +397,10 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[150px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/instruments'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={instruments}
+                src={InstrumentHome}
                 alt="Instruments"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
@@ -420,7 +419,7 @@ const Home = () => {
             <div className="relative group h-[80px] md:h-[300px] overflow-hidden rounded-lg md:rounded-2xl cursor-pointer"
             onClick={() => { navigate('/products/sterilization'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
               <img
-                src={steri}
+                src={SterilizationHome}
                 alt="Sterilization"
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />

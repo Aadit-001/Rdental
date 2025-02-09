@@ -2,6 +2,11 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import indiamap from '../assets/indiamap.png';
 import suresh from '../assets/suresh.jpeg';
+import KaifTestimonial from '../assets/KaifTestimonial.jpg';
+import aditTestimonial from '../assets/aditTestimonial.jpeg';
+
+
+
 
 const AboutUs = () => {
   const [teamMembers] = useState([
@@ -9,17 +14,18 @@ const AboutUs = () => {
       name: 'Adit Jha',
       role: 'Lead Developer & Team Leader',
       description: 'Developed the fully functioanl frontend and backend for R-dental.',
-      contact: 'Contact Adit',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR48kgQNS7jHuRO0_X6Qv5PCh-chkE0_E8uRA&s'
+      image: aditTestimonial
     },
+
+
     {
       name: 'Kaif Shaikh',
       role: 'Frontend Developer',
       description: 'Builds robust server-side logic and ensures smooth communication with front-end frameworks.',
-      contact: 'Contact Kaif',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR48kgQNS7jHuRO0_X6Qv5PCh-chkE0_E8uRA&s'
+      image: KaifTestimonial
     }
   ]);
+
   console.log('teamMembers:', teamMembers);
 
   return (
@@ -226,12 +232,13 @@ const AboutUs = () => {
                 
                 <div className="space-y-6">
                   <p className="text-gray-700 text-lg leading-relaxed">
-                    With over <span className="font-semibold text-green-600">[X] years</span> of experience 
+                    With over <span className="font-semibold text-green-600">5 years</span> of experience 
                     in the dental industry, our founder established R-DENTAL with a vision to revolutionize 
-                    dental equipment distribution in India. Their commitment to quality and customer service 
+                    dental equipment, instruments and endodontics products distribution in India. Their commitment to quality and customer service 
                     has been the driving force behind our company's success.
                   </p>
                   
+
                   <blockquote className="relative p-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl">
                     <div className="absolute top-0 left-0 transform -translate-x-4 -translate-y-4">
                       <svg className="h-8 w-8 text-green-400" fill="currentColor" viewBox="0 0 24 24">
@@ -331,17 +338,13 @@ const AboutUs = () => {
                 {/* Card content - increased padding */}
                 <div className="relative bg-slate-800/90 rounded-2xl p-8 ring-1 ring-gray-700/50 h-full">
                   <div className="flex flex-col md:flex-row items-center gap-8 h-full">
-                    {/* Larger Image Container */}
+                    {/* Larger Image Container - removed shadow effects */}
                     <div className="relative w-36 h-36 md:w-40 md:h-40 flex-shrink-0">
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-green-500 rounded-xl animate-pulse opacity-20"></div>
                       <img 
                         src={member.image} 
                         alt={member.name}
                         className="relative w-full h-full object-cover rounded-xl ring-2 ring-green-500/50"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900/50 rounded-xl">
-                        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-slate-900/50 to-transparent rounded-b-xl"></div>
-                      </div>
                     </div>
 
                     {/* Content - adjusted spacing */}
