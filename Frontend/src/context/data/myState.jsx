@@ -355,49 +355,48 @@ const MyState = (props) => {
         });
     }, []);
 
-    const removeFromWishlist = useCallback(async (productId,userId) => {
-        const userRef = doc(fireDb,"users",userId);
-        await updateDoc(userRef,{
-            wishlist: arrayRemove(productId)  
-        });
-    }, []);
+    // const removeFromWishlist = useCallback(async (productId,userId) => {
+    //     const userRef = doc(fireDb,"users",userId);
+    //     await updateDoc(userRef,{
+    //         wishlist: arrayRemove(productId)  
+    //     });
+    // }, []);
 
+    
     const getWishlist = useCallback(async (userId) => {
         try {
-            if (!userId) {
-                console.error('No userId provided to getWishlist');
-                return [];
-            }
-
             const userRef = doc(fireDb, "users", userId);
             const userDoc = await getDoc(userRef);
-            
-            console.log('Fetching wishlist for user:', userId);
-            
             if (userDoc.exists()) {
-                const userData = userDoc.data();
-                const wishlist = userData.wishlist || [];
-                console.log('Retrieved wishlist:', wishlist);
-                return wishlist;
+                return userDoc.data()?.wishlist || [];
             }
-            
-            // Initialize user document if it doesn't exist
-            const initialData = {
+            await setDoc(userRef, {
                 wishlist: [],
                 carts: [],
                 orders: [],
                 createdAt: Timestamp.now()
-            };
-            
-            console.log('Creating new user document with initial data');
-            await setDoc(userRef, initialData, { merge: true });
-            
+            });
             return [];
         } catch (error) {
-            console.error("Error in getWishlist:", error);
-            throw error;
+            console.error("Error getting wishlist:", error);
+            return [];
         }
     }, []);
+    const removeFromWishlist = useCallback(async (userId, productId) => {
+        try {
+            const userRef = doc(fireDb, 'users', userId);
+            await updateDoc(userRef, {
+                wishlist: arrayRemove(productId)  
+            });
+            
+            // Fetch the updated wishlist after removal
+            const updatedWishlist = await getWishlist(userId);
+            setWishlistItems(updatedWishlist);
+        } catch (error) {
+            console.error("Error removing from wishlist:", error);
+            toast.error("Failed to remove item from wishlist");
+        }
+    }, [getWishlist, setWishlistItems]);
 
     const addToCart = useCallback(async (productId,userId) => {
         const userRef = doc(fireDb,"users",userId);
@@ -409,17 +408,6 @@ const MyState = (props) => {
                     lastUpdated: Date.now()
                 }
             )   
-        });
-    }, []);
-
-    const removeFromCart = useCallback(async (productId,userId) => {
-        const userRef = doc(fireDb,"users",userId);
-        const cart = await getCart(userId);
-        const itemToRemove = cart.find(item => item.productId === productId);
-        if (!itemToRemove) return;
-        
-        await updateDoc(userRef,{
-            carts: arrayRemove(itemToRemove)
         });
     }, []);
 
@@ -442,6 +430,54 @@ const MyState = (props) => {
             return [];
         }
     }, []);
+
+    // const addToCart = useCallback(async (productDetails) => {
+    //     try {
+    //         const user = JSON.parse(localStorage.getItem('user'));
+    //         if (!user) {
+    //             toast.error("Please login to add items to cart");
+    //             return;
+    //         }
+    
+    //         const cartItem = {
+    //             ...productDetails,
+    //             quantity: 1
+    //         };
+    
+    //         const userRef = doc(fireDb, 'users', user.uid);
+    //         await updateDoc(userRef, {
+    //             carts: arrayUnion(cartItem)
+    //         });
+    
+    //         // Remove the item from wishlist after adding to cart
+    //         // await removeFromWishlist(user.uid, productDetails.id);
+    
+    //         // Fetch updated cart and wishlist
+    //         const updatedCart = await getCart(user.uid);
+    //         const updatedWishlist = await getWishlist(user.uid);
+    
+    //         setCartItems(updatedCart);
+    //         setWishlistItems(updatedWishlist);
+    
+    //         toast.success("Item added to cart");
+    //     } catch (error) {
+    //         console.error("Error adding to cart:", error);
+    //         toast.error("Failed to add item to cart");
+    //     }
+    // }, [removeFromWishlist, getCart, setCartItems, setWishlistItems]);
+
+    const removeFromCart = useCallback(async (productId,userId) => {
+        const userRef = doc(fireDb,"users",userId);
+        const cart = await getCart(userId);
+        const itemToRemove = cart.find(item => item.productId === productId);
+        if (!itemToRemove) return;
+        
+        await updateDoc(userRef,{
+            carts: arrayRemove(itemToRemove)
+        });
+    }, []);
+
+    
 
     const getOrders = useCallback(async (userId) => {
         const userRef = doc(fireDb,"users",userId);

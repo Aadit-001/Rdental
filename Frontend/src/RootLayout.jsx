@@ -6,11 +6,15 @@ import Signup from './Components/signup.jsx'
 import Profile from './User/profile.jsx'
 import myContext from './context/data/myContext';
 import { useContext, useEffect } from 'react'
+import OfflinePage from './Pages/OfflinePage.jsx'
+import useNetworkStatus from './Hooks/useNetworkStatus.jsx'
 
 function RootLayout() {
-  const { showSignIn, showSignUp , showProfile ,isUserLoggedIn, setIsUserLoggedIn} = useContext(myContext);  
-
-
+  const isOnline = useNetworkStatus();
+  const { showSignIn, showSignUp , showProfile ,isUserLoggedIn, setIsUserLoggedIn} = useContext(myContext);
+  
+  
+  
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) {
@@ -19,7 +23,11 @@ function RootLayout() {
       setIsUserLoggedIn(false);
     }
   }, [setIsUserLoggedIn]);
-
+  
+  if(!isOnline){
+    return <OfflinePage />
+  }
+  
   return (
     <>
 

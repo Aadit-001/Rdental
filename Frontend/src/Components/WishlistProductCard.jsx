@@ -85,7 +85,8 @@ const WishlistProductCard = ({ productId }) => {
     }
 
     try {
-      await removeFromWishlist(productId, currentUserId);
+      // await removeFromWishlist(productId, currentUserId);
+      await removeFromWishlist(currentUserId,productId);
       setWishlistItems((prevItems) => prevItems.filter((item) => item.id !== productId));
       toast.success('Product removed from wishlist', {
         position: "bottom-right",
@@ -117,6 +118,7 @@ const WishlistProductCard = ({ productId }) => {
         toast.success('Product removed from cart');
       } else {
         await addToCart(productId, currentUserId);
+        // await removeFromWishlist(currentUserId,productId);
         const cartItems = await getCart(currentUserId);
         setCartItems(cartItems || []);
         setIsAddedToCart(true);
