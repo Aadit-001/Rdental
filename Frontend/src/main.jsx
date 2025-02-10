@@ -34,6 +34,7 @@ import { Provider } from 'react-redux';
 import { store } from './Redux/Store';
 import TermsAndCondition from "./Pages/TermsAndCondition.jsx";
 import ShippingAndDelivery from "./Pages/ShippingAndDelivery.jsx";
+import CancellationAndRefund from "./Pages/CancellationAndRefund.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -47,6 +48,7 @@ createRoot(document.getElementById("root")).render(
               <Route path="aboutUs" element={<AboutUs />} />
               <Route path="termsAndCondition" element={<TermsAndCondition />} />
               <Route path="shippingAndDelivery" element={<ShippingAndDelivery />} />
+              <Route path="cancellationAndRefund" element={<CancellationAndRefund />} />
               <Route path="products/:category" element={<SpecificCatagoryPage />} />
               <Route path="products/:category/:productId" element={<ProductDetailPage />} />
               <Route

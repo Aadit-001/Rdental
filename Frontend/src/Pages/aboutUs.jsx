@@ -11,9 +11,9 @@ import aditTestimonial from '../assets/aditTestimonial.jpeg';
 const AboutUs = () => {
   const [teamMembers] = useState([
     {
-      name: 'Adit Jha',
+      name: 'Aadit Jha',
       role: 'Lead Developer & Team Leader',
-      description: 'Developed the fully functioanl frontend and backend for R-dental.',
+      description: 'Developed the fully functioanl frontend and backend for R-DENTAL.',
       image: aditTestimonial
     },
 

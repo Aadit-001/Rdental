@@ -10,7 +10,7 @@ const Footer = () => {
             <h3 className="text-2xl font-bold mb-4"><span className='text-green-500'>R</span>-DENTAL</h3>
             <p className="text-gray-400">
               Your trusted partner in dental supplies. Providing quality dental products 
-              and equipment to dental professionals since 2023.
+              and equipment to dental professionals since 2021.
             </p>
           </div>
 
@@ -30,8 +30,9 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Information</h4>
             <ul className="space-y-2">
-              <li><Link to="/termsAndCondition" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Terms of Use</Link></li>
-              <li><Link to="/shippingAndDelivery" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Shipping and Delivery</Link></li>
+              <li><Link to="/termsAndCondition" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Terms And Conditions</Link></li>
+              <li><Link to="/shippingAndDelivery" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Shipping Policy</Link></li>
+              <li><Link to="/cancellationAndRefund" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Cancellation and Refund</Link></li>
             </ul>
           </div>
 
