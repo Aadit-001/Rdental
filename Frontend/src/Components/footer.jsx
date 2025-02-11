@@ -10,7 +10,7 @@ const Footer = () => {
             <h3 className="text-2xl font-bold mb-4"><span className='text-green-500'>R</span>-DENTAL</h3>
             <p className="text-gray-400">
               Your trusted partner in dental supplies. Providing quality dental products 
-              and equipment to dental professionals since 2023.
+              and equipment to dental professionals since 2020.
             </p>
           </div>
 

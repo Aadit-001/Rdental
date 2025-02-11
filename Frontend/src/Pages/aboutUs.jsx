@@ -11,18 +11,23 @@ import aditTestimonial from '../assets/aditTestimonial.jpeg';
 const AboutUs = () => {
   const [teamMembers] = useState([
     {
-      name: 'Adit Jha',
-      role: 'Lead Developer & Team Leader',
-      description: 'Developed the fully functioanl frontend and backend for R-dental.',
-      image: aditTestimonial
+      name: 'Aadit Jha',
+      work: 'Team Leader',
+      role: 'Full Stack Developer',
+      description: 'Architected and developed a comprehensive full-stack solution for R-dental, delivering a robust and innovative web platform.',
+      image: aditTestimonial,
+      below1: 'Technical Expert',
+      below2: 'Project Innovator'
     },
 
 
     {
       name: 'Kaif Shaikh',
       role: 'Frontend Developer',
-      description: 'Builds robust server-side logic and ensures smooth communication with front-end frameworks.',
-      image: KaifTestimonial
+      description: 'Crafted intuitive and responsive user interfaces, transforming complex design concepts into user-friendly web experiences for R-dental.',
+      image: KaifTestimonial,
+      below1: 'UI/UX Specialist',
+      below2: 'Frontend Architect'
     }
   ]);
 
@@ -304,7 +309,7 @@ const AboutUs = () => {
       {/* Technical Team Section */}
       <div className="relative max-w-6xl mx-auto py-16 mb-6">
         {/* Background elements remain the same */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-blue-900 opacity-95 rounded-3xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-700 via-slate-900 to-blue-900 opacity-95 rounded-3xl"></div>
         <div className="absolute inset-0">
           <div className="absolute w-full h-full">
             <div className="absolute inset-0 opacity-10">
@@ -319,51 +324,47 @@ const AboutUs = () => {
         <div className="relative container mx-auto px-6">
           {/* Header */}
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-green-300 mb-4">
+            <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-green-200 mb-4">
               Technical Innovation Team
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-green-500 mx-auto"></div>
           </div>
 
           {/* Team Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto backdrop-blur-3xl">
             {teamMembers.slice(0, 2).map((member, index) => (
               <div 
                 key={index} 
                 className="relative w-full"
               >
-                {/* Glow effect */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-green-500 rounded-2xl blur-md opacity-90"></div>
-                
-                {/* Card content - increased padding */}
-                <div className="relative bg-slate-800/90 rounded-2xl p-8 ring-1 ring-gray-700/50 h-full">
+                <div className="relative bg-slate-900/90 rounded-2xl p-8 ring-1 ring-purple-500/30 h-full">
                   <div className="flex flex-col md:flex-row items-center gap-8 h-full">
-                    {/* Larger Image Container - removed shadow effects */}
-                    <div className="relative w-36 h-36 md:w-40 md:h-40 flex-shrink-0">
+                    <div className="relative w-36 h-36 md:w-40 md:h-48 flex-shrink-0">
                       <img 
                         src={member.image} 
                         alt={member.name}
-                        className="relative w-full h-full object-cover rounded-xl ring-2 ring-green-500/50"
+                        className="relative w-full h-full object-cover rounded-xl ring-2 ring-indigo-400/50"
                       />
                     </div>
 
-                    {/* Content - adjusted spacing */}
                     <div className="flex-1 text-center md:text-left">
-                      <h3 className="text-2xl font-bold text-blue-300 mb-3">{member.name}</h3>
-                      <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-900/70 text-blue-200 mb-4">
+                      <div className='flex flex-row'>
+                        <h3 className="text-2xl font-bold text-indigo-300 mb-3">{member.name}</h3>
+                        {member.work && <div className='inline-flex items-center px-3 py-1 rounded-full ml-4 text-sm font-medium bg-green-600/90 text-white mb-3'>{member.work}</div>}
+                      </div>
+                      <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-900/70 text-purple-200 mb-4">
                         {member.role}
                       </div>
-                      <p className="text-gray-200 text-sm leading-relaxed mb-5">
+                      <p className="text-gray-300 text-sm leading-relaxed mb-5">
                         {member.description}
                       </p>
                       
-                      {/* Technical tags */}
                       <div className="flex flex-wrap gap-2">
-                        <span className="px-2 py-1 text-xs rounded-md bg-green-900/50 text-green-300 border border-green-500/40">
-                          Technical Expert
+                        <span className="px-2 py-1 text-xs rounded-md bg-indigo-500/50 text-indigo-100 border border-indigo-500/40">
+                          {member.below1}
                         </span>
-                        <span className="px-2 py-1 text-xs rounded-md bg-blue-900/50 text-blue-300 border border-blue-500/40">
-                          Innovation Lead
+                        <span className="px-2 py-1 text-xs rounded-md bg-purple-500/50 text-purple-100 border border-purple-500/40">
+                          {member.below2}
                         </span>
                       </div>
                     </div>
