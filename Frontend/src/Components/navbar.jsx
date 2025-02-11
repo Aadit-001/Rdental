@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Logoo from '../assets/logoo.png';
+import AppLogo from '../assets/AppLogo.png';
 import name from '../assets/name.png';
 import myContext from '../context/data/myContext';
 import { useContext } from 'react';
@@ -51,7 +51,7 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-0 pl-3">
-              <img src={Logoo} alt="R-Dental" className="h-14 w-14" />
+              <img src={AppLogo} alt="R-Dental" className="h-14 w-14" />
               <img src={name} alt="R-Dental" className=" h-10 w-auto hidden sm:block" />
             </Link>
           </div>
