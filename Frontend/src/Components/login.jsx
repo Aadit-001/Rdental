@@ -14,6 +14,7 @@ import { Timestamp } from 'firebase/firestore';
 import {  doc, getDoc, setDoc } from 'firebase/firestore';
 import { fireDB } from '../firebase/firebaseConfig';
 
+
 const Login = () => {
   const { setShowSignIn, setShowSignUp,setIsUserLoggedIn,isLoading, setIsLoading } = useContext(myContext);
   const navigate = useNavigate();
@@ -25,6 +26,13 @@ const Login = () => {
 
   const handleGoogleSignIn = async () => {
     try {
+
+      // Configure provider to allow popups
+      provider.setCustomParameters({
+        'prompt': 'select_account',
+        'display': 'popup'
+      });
+
       const result = await signInWithPopup(auth, provider);
       
       // Create user object
@@ -73,8 +81,27 @@ const Login = () => {
       navigate(location.pathname);
 
     } catch (error) {
-      console.error(error);
-      toast.error(error.message);
+      // console.error(error);
+      // toast.error(error.message);
+      console.error('Google Sign-In Error:', error);
+      
+      // Specific error handling
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.info('Sign-in popup was closed. Please try again.', {
+          position: "bottom-right",
+          autoClose: 2000,
+        });
+      } else if (error.code === 'auth/cancelled-popup-request') {
+        toast.info('Sign-in request was cancelled. Please try again.', {
+          position: "bottom-right",
+          autoClose: 2000,
+        });
+      } else {
+        toast.error('Authentication failed. Please try again.', {
+          position: "bottom-right",
+          autoClose: 2000,
+        });
+      }
     }
   };
 
@@ -139,7 +166,7 @@ const Login = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-gradient-to-br from-white via-white to-green-50 rounded-lg shadow-lg overflow-hidden w-[400px] max-w-full hover:shadow-xl transition-shadow duration-300 relative"
+        className="bg-gradient-to-br from-white via-white to-green-50 rounded-lg shadow-lg overflow-hidden w-[360px] md:w-[400px] max-w-full hover:shadow-xl transition-shadow duration-300 relative"
       >
         {/* Close Button */}
         <button

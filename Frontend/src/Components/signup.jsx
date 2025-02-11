@@ -27,8 +27,13 @@ const Signup = () => {
 
   const handleGoogleSignUp = async () => {
     try {
+      // Configure provider to allow popups
+      provider.setCustomParameters({
+        'prompt': 'select_account',
+        'display': 'popup'
+      });
+
       const result = await signInWithPopup(auth, provider);
-      setShowSignUp(false);
       
       // Create user object
       const user = {
@@ -38,7 +43,7 @@ const Signup = () => {
         wishlist: [],
         orders: [],
         carts: [],
-        time: Timestamp.now()
+        time : Timestamp.now()
       }
 
       // Check if user exists in Firestore
@@ -50,11 +55,14 @@ const Signup = () => {
         await setDoc(userDoc, user);
       }
 
-      // Set user details in local storage
+      // First update local storage
       localStorage.setItem('user', JSON.stringify(result.user));
+      
+      // Then update app state
+      setIsUserLoggedIn(true);
+      setShowSignUp(false);
 
-      // Show success message
-      toast.success('User Logged in successfully', {
+      toast.success('User Signed up successfully', {
         position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
@@ -65,13 +73,33 @@ const Signup = () => {
         theme: "colored",
       });
 
-      // Update app state and redirect
-      navigate('/');
-      setIsUserLoggedIn(true);
+      // Finally navigate
+      if(location.pathname === '/') {
+        // If we're already on home page, no need to navigate
+        return;
+      }
+      navigate(location.pathname);
 
     } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong");
+      console.error('Google Sign-Up Error:', error);
+      
+      // Specific error handling
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.info('Sign-up popup was closed. Please try again.', {
+          position: "bottom-right",
+          autoClose: 2000,
+        });
+      } else if (error.code === 'auth/cancelled-popup-request') {
+        toast.info('Sign-up request was cancelled. Please try again.', {
+          position: "bottom-right",
+          autoClose: 2000,
+        });
+      } else {
+        toast.error('Authentication failed. Please try again.', {
+          position: "bottom-right",
+          autoClose: 2000,
+        });
+      }
     }
   };
 
@@ -160,7 +188,7 @@ const Signup = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-gradient-to-br from-white via-white to-green-50 rounded-lg shadow-lg overflow-hidden w-[400px] max-w-full hover:shadow-xl transition-shadow duration-300 relative"
+          className="bg-gradient-to-br from-white via-white to-green-50 rounded-lg shadow-lg overflow-hidden w-[360px] md:w-[400px] max-w-full hover:shadow-xl transition-shadow duration-300 relative"
         >
           {/* Close Button */}
           <button

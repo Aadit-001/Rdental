@@ -11,29 +11,36 @@ const ProductSection = ({ title = 'general' }) => {
     let path = "/products/" + (title || 'general');
     const [showLeftButton, setShowLeftButton] = useState(false);
     const [showRightButton, setShowRightButton] = useState(true);
+
     const checkScrollButtons = () => {
         const container = scrollContainerRef.current;
         if (container) {
-            // Show left button if we're not at the start
-            setShowLeftButton(container.scrollLeft > 0);
-            // Show right button if there's more content to scroll
-            setShowRightButton(
-                container.scrollLeft < (container.scrollWidth - container.clientWidth - 10)
-            );
+            // Precise scroll button visibility calculation
+            const isAtStart = container.scrollLeft <= 0;
+            const isAtEnd = container.scrollLeft >= (container.scrollWidth - container.clientWidth - 1);
+            
+            setShowLeftButton(!isAtStart);
+            setShowRightButton(!isAtEnd);
         }
     };
+
     useEffect(() => {
         const container = scrollContainerRef.current;
         if (container) {
             container.addEventListener('scroll', checkScrollButtons);
-            // Initial check
+            
+            // Ensure initial state is correct
             checkScrollButtons();
-        }
-        return () => {
-            if (container) {
+
+            // Handle resize events to recalculate scroll buttons
+            const resizeObserver = new ResizeObserver(checkScrollButtons);
+            resizeObserver.observe(container);
+
+            return () => {
                 container.removeEventListener('scroll', checkScrollButtons);
-            }
-        };
+                resizeObserver.disconnect();
+            };
+        }
     }, []);
 
     const scroll = (direction) => {
@@ -42,18 +49,16 @@ const ProductSection = ({ title = 'general' }) => {
             const cardWidth = 250; // Width of each product card
             const gap = 16; // Approximate gap between cards
             const scrollAmount = (cardWidth + gap) * 2; // Scroll 2 cards at a time
-            const targetScroll = container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
             
             container.scrollTo({
-                left: targetScroll,
+                left: container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount),
                 behavior: 'smooth'
             });
         }
     };
 
-
     return (
-        <div className="max-w-[1350px] w-screen mx-auto py-8 px-4 ">
+        <div className="max-w-[1350px] w-full mx-auto py-8 px-4">
             <div className="flex justify-between items-center mb-0 lg:mb-4 bg-gradient-to-r from-white to-gray-50 p-4 rounded-xl border-l-4 border-green-500 transition-all duration-300">
                 <div className="flex items-center gap-4">
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-800 relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-500">
@@ -72,14 +77,14 @@ const ProductSection = ({ title = 'general' }) => {
                     className="group flex items-center gap-0 px-4 py-2 rounded-lg transition-all duration-300"
                 >
                     <span className="text-green-700 font-semibold">View all</span>
-                     <svg
+                    <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-6 w-6 text-green-600 group-hover:translate-x-1 transition-transform duration-300"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
                     >
-                         <path
+                        <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth={2}
@@ -89,7 +94,7 @@ const ProductSection = ({ title = 'general' }) => {
                 </Link>
             </div>
 
-              <div className="relative group">
+            <div className="relative group">
                 {/* Left scroll button */}
                 <button
                     onClick={() => scroll('left')}
@@ -110,15 +115,19 @@ const ProductSection = ({ title = 'general' }) => {
                             strokeWidth={2}
                             d="M15 19l-7-7 7-7"
                         />
-                   </svg>
+                    </svg>
                 </button>
+                
                 {/* Products container */}
                 <div 
                     ref={scrollContainerRef}
-                    className="flex overflow-x-auto pb-6 pt-6 lg:pl-4   scrollbar-hide scroll-smooth gap-0 md:gap-4"
+                    className="flex overflow-x-auto pb-6 pt-6 scrollbar-hide scroll-smooth gap-4 w-full"
                 >
                     {products.map((product) => (
-                        <div key={product.id} className="flex-shrink-0 w-[250px] hover:scale-105 transition-all duration-300">
+                        <div 
+                            key={product.id} 
+                            className="flex-shrink-0 w-[250px] hover:scale-105 transition-all duration-300"
+                        >
                             <ProductCard
                                 title={product.title}
                                 description={product.description}
@@ -138,6 +147,7 @@ const ProductSection = ({ title = 'general' }) => {
                         </div>
                     ))}
                 </div>
+                
                 {/* Right scroll button */}
                 <button
                     onClick={() => scroll('right')}
