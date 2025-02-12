@@ -103,7 +103,7 @@ const AboutUs = () => {
             />
           </div>
           <div className="max-w-2xl order-1 md:order-2">
-            <h2 className="text-3xl font-bold mb-6 text-center">About ussssss</h2>
+            <h2 className="text-3xl font-bold mb-6 text-center">About us</h2>
             <p className="text-gray-600 mb-6">
               <span className='text-green-500'>R</span>-DENTAL was founded in 2020, At Mumbai. With the commitment to deliver the best quality 
               product that offer long term compatibility to Dentist.
