@@ -78,7 +78,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <a 
-                href="https://www.facebook.com/yourpage" 
+                href="https://www.facebook.com/share/15JxAxWXZh/?mibextid=qi2Omg" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-gray-400 hover:text-white"
