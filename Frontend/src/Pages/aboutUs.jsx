@@ -17,7 +17,8 @@ const AboutUs = () => {
       description: 'Architected and developed a comprehensive full-stack solution for R-dental, delivering a robust and innovative web platform.',
       image: aditTestimonial,
       below1: 'Technical Expert',
-      below2: 'Project Innovator'
+      below2: 'Project Innovator',
+      contact: 'https://portfolioaadit.web.app/'
     },
 
 
@@ -331,7 +332,7 @@ const AboutUs = () => {
           </div>
 
           {/* Team Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto backdrop-blur-3xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {teamMembers.slice(0, 2).map((member, index) => (
               <div 
                 key={index} 
@@ -339,16 +340,21 @@ const AboutUs = () => {
               >
                 <div className="relative bg-slate-900/90 rounded-2xl p-8 ring-1 ring-purple-500/30 h-full">
                   <div className="flex flex-col md:flex-row items-center gap-8 h-full">
-                    <div className="relative w-36 h-36 md:w-40 md:h-48 flex-shrink-0">
+                    <div className="relative w-36 h-36 md:w-40 md:h-48 flex-shrink-0 ">
                       <img 
                         src={member.image} 
                         alt={member.name}
                         className="relative w-full h-full object-cover rounded-xl ring-2 ring-indigo-400/50"
                       />
+                      {/* <div className="inset-0 rounded-xl ring-2 ring-indigo-400/50 text-white"> */}
+                        {member.contact && <a href={member.contact} className="pl-6 pr-5 ml-1.5 md:pl-8 md:pr-7 md:ml-1.5  inset-0 rounded-xl ring-2 ring-indigo-400/50 text-white text-center">
+                          Get in Touch
+                        </a>}
+                      {/* </div> */}
                     </div>
 
                     <div className="flex-1 text-center md:text-left">
-                      <div className='flex flex-row'>
+                      <div className='flex flex-row justify-center mt-6 md:mt-0 md:justify-start'>
                         <h3 className="text-2xl font-bold text-indigo-300 mb-3">{member.name}</h3>
                         {member.work && <div className='inline-flex items-center px-3 py-1 rounded-full ml-4 text-sm font-medium bg-green-600/90 text-white mb-3'>{member.work}</div>}
                       </div>
@@ -359,7 +365,7 @@ const AboutUs = () => {
                         {member.description}
                       </p>
                       
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                         <span className="px-2 py-1 text-xs rounded-md bg-indigo-500/50 text-indigo-100 border border-indigo-500/40">
                           {member.below1}
                         </span>
