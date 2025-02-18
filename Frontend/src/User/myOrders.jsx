@@ -256,7 +256,6 @@ const MyOrders = () => {
           
           if (orderDocSnap.exists()) {
             const orderData = orderDocSnap.data();
-            console.log("Raw Order Data:", orderData); // Debug log
             
             const itemsWithDetails = await Promise.all(
               (orderData.orderDetails?.items || []).map(async (item) => {
@@ -342,8 +341,6 @@ const MyOrders = () => {
             } else if (orderData.addressInfo) {
               shippingAddress = orderData.addressInfo;
             }
-
-            console.log("Extracted Shipping Address:", shippingAddress); // Debug log
 
             return {
               ...orderData,
