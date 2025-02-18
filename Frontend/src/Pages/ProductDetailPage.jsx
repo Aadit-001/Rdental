@@ -611,7 +611,7 @@ const ProductDetailPage = () => {
               </h2>
               <div className="space-y-4">
                 {/* Product Details Summary */}
-                <div className="bg-gray-50 rounded-md p-4 mb-4">
+                {/* <div className="bg-gray-50 rounded-md p-4 mb-4">
                   <div className="flex gap-4 items-start">
                     <img 
                       src={imageError ? '/placeholder-image.jpg' : product.imageUrl}
@@ -624,7 +624,7 @@ const ProductDetailPage = () => {
                       <p className="text-sm text-gray-500">Unit Price: ₹{product.price}</p>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Shipping Information */}
                 <div className="bg-gray-50 rounded-md p-4">
