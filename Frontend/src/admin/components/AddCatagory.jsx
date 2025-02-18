@@ -16,7 +16,7 @@ const AddCatagory = () => {
     };
     
     return (
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-6xl mx-auto">
+        <div className="bg-white rounded-lg shadow-lg p-8 max-w-6xl ">
             {/* Header Section */}
             <div className="mb-8 flex flex-col md:flex-row justify-between items-center">
                 <div>

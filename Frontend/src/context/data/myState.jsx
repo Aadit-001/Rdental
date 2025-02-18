@@ -2,8 +2,9 @@ import React, {
     useState, 
     useEffect, 
     useMemo, 
-    useCallback, 
-    useRef 
+    useCallback ,
+    // useNavigate,  //mystate mai hum usenagvigate and use location use nhi kar sakte
+    // useLocation
 } from 'react';
 import { 
     collection, 
@@ -61,7 +62,10 @@ const DEFAULT_PRODUCT = {
     })
 };
 
+
 const MyState = (props) => {
+    // const navigate = useNavigate();
+    // const location = useLocation();
     // Optimized state initialization with lazy loading
     const [currentUserId, setCurrentUserId] = useState(() => {
         const userStr = localStorage.getItem('user');
@@ -105,7 +109,6 @@ const MyState = (props) => {
     });
 
     // Refs for tracking previous states
-    const prevProductsLength = useRef(0);
 
     // Memoized selectors
     const getCategoryProducts = useCallback((category) => {
@@ -549,6 +552,34 @@ const MyState = (props) => {
         };
     }, [products, getBestSellers]);
 
+
+    // const navigate = useNavigate();
+
+    const Logout = useCallback((navigate) => {
+        setIsLoading(true);
+        // Clear all auth-related states
+        // localStorage.clear();
+        localStorage.removeItem('user');
+        setUser(null);
+        setCurrentUserId(null);
+        setIsUserLoggedIn(false);
+        setShowProfile(false);
+        setIsLoading(false);
+    
+        // Navigate to home if not already there
+        navigate('/');
+        toast.success('Logged out successfully', {
+          position: "bottom-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }, []);
+
     // Memoized context value to prevent unnecessary re-renders
     const contextValue = useMemo(() => ({
         currentUserId,
@@ -596,7 +627,8 @@ const MyState = (props) => {
         user,
         setUser,
         userInfo,
-        setUserInfo
+        setUserInfo,
+        Logout
     }), [
         currentUserId, 
         showSignIn, 
@@ -613,7 +645,11 @@ const MyState = (props) => {
         cartItems,
         currentProductId,
         user,
-        userInfo
+        userInfo,
+        Logout,
+        setCurrentUserId,
+        setUser,
+        setUserInfo
     ]);
 
     return (

@@ -123,8 +123,8 @@ const Cart = () => {
   return (
     <>
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)] py-4 px-0 lg:px-8 pt-24">
-      <div className="max-w-7xl mx-auto px-4 md:px-4 py-8">
-        <h1 className="text-4xl font-bold text-blue-900 mb-8 text-center animate-fade-in-down relative group">
+      <div className="max-w-7xl mx-auto px-4 md:px-4 py-2">
+        <h1 className="text-4xl font-bold text-gray-600 mb-8 text-center animate-fade-in-down relative group">
           <span className="inline-block">Shopping Cart</span>
           <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-900 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
         </h1>

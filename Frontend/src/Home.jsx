@@ -48,7 +48,7 @@ const Home = () => {
 
 
   return (
-    <div className="pt-20 max-w-[1480px] w-screen mx-auto ">
+    <div className="pt-16 md:pt-20 max-w-[1480px] w-screen mx-auto ">
       {/* Image Carousel Section */}
       <div className="relative h-[200px] lg:h-[500px] w-full overflow-hidden py-1 mb-0 mx-auto">
         {/* Left Arrow Button */}
@@ -86,7 +86,7 @@ const Home = () => {
                 alt={`Slide ${index + 1}`}
                 className={`w-full h-full ${
                   index < 3 ? "object-cover" : "object-stretch"
-                } rounded-[0.5rem] sm:rounded-[1rem] lg:rounded-[2rem] shadow-lg 
+                } rounded-[0.5rem] sm:rounded-[1rem] lg:rounded-[1rem] shadow-lg 
                 sm:transform-none transform scale-[1.02]
                 object-center`}
                 loading="eager"
@@ -109,7 +109,7 @@ const Home = () => {
       </div>
 
       {/* Info Strip */}
-      <div className="bg-gradient-to-r from-green-50 to-green-100/20 py-2 mt-4  max-w-[1400px] mx-auto rounded-xl shadow-sm relative overflow-hidden
+      <div className="bg-gradient-to-r from-green-50 to-green-100/20 py-1 md:py-2 mt-2 md:mt-4 w-[96%] md:w-full max-w-[1400px] mx-auto rounded-xl shadow-sm relative overflow-hidden
         before:absolute before:inset-0 before:border-2 before:border-green-300/50 before:rounded-xl
         before:animate-[border-dance_4s_linear_infinite]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

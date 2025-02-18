@@ -56,7 +56,7 @@ const Login = () => {
       }
 
       // First update local storage
-      localStorage.setItem('user', JSON.stringify(result.user));
+      localStorage.setItem('user', JSON.stringify(docSnap.exists() ? docSnap.data() : user));
       
       // Then update app state
       setIsUserLoggedIn(true);

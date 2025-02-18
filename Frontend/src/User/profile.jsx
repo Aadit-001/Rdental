@@ -1,16 +1,14 @@
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { Link, useNavigate} from "react-router-dom";
 import { useContext } from 'react';
 import myContext from '../context/data/myContext';
 
 
 const Profile = () => {
-  const { setIsUserLoggedIn, setShowProfile,setIsLoading } = useContext(myContext);
+  const { setShowProfile,Logout } = useContext(myContext);
   const navigate = useNavigate();
-  const location = useLocation();
-    const profileRef = useRef(null);
+  const profileRef = useRef(null);
 
    useEffect(() => {
     const handleClickOutside = (event) => {
@@ -34,29 +32,10 @@ const Profile = () => {
   });
 
   // logout button 
-  const Logout = () => {
-    setIsLoading(true);
-    // Clear all auth-related states
-    localStorage.clear();
-    setIsUserLoggedIn(false);
-    setShowProfile(false);
-    setIsLoading(false);
-
-    // Navigate to home if not already there
-    if (location.pathname !== '/') {
-      navigate('/');
-    }
-    toast.success('Logged out successfully', {
-      position: "bottom-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: false,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+  const handleLogout = () => {
+    Logout(navigate);
   };
+  
 
   return (
     <div className=" lg:pt-1 lg:mr-6  w-full h-full bg-transparent fixed top-0 z-40 " onClick={() => setShowProfile(false)}>
@@ -175,7 +154,7 @@ const Profile = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="w-full p-4 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center font-medium"
-              onClick={Logout}
+              onClick={handleLogout}
             >
               <svg
                 className="w-6 h-6 mr-3"

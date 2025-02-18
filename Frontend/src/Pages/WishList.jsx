@@ -12,7 +12,7 @@ function WishList() {
   const [isLoading, setIsLoading] = useState(true);
   const [, setWishlistEmpty] = useState(false);
 
-  const { getWishlist, addToWishlist, removeFromWishlist, wishlistItems, setWishlistItems,addToCart } = useContext(myContext);
+  const { getWishlist, wishlistItems, setWishlistItems } = useContext(myContext);
   
   // useEffect(() => {
   //   const fetchWishlist = async () => {
@@ -79,7 +79,7 @@ function WishList() {
         animate={{ opacity: 1 }}
         className="min-h-screen flex flex-col relative bg-[radial-gradient(circle_at_top_left,_#10B98120_0%,_transparent_25%),_radial-gradient(circle_at_top_right,_#0D948020_0%,_transparent_25%),_radial-gradient(circle_at_bottom_left,_#05966920_0%,_transparent_25%),_radial-gradient(circle_at_bottom_right,_#0F766E20_0%,_transparent_25%)]"
       >
-        <div className="container mx-auto  md:px-24 pt-28 flex-grow relative">
+        <div className="container mx-auto  md:px-24 pt-24 flex-grow relative">
           <div className="flex">
             {/* Vertical Poster Section - 20% width */}
             <div className="w-1/5 mr-2 mb-20 mt-10 hidden md:block">

@@ -27,7 +27,6 @@ const ProductDetailPage = () => {
   const [averageRating, setAverageRating] = useState(0);
   const [totalRatings, setTotalRatings] = useState(0);
   const [hasUserRated, setHasUserRated] = useState(false);
-  const [expandedCard, setExpandedCard] = useState(null);
   const [showZoom, setShowZoom] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const imageRef = useRef(null);

@@ -47,11 +47,11 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-md w-screen fixed top-0 z-50 md:pr-4" onClick={removeProfile}>
       <div className="lg:w-full sm:max-w-screen px-1">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-14 md:h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-0 pl-3">
-              <img src={AppLogo} alt="R-Dental" className="h-14 w-14" />
+              <img src={AppLogo} alt="R-Dental" className="h-12 w-12" />
               <img src={name} alt="R-Dental" className=" h-10 w-auto hidden sm:block" />
             </Link>
           </div>
@@ -141,7 +141,7 @@ const Navbar = () => {
             {/* Sign In Button */}
             {
               isUserLoggedIn ? null :
-                <button className="px-6 py-2 font-medium text-green-600 border-2 border-green-500 rounded-lg 
+                <button className="px-2 md:px-6 py-1 md:py-2 font-medium text-green-600 border-2 border-green-500 rounded-lg 
                 bg-gradient-to-r from-transparent to-transparent hover:from-green-500 hover:to-green-600 
                hover:text-white transition-all duration-300 ease-in-out
                 bg-[length:200%_100%] bg-right hover:bg-left " onClick={handleSignInClick}>
@@ -192,7 +192,7 @@ const Navbar = () => {
             </Link>
 
             {isUserLoggedIn ?
-              <div className="text-gray-600 hover:text-gray-800 group" onClick={handleProfileClick}>
+              <div className="text-gray-600 hover:text-gray-800 group cursor-pointer" onClick={handleProfileClick}>
                 <div className="relative transform transition-transform duration-300 group-hover:scale-110">
                   <svg
                     className={`h-6 w-6 ${showProfile ? 'text-green-500 fill-current' : ''}`}
