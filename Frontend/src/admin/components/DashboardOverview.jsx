@@ -30,14 +30,12 @@ const DashboardOverview = () => {
                 // Calculate total revenue from all orders
                 ordersSnapshot.docs.forEach((orderDoc) => {
                     const orderData = orderDoc.data();
-                    console.log('Processing order:', orderData);
 
                     // Get total from orderDetails
                     if (orderData.orderDetails) {
                         if (typeof orderData.orderDetails === 'object' && !Array.isArray(orderData.orderDetails)) {
                             // If orderDetails is an object with total
                             const total = parseFloat(orderData.orderDetails.total);
-                            console.log('Order total from object:', total);
                             if (!isNaN(total)) {
                                 revenue += total;
                             }
@@ -47,13 +45,10 @@ const DashboardOverview = () => {
                                 const itemTotal = (parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1);
                                 return sum + itemTotal;
                             }, 0);
-                            console.log('Order total from array:', total);
                             revenue += total;
                         }
                     }
                 });
-
-                console.log('Final total revenue:', revenue);
 
                 setStats({
                     products: productsCount,
