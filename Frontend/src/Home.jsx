@@ -20,7 +20,7 @@ import SterilizationHome from './assets/SterilizationHome.jpg';
 
 
 const Home = () => {
-  const {categories,bestSellers} = useContext(myContext);
+  const {categories,bestSellers,setCurrentUserId,setIsUserLoggedIn, setUser} = useContext(myContext);
   const [currentSlide, setCurrentSlide] = useState(0);
   // const [restorativeSlide, setRestorativeSlide] = useState(0);
   const navigate = useNavigate();
@@ -46,6 +46,16 @@ const Home = () => {
     return () => clearInterval(timer);
   }, []); // Added dependency array
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if(user){
+      setIsUserLoggedIn(true);
+      setCurrentUserId(user.uid);
+      setUser(user);
+    }else{
+      setIsUserLoggedIn(false);
+    }
+  }, []);
 
   return (
     <div className="pt-16 md:pt-20 max-w-[1480px] w-screen mx-auto ">

@@ -17,7 +17,7 @@ import { doc, setDoc } from 'firebase/firestore';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { setShowSignIn, setShowSignUp, isLoading, setIsLoading, setIsUserLoggedIn } = useContext(myContext);
+  const { setShowSignIn, setShowSignUp, isLoading, setIsLoading, setIsUserLoggedIn ,setCurrentUserId, setUser} = useContext(myContext);
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -60,6 +60,8 @@ const Signup = () => {
       
       // Then update app state
       setIsUserLoggedIn(true);
+      setCurrentUserId(user.uid);
+      setUser(result.user);
       setShowSignUp(false);
 
       toast.success('User Signed up successfully', {

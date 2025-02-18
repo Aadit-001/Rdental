@@ -16,7 +16,7 @@ import { fireDB } from '../firebase/firebaseConfig';
 
 
 const Login = () => {
-  const { setShowSignIn, setShowSignUp,setIsUserLoggedIn,isLoading, setIsLoading } = useContext(myContext);
+  const { setShowSignIn, setShowSignUp,setIsUserLoggedIn,isLoading, setIsLoading, setCurrentUserId, setUser } = useContext(myContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
@@ -61,6 +61,8 @@ const Login = () => {
       // Then update app state
       setIsUserLoggedIn(true);
       setShowSignIn(false);
+      setCurrentUserId(user.uid);
+      setUser(docSnap.exists() ? docSnap.data() : user);
 
       toast.success('User Logged in successfully', {
         position: "bottom-right",
@@ -74,10 +76,12 @@ const Login = () => {
       });
 
       // Finally navigate
-      if(location.pathname === '/') {
-        // If we're already on home page, no need to navigate
-        return;
-      }
+      // if(location.pathname === '/') {
+      //   // If we're already on home page, no need to navigate
+      // localStorage.setItem('user', JSON.stringify(docSnap.exists() ? docSnap.data() : user));
+      //   navigate('/');
+      //   // return;
+      // }
       navigate(location.pathname);
 
     } catch (error) {
@@ -127,7 +131,9 @@ const Login = () => {
       // Then update app state
       setIsUserLoggedIn(true);
       setShowSignIn(false);
-      window.location.reload();
+      setCurrentUserId(user.user.uid);
+      setUser(docSnap.data());
+      // window.location.reload();
 
       toast.success('User Logged in successfully', {
         position: "bottom-right",

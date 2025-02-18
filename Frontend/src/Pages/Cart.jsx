@@ -21,18 +21,26 @@ const Cart = () => {
       
       try {
         // If user is not logged in, clear cart and stop loading
-        if (!currentUserId || !isUserLoggedIn) {
-          setCartItems([]);
-          setIsLoading(false);
-          return;
-        }
+        // if (!currentUserId || !isUserLoggedIn) {
+        //   setCartItems([]);
+        //   setIsLoading(false);
+        //   return;
+        // }
+
+        const user = JSON.parse(localStorage.getItem('user'));
+        console.log(user);
+            if (!user) {
+              setCartItems([]);
+              setIsLoading(false);
+              return;
+            }
 
         // Wait for products to be available
         if (!products || products.length === 0) {
           return;
         }
 
-        const items = await getCart(currentUserId);
+        const items = await getCart(user.uid);
         if (!isMounted) return;
 
         // Update cart items only if component is still mounted

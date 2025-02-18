@@ -45,9 +45,10 @@ const ProductCard = ({ id, title, description, price, image, catagory, mrp, rati
   //and jo cart mai add ho raha hai wo cart mai add ho raha
   useEffect(() => {
     const checkWishlistStatus = async () => {
-      if (isUserLoggedIn && currentUserId) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
         try {
-          const wishlistItems = await getWishlist(currentUserId);
+          const wishlistItems = await getWishlist(user.uid);
           setIsLiked(wishlistItems.includes(id)); 
         } catch (error) {
           console.error('Error checking wishlist status:', error);
@@ -60,9 +61,10 @@ const ProductCard = ({ id, title, description, price, image, catagory, mrp, rati
 
   useEffect(() => {
     const checkCartStatus = async () => {
-      if (isUserLoggedIn && currentUserId) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
         try {
-          const cartItems = await getCart(currentUserId);
+          const cartItems = await getCart(user.uid);
           setIsAddedToCart(cartItems.some(item => item.productId === id));
           setCartItems(cartItems);
         } catch (error) {
@@ -75,17 +77,18 @@ const ProductCard = ({ id, title, description, price, image, catagory, mrp, rati
   }, [getCart, setCartItems]);
 
   const handleLike = async () => {
-    if(!isUserLoggedIn){
+    const user = JSON.parse(localStorage.getItem('user'));
+    if(!user){
       toast.error('Please login to like products');
       return;
     }
     try {
       if(isLiked){
         setIsLiked(false);
-        await removeFromWishlist(id, currentUserId);
+        await removeFromWishlist(id, user.uid);
       } else {
         setIsLiked(true);
-        await addToWishlist(id, currentUserId);
+        await addToWishlist(id, user.uid);
       }
     } catch (error) {
       console.error('Error updating wishlist:', error);
@@ -96,18 +99,19 @@ const ProductCard = ({ id, title, description, price, image, catagory, mrp, rati
   }
 
   const handleAddToCart = async (productId) => {
-    if(!isUserLoggedIn){
+    const user = JSON.parse(localStorage.getItem('user'));
+    if(!user){
       toast.error('Please login to add products to cart');
       return;
     }
     try {
       if(isAddedToCart){
-        await removeFromCart(productId, currentUserId);
+        await removeFromCart(productId, user.uid);
         setIsAddedToCart(false);
         toast.success('Product removed from cart');
         setCartItems(prev => prev.filter(item => item.productId !== productId));
       } else {
-        await addToCart(productId, currentUserId);
+        await addToCart(productId, user.uid);
         setIsAddedToCart(true);
         toast.success('Product added to cart successfully');
         setCartItems(prev => [...prev, { productId, quantity: 1 }]);
