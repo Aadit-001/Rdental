@@ -33,6 +33,7 @@ const Footer = () => {
                <li><Link to="/termsAndCondition" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Terms And Conditions</Link></li>
               <li><Link to="/shippingAndDelivery" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Shipping Policy</Link></li>
               <li><Link to="/cancellationAndRefund" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Cancellation and Refund</Link></li>
+              <li><Link to="/PrivacyAndPolicy" className="text-gray-400 hover:text-white" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Privacy Policy</Link></li>
             </ul>
           </div>
 

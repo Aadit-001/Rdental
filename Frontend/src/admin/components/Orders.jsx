@@ -14,27 +14,21 @@ const OrderModal = ({ order, onClose }) => {
         const fetchProductDetails = async () => {
             try {
                 setLoading(true);
-                console.log('Full order:', order); // Debug log
 
                 if (!order.orderDetails) {
-                    console.log('No order details found');
                     setOrderProducts([]);
                     return;
                 }
 
                 // Ensure orderDetails is an array
                 const details = Array.isArray(order.orderDetails.items) ? order.orderDetails.items : [order.orderDetails.items];
-                console.log('Processing order details:', details);
 
                 const productsWithDetails = await Promise.all(
                     details.map(async (item) => {
                         try {
-                            console.log('Processing item:', item);
-
                             // Extract product ID
                             const productId = item.productId || item.id;
                             if (!productId) {
-                                console.log('No product ID found for item:', item);
                                 return {
                                     ...item,
                                     title: item.title || 'Unknown Product',
@@ -51,7 +45,6 @@ const OrderModal = ({ order, onClose }) => {
                             
                             if (productSnap.exists()) {
                                 const productData = productSnap.data();
-                                console.log('Product data from Firestore:', productData);
                                 
                                 return {
                                     ...item,
@@ -62,7 +55,6 @@ const OrderModal = ({ order, onClose }) => {
                                     totalPrice: (parseFloat(productData.price) || parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1)
                                 };
                             } else {
-                                console.log('Product not found in Firestore:', productId);
                                 return {
                                     ...item,
                                     title: item.title || 'Unknown Product',
@@ -85,7 +77,6 @@ const OrderModal = ({ order, onClose }) => {
                     })
                 );
 
-                console.log('Final products with details:', productsWithDetails);
                 setOrderProducts(productsWithDetails.filter(product => product !== null));
             } catch (error) {
                 console.error('Error fetching product details:', error);
@@ -349,7 +340,6 @@ const Orders = () => {
             
             const ordersData = querySnapshot.docs.map(doc => {
                 const data = doc.data();
-                console.log('Raw order data:', data); // Debug log
                 return {
                     id: doc.id,
                     ...data,
@@ -357,7 +347,6 @@ const Orders = () => {
                 };
             });
             
-            console.log('Processed orders:', ordersData); // Debug log
             setOrders(ordersData);
             setLoading(false);
         } catch (error) {
@@ -384,7 +373,6 @@ const Orders = () => {
     };
 
     const handleViewOrder = (order) => {
-        console.log('Viewing order:', order); // Debug log
         setSelectedOrder(order);
     };
 

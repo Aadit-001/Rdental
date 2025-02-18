@@ -14,7 +14,7 @@ const AboutUs = () => {
       name: 'Aadit Jha',
       work: 'Team Leader',
       role: 'Full Stack Developer',
-      description: 'Architected and developed a comprehensive full-stack solution for R-dental, delivering a robust and innovative web platform.',
+      description: 'Architected and developed a comprehensive full-stack solution for R-DENTAL, delivering a robust and innovative web platform.',
       image: aditTestimonial,
       below1: 'Technical Expert',
       below2: 'Project Innovator',
@@ -24,11 +24,12 @@ const AboutUs = () => {
 
     {
       name: 'Kaif Shaikh',
-      role: 'Frontend Developer',
-      description: 'Crafted intuitive and responsive user interfaces, transforming complex design concepts into user-friendly web experiences for R-dental.',
+      role: 'Full Stack Developer',
+      description: 'Crafted intuitive and responsive user interfaces, transforming complex design concepts into user-friendly web experiences for R-DENTAL.',
       image: KaifTestimonial,
-      below1: 'UI/UX Specialist',
-      below2: 'Frontend Architect'
+      below1: 'Technical Expert',
+      below2: 'Frontend Architect',
+      contact: 'https://kaifsportfolio.web.app/'
     }
   ]);
 
@@ -347,7 +348,7 @@ const AboutUs = () => {
                         className="relative w-full h-full object-cover rounded-xl ring-2 ring-indigo-400/50"
                       />
                       {/* <div className="inset-0 rounded-xl ring-2 ring-indigo-400/50 text-white"> */}
-                        {member.contact && <a href={member.contact} className="pl-6 pr-5 ml-1.5 md:pl-8 md:pr-7 md:ml-1.5  inset-0 rounded-xl ring-2 ring-indigo-400/50 text-white text-center">
+                        {member.contact && <a href={member.contact} className="pl-6 pr-5 ml-1.5 md:pl-8 md:pr-7 md:ml-1.5 inset-0 rounded-xl ring-2 ring-indigo-400/50 text-white text-center">
                           Get in Touch
                         </a>}
                       {/* </div> */}

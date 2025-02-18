@@ -112,8 +112,6 @@ const CheckoutLayout = () => {
       else if (location.state.product) {
         const { product } = location.state;
         const productDetails = await fetchProductDetails(product.id);
-        console.log(productDetails);
-        console.log(product);
         setOrderDetails({
           items: [{
             id: productDetails?.id || product?.id || product?.productId,
@@ -288,7 +286,6 @@ const CheckoutLayout = () => {
 
   const handlePayment = async () => {
     if (isProcessing) {
-      console.log('Payment already processing');
       return;
     }
     
@@ -309,7 +306,6 @@ const CheckoutLayout = () => {
 
       const userRef = doc(fireDB, "users", currentUserId);
       const getUserInfo = await getDoc(userRef);
-      console.log(getUserInfo.data())
 
       if (paymentMethodSelected === 'cardOrUpi') {
         //fetch razorpay key id from backend
@@ -339,7 +335,6 @@ const CheckoutLayout = () => {
             }
 
             orderData = await response.json();
-            console.log('Order created:', orderData);
           } catch (error) {
             console.error("Error creating order:", error);
             toast.error("Failed to create order. Please try again.");

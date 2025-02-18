@@ -83,8 +83,8 @@ const Messages = () => {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-8 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold mb-8 text-gray-800 border-b pb-4">Messages</h2>
+    <div className="bg-white rounded-xl shadow-lg p-4 sm:p-8 max-w-7xl mx-auto">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-gray-800 border-b pb-4">Messages</h2>
       <div className="overflow-x-auto">
         <div className="inline-block min-w-full align-middle">
           {messages.length === 0 ? (
@@ -95,48 +95,48 @@ const Messages = () => {
               No messages yet
             </div>
           ) : (
-            <div className="grid gap-6">
+            <div className="grid gap-4 sm:gap-6">
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`p-6 rounded-xl border transition-all duration-200 hover:shadow-md ${
+                  className={`p-4 sm:p-6 rounded-xl border transition-all duration-200 hover:shadow-md ${
                     message.status === 'unread'
                       ? 'bg-green-50 border-green-300'
                       : 'bg-white border-gray-200'
                   }`}
                 >
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-0 mb-4">
                     <div>
-                      <h3 className="font-semibold text-xl text-gray-800">{message.name}</h3>
+                      <h3 className="font-semibold text-lg sm:text-xl text-gray-800">{message.name}</h3>
                       <p className="text-sm text-gray-600 mt-1">
                         <span className="inline-block mr-2">📧</span>
                         {message.email}
                       </p>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                      <span className="text-xs sm:text-sm text-gray-500 bg-gray-100 px-2 sm:px-3 py-1 rounded-full">
                         {message.timestamp.toDate().toLocaleString()}
                       </span>
-                      <div className="flex gap-3">
+                      <div className="flex gap-2 sm:gap-3">
                         {message.status === 'unread' && (
                           <button
                             onClick={() => markAsRead(message.id)}
-                            className="text-sm px-3 py-1 rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition-colors duration-200"
+                            className="text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition-colors duration-200"
                           >
                             Mark as read
                           </button>
                         )}
                         <button
                           onClick={() => deleteMessage(message.id)}
-                          className="text-sm px-3 py-1 rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition-colors duration-200"
+                          className="text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-full bg-red-100 text-red-700 hover:bg-red-200 transition-colors duration-200"
                         >
                           Delete
                         </button>
                       </div>
                     </div>
                   </div>
-                  <h4 className="font-medium text-lg mb-3 text-gray-800">{message.subject}</h4>
-                  <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{message.message}</p>
+                  <h4 className="font-medium text-base sm:text-lg mb-2 sm:mb-3 text-gray-800">{message.subject}</h4>
+                  <p className="text-sm sm:text-base text-gray-700 whitespace-pre-wrap leading-relaxed">{message.message}</p>
                 </div>
               ))}
             </div>
