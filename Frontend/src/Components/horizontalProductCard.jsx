@@ -1,173 +1,206 @@
-import { useState } from "react";
+import React, { 
+  useState, 
+  useEffect, 
+  useRef, 
+  useCallback, 
+  useMemo 
+} from "react";
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import  myContext  from '../context/data/myContext';
-import { useContext } from 'react';
 import { toast } from 'react-toastify';
-import { useEffect, useRef } from 'react';
+import myContext from '../context/data/myContext';
 
 const HorizontalProductCard = ({ id, quantity }) => {
-  const { removeFromCart,currentUserId ,setCartItems,updatequantity, products } = useContext(myContext);
-  const [showFullDescription, setShowFullDescription] = useState(false);
+  const navigate = useNavigate();
+  const { 
+    removeFromCart,
+    currentUserId,
+    setCartItems,
+    updatequantity, 
+    products 
+  } = React.useContext(myContext);
+
+  // State Management
   const [productData, setProductData] = useState(null);
   const [localQuantity, setLocalQuantity] = useState(quantity);
   const [isUpdating, setIsUpdating] = useState(false);
-  const updateTimeout = useRef(null);
   const [isRemoving, setIsRemoving] = useState(false);
-  const navigate = useNavigate();
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
+  // Refs and Timeouts
+  const updateTimeout = useRef(null);
+
+  // Memoized Product Finder
+  const findProduct = useCallback(() => {
+    return products.find(product => product.id === id) || null;
+  }, [id, products]);
+
+  // Product Loading Effect
   useEffect(() => {
-    const getCartProduct = () => {
+    const loadProduct = () => {
       try {
-        const product = products.find(product => product.id === id);
+        const product = findProduct();
         if (product) {
           setProductData(product);
         } else {
           throw new Error('Product not found');
         }
       } catch (error) {
-        console.log(error);
+        console.error('Product loading error:', error);
       }
-    }
-    getCartProduct();
-  }, [id, products]);
+    };
+    loadProduct();
+  }, [findProduct]);
 
-  // Sync local quantity with prop
+  // Quantity Sync Effect
   useEffect(() => {
     setLocalQuantity(quantity);
   }, [quantity]);
 
-  const handleQuantityChange = async (id, newQuantity) => {
+  // Quantity Change Handler
+  const handleQuantityChange = useCallback(async (productId, newQuantity) => {
     if (newQuantity < 1 || isUpdating) return;
-    
-    // Update local state immediately
-    setLocalQuantity(newQuantity);
     
     // Clear any pending updates
     if (updateTimeout.current) {
       clearTimeout(updateTimeout.current);
     }
 
-    // Debounce the database update
+    // Optimistic UI Update
+    setLocalQuantity(newQuantity);
+    
     updateTimeout.current = setTimeout(async () => {
       setIsUpdating(true);
       try {
-        // Update cart items state
-        setCartItems(prev => {
-          const updatedItems = prev.map(item => 
-            item.productId === id 
-              ? { ...item, quantity: newQuantity, lastUpdated: Date.now() }
+        // Optimistic Cart Update
+        setCartItems(prev => 
+          prev.map(item => 
+            item.productId === productId 
+              ? { ...item, quantity: newQuantity } 
               : item
-          );
-          return updatedItems;
-        });
+          )
+        );
 
-        // Update database
-        toast.success('Product quantity updated', {
-          position: "bottom-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        await updatequantity(id, currentUserId, newQuantity);
+        // Database Update
+        await updatequantity(productId, currentUserId, newQuantity);
         
-      } catch(error) {
-        // Revert local state on error
+        // toast.success('Quantity updated', {
+        //   position: "bottom-right",
+        //   autoClose: 1000,
+        //   theme: "colored",
+        // });
+      } catch (error) {
+        // Rollback on Error
         setLocalQuantity(quantity);
-        setCartItems(prev => {
-          const updatedItems = prev.map(item => 
-            item.productId === id 
-              ? { ...item, quantity, lastUpdated: Date.now() }
+        setCartItems(prev => 
+          prev.map(item => 
+            item.productId === productId 
+              ? { ...item, quantity } 
               : item
-          );
-          return updatedItems;
-        });
+          )
+        );
         
-        console.error('Failed to update quantity:', error);
+        console.error('Quantity update failed:', error);
         toast.error('Failed to update quantity');
       } finally {
         setIsUpdating(false);
       }
-    }, 500); // Wait 500ms before updating database
-  };
+    }, 500);
+  }, [isUpdating, currentUserId, updatequantity, setCartItems, quantity]);
 
-  const handleRemove = async (id) => {
+  // Remove Product Handler
+  const handleRemove = useCallback(async (productId) => {
     try {
-      // Update local state first to prevent flicker
       setIsRemoving(true);
-      await removeFromCart(id, currentUserId);
-      setCartItems(prev => prev.filter(item => item.productId !== id));
-      setIsRemoving(false);
+      await removeFromCart(productId, currentUserId);
       
-      // Then remove from database
+      setCartItems(prev => 
+        prev.filter(item => item.productId !== productId)
+      );
       
-      toast.success('Product removed from cart', {
+      toast.success('Product removed', {
         position: "bottom-right",
         autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
         theme: "colored",
       });
-    } catch(error) {
-      // Revert local state if database operation fails
-      setCartItems(prev => {
-        const existingItem = prev.find(item => item.productId === id);
-        return existingItem ? prev : [...prev, { productId: id, quantity }];
-      });
-      
-      console.error('Failed to remove product:', error);
+    } catch (error) {
+      console.error('Remove product failed:', error);
       toast.error('Failed to remove product');
+    } finally {
+      setIsRemoving(false);
     }
-  };
+  }, [currentUserId, removeFromCart, setCartItems]);
 
-  const handleClick = () => {
+  // Navigation Handler
+  const handleProductNavigation = useCallback(() => {
     if (!productData) return;
     
     setTimeout(() => {
       navigate(`/products/${productData.catagory}/${productData.id}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 300);
-  };
+  }, [productData, navigate]);
 
+  // Derived Calculations
+  const savedAmount = useMemo(() => 
+    productData ? productData.mrp - productData.price : 0, 
+    [productData]
+  );
+
+  const savingsPercentage = useMemo(() => 
+    productData 
+      ? ((savedAmount / productData.mrp) * 100).toFixed(0) 
+      : '0', 
+    [savedAmount, productData]
+  );
+
+  // Star Rating Renderer
+  const renderStarRating = useMemo(() => {
+    if (!productData) return null;
+    return (
+      <div className="flex items-center mb-1">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span
+            key={star}
+            className={`text-sm ${star <= productData.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+          >
+            ★
+          </span>
+        ))}
+      </div>
+    );
+  }, [productData]);
+
+  // Loading State
   if (!productData) {
-    return <div className="w-full max-w-4xl mx-auto p-4 rounded-lg shadow-lg bg-white">
-      <div className="animate-pulse flex space-x-4">
-        <div className="w-40 h-40 bg-gray-200 rounded"></div>
-        <div className="flex-1 space-y-4 py-1">
-          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-          <div className="space-y-2">
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+    return (
+      <div className="w-full max-w-4xl mx-auto p-4 rounded-lg shadow-lg bg-white">
+        <div className="animate-pulse flex space-x-4">
+          <div className="w-40 h-40 bg-gray-200 rounded"></div>
+          <div className="flex-1 space-y-4 py-1">
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-200 rounded"></div>
+              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>;
+    );
   }
-
-  const savedAmount = productData.mrp - productData.price;
-  const savingsPercentage = ((savedAmount) / productData.mrp * 100).toFixed(0);
 
   return (
     <div 
       className="w-full cursor-pointer max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] bg-white mb-4"
-      onClick={handleClick}
+      onClick={handleProductNavigation}
     >
-      {
-        isRemoving && (
-          <div className="absolute inset-0 z-10 bg-black/40 text-white   backdrop-blur-sm h-full w-full flex justify-center items-center">
-              Removing.....
-          </div>
-        )
-      }
+      {isRemoving && (
+        <div className="absolute inset-0 z-10 bg-black/40 text-white backdrop-blur-sm h-full w-full flex justify-center items-center">
+          Removing.....
+        </div>
+      )}
       <div className="flex">
-        <div className="relative w-40 h-40 sm:h-40 h-52">
+        <div className="relative w-40 h-40 md:h-44">
           <img 
             src={productData.imageUrl} 
             alt={productData.title}
@@ -178,19 +211,13 @@ const HorizontalProductCard = ({ id, quantity }) => {
         <div className="flex-1 p-4">
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-xl font-bold text-gray-800 mb-2" title={productData.title}>
+              <h2 
+                className="text-xl font-bold text-gray-800 mb-2" 
+                title={productData.title}
+              >
                 {productData.title}
               </h2>
-              <div className="flex items-center mb-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                    key={star}
-                    className={`text-sm ${star <= productData.rating ? 'text-yellow-400' : 'text-gray-300'}`}
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
+              {renderStarRating}
             </div>
             <button 
               onClick={(e) => {
@@ -273,4 +300,4 @@ HorizontalProductCard.propTypes = {
   quantity: PropTypes.number.isRequired
 };
 
-export default HorizontalProductCard;
+export default React.memo(HorizontalProductCard);

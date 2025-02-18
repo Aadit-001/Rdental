@@ -35,6 +35,7 @@ import { store } from './Redux/Store';
 import TermsAndCondition from "./Pages/TermsAndCondition.jsx";
 import ShippingAndDelivery from "./Pages/ShippingAndDelivery.jsx";
 import CancellationAndRefund from "./Pages/CancellationAndRefund.jsx";
+// import EmailSender from "./Components/email.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -59,6 +60,7 @@ createRoot(document.getElementById("root")).render(
                   </ProtectedRouteForUser>
                 }
               />
+              {/* <Route path="email" element={<EmailSender />} /> */}
               <Route
                 path="myOrders"
                 element={
@@ -100,7 +102,11 @@ createRoot(document.getElementById("root")).render(
                 <CheckoutLayout /> 
                 </ProtectedRouteForUser>
               } />
-              <Route path="orderConfirmation" element={<OrderConfirmationPage />} />
+              <Route path="orderConfirmation" element={
+                <ProtectedRouteForUser>
+                <OrderConfirmationPage />
+                </ProtectedRouteForUser>
+              } />
               <Route path="paymentFailed" element={<PaymentFailed />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>

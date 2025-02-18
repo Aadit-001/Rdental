@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { clearCartAsync } from '../Redux/slices/cartSlice';
 import myContext from '../context/data/myContext';
 import Loader from '../Components/Loader';
+import axios from 'axios';
 
 const OrderConfirmationPage = () => {
   const location = useLocation();
@@ -127,6 +128,86 @@ const OrderConfirmationPage = () => {
       createOrderIfNotExists();
     }
   }, [location.state, orderId, isOrderProcessed, isProcessing, navigate, dispatch]);
+
+
+  const sendEmail = async () => {
+    try {
+      // Check if email has already been sent for this order
+      const emailSentKey = `email_sent_${orderId}`;
+      const hasEmailBeenSent = localStorage.getItem(emailSentKey);
+      
+      if (hasEmailBeenSent) {
+        console.log('Email already sent for this order');
+        return;
+      }
+
+      // Replace with your backend URL
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/send-email`, {
+        to: `${user?.email}`,
+        subject: "Order Confirmation Email",
+        html: `
+          <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div style="background-color:#2ecc71 ; color: white; padding: 20px; text-align: center; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+              <h1 style="margin: 0; font-size: 24px;">Order Confirmation</h1>
+            </div>
+            
+            <div style="padding: 20px; background-color: white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+              <p style="color: #333; line-height: 1.6;">Dear Valued Customer,</p>
+              
+              <p style="color: #333; line-height: 1.6;">
+                Thank you for choosing RDental. We are pleased to confirm that we have received your order and are processing it with the utmost care.
+              </p>
+              
+              <div style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #e6f2ff;">
+                <h2 style="margin-top: 0; color: #0077be; border-bottom: 1px solid #e6f2ff; padding-bottom: 10px;">Order Details</h2>
+                <p style="margin: 10px 0;"><strong>Order Number:</strong> ${orderId}</p>
+                <p style="margin: 10px 0;"><strong>Order Date:</strong> ${new Date().toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}</p>
+                <p style="margin: 10px 0;"><strong>Total Amount:</strong> ${orderDetails?.total}</p>
+              </div>
+              
+              <p style="color: #333; line-height: 1.6;">
+                Our team is diligently processing your order. We will send a shipping confirmation email with tracking details as soon as your package is dispatched.
+              </p>
+              
+              <p style="color: #333; line-height: 1.6;">
+                For any questions or concerns about your order, please contact our dedicated customer support team.
+              </p>
+              
+              <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e0e0e0; text-align: center;">
+                <p style="color: #666; font-size: 14px;">
+                  Best regards,<br>
+                  <strong>RDental Customer Care Team</strong>
+                </p>
+              </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 10px; color: #888; font-size: 12px;">
+              © ${new Date().getFullYear()} RDental. All rights reserved.
+            </div>
+          </div>`
+      });
+
+      // Mark email as sent in localStorage
+      localStorage.setItem(emailSentKey, 'true');
+    } catch (error) {
+      console.error('Email send error:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (isOrderProcessed) {
+      const emailSentKey = `email_sent_${orderId}`;
+      const hasEmailBeenSent = localStorage.getItem(emailSentKey);
+      
+      if (!hasEmailBeenSent) {
+        sendEmail();
+      }
+    }
+  }, [isOrderProcessed, orderId]);
 
   if (error) {
     return (
@@ -357,6 +438,12 @@ const OrderConfirmationPage = () => {
             className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold"
           >
             My Orders
+          </button>
+          <button
+            onClick={() => {sendEmail()}}
+            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold"
+          >
+            Email Order Details
           </button>
           <button
             onClick={() => {

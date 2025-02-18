@@ -56,7 +56,7 @@ const PaymentForm = ({ paymentMethodSelected, setPaymentMethodSelected }) => {
 };
 
 PaymentForm.propTypes = {
-  paymentMethodSelected: PropTypes.string.isRequired,
+  paymentMethodSelected: PropTypes.string,
   setPaymentMethodSelected: PropTypes.func.isRequired,
 };
 

@@ -8,6 +8,8 @@ import myContext from '../../context/data/myContext';
 import OrderSummary from './OrderSummary';
 import PaymentForm from './PaymentForm';
 import UserInfoForm from './userInfoForm';
+// import sendEmail from '../../Components/email';
+// import axios from 'axios';
 
 const steps = ['Shipping Information', 'Payment Information', 'Review Order'];
 
@@ -46,6 +48,9 @@ const loadScript = (src) => {
   });
 };
 
+
+
+
 const CheckoutLayout = () => {
   const { setUserInfo,currentUserId} = useContext(myContext);
   const navigate = useNavigate();
@@ -55,6 +60,8 @@ const CheckoutLayout = () => {
   const [paymentMethodSelected, setPaymentMethodSelected] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [razorpayInstance, setRazorpayInstance] = useState(null);
+
+
 
   useEffect(() => {
     const fetchProductDetails = async (productId) => {
@@ -179,6 +186,74 @@ const CheckoutLayout = () => {
     return true;
   };
 
+  const validateOrderDetails = (orderDetails) => {
+    if (!orderDetails || !orderDetails.items || orderDetails.items.length === 0) {
+      throw new Error('Invalid order details');
+    }
+  
+    // Validate each item
+    orderDetails.items.forEach(item => {
+      if (!item.id || !item.title || item.quantity <= 0 || item.price < 0) {
+        throw new Error('Invalid item in order');
+      }
+    });
+  
+    // Validate financial calculations
+    const calculatedSubtotal = orderDetails.items.reduce(
+      (sum, item) => sum + (item.price * item.quantity), 
+      0
+    );
+  
+    const TOLERANCE = 0.01; // Allow small floating-point discrepancies
+    if (Math.abs(calculatedSubtotal - orderDetails.subtotal) > TOLERANCE) {
+      throw new Error('Subtotal calculation mismatch');
+    }
+  };
+
+  const validateUserInformation = (formData) => {
+    const validations = [
+      { 
+        field: 'firstName', 
+        validate: (value) => value && value.length >= 2 && value.length <= 50 
+      },
+      { 
+        field: 'lastName', 
+        validate: (value) => value && value.length >= 2 && value.length <= 50 
+      },
+      { 
+        field: 'phone', 
+        validate: (value) => /^\d{10}$/.test(value) 
+      },
+      { 
+        field: 'pincode', 
+        validate: (value) => /^\d{6}$/.test(value) 
+      },
+      { 
+        field: 'address', 
+        validate: (value) => value && value.length >= 10 && value.length <= 200 
+      }
+    ];
+  
+    const failedValidations = validations.filter(
+      validation => !validation.validate(formData[validation.field])
+    );
+  
+    if (failedValidations.length > 0) {
+      const errorMessages = failedValidations.map(
+        validation => `Invalid ${validation.field}`
+      );
+      throw new Error(errorMessages.join(', '));
+    }
+  };
+  
+  const validatePaymentMethod = (method) => {
+    const VALID_METHODS = ['cardOrUpi', 'cod'];
+    
+    if (!VALID_METHODS.includes(method)) {
+      throw new Error('Invalid payment method');
+    }
+  };
+
   const handleNext = () => {
     let isValid = true;
 
@@ -221,6 +296,10 @@ const CheckoutLayout = () => {
     let orderData = null;
 
     try {
+      validateOrderDetails(orderDetails);
+      validateUserInformation(formData);
+      validatePaymentMethod(paymentMethodSelected);
+
       const amountInPaise = Math.round(orderDetails.total*100);
       if (!amountInPaise) {
         toast.error('Amount is not available');
@@ -233,6 +312,15 @@ const CheckoutLayout = () => {
       console.log(getUserInfo.data())
 
       if (paymentMethodSelected === 'cardOrUpi') {
+        //fetch razorpay key id from backend
+        const getRazorpayKey = await fetch(`${import.meta.env.VITE_BACKEND_URL}/getRazorpayKey`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        // const data = await razorpayKey.json();
+        const { razorpayKey } = await getRazorpayKey.json();
         // Create order only if not already created
         if (!orderData) {
           try {
@@ -265,8 +353,9 @@ const CheckoutLayout = () => {
           razorpayInstance.close();
         }
 
+
         const options = {
-          key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+          key: razorpayKey,
           amount: amountInPaise.toString(),
           currency: "INR",
           name: "R Dental",
@@ -289,6 +378,10 @@ const CheckoutLayout = () => {
                   orderId: orderData.id
                 }
               });
+              // sendEmail(orderDetails,orderData.id,user?.email);
+              // console.log(orderData.id);
+              // console.log(user?.email);
+              // console.log(orderDetails)
             } else {
               toast.error('Payment failed');
             }
@@ -344,6 +437,7 @@ const CheckoutLayout = () => {
             orderId: `order_${Date.now()}`
           }
         });
+        // sendEmail();
         setIsProcessing(false);
       }
       
@@ -363,9 +457,11 @@ const CheckoutLayout = () => {
       setUserInfo(formData);
 
     } catch (error) {
+      console.error('Validation Error:', error);
       setIsProcessing(false);
       console.error('Payment failed:', error);
       toast.error('Payment failed. Please try again.');
+      return;
     }
   };
 
@@ -435,7 +531,7 @@ const CheckoutLayout = () => {
     <div className="max-w-lg mx-auto min-h-screen pt-24">
       <div className="bg-white rounded-lg shadow-md p-6">
         <h1 className="text-2xl font-bold text-center mb-4">Checkout</h1>
-        <div className="flex justify-between mb-12">
+        <div className="flex mb-12 items-center justify-center space-x-3">
           {steps.map((label) => (
             <div key={label} className="flex items-center flex-col">
               <div

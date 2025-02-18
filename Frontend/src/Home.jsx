@@ -109,7 +109,7 @@ const Home = () => {
       </div>
 
       {/* Info Strip */}
-      <div className="bg-gradient-to-r from-green-50 to-green-100/20 py-2 mt-8  max-w-[1400px] mx-auto rounded-xl shadow-sm relative overflow-hidden
+      <div className="bg-gradient-to-r from-green-50 to-green-100/20 py-2 mt-4  max-w-[1400px] mx-auto rounded-xl shadow-sm relative overflow-hidden
         before:absolute before:inset-0 before:border-2 before:border-green-300/50 before:rounded-xl
         before:animate-[border-dance_4s_linear_infinite]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

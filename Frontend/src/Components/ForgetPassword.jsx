@@ -18,7 +18,7 @@ const ForgetPassword = () => {
     e.preventDefault();
     setIsLoading(true);
     sendPasswordResetEmail(auth,email,{
-        url: import.meta.env.VITE_APP_URL || "http://localhost:5173/"
+        url: "https://rdental.in/"
     });
     try {
       // Here you would typically make an API call to handle password reset

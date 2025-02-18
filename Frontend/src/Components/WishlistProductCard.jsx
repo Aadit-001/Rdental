@@ -1,150 +1,185 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
 import { toast } from 'react-toastify';
+import { useContext } from 'react';
 import myContext from '../context/data/myContext';
 
 const WishlistProductCard = ({ productId }) => {
+  const navigate = useNavigate();
   const { 
     removeFromWishlist, 
     currentUserId, 
     setWishlistItems, 
     addToCart, 
-    removeFromCart, 
     isUserLoggedIn, 
     getCart, 
     setCartItems, 
     products 
   } = useContext(myContext);
-  const [showFullDescription, setShowFullDescription] = useState(false);
+
   const [product, setProduct] = useState(null);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const navigate = useNavigate();
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
-  useEffect(() => {
-    const getProduct = async () => {
-      try {
-        if (!productId || !products) return;
-        const foundProduct = products.find(p => p.id === productId);
-        if (foundProduct) {
-          setProduct(foundProduct);
-        } else {
-          console.error('Product not found:', productId);
-          // Remove the product from wishlist if not found
-          await removeFromWishlist(productId,currentUserId);
-          // setProduct(null);
-        }
-      } catch (error) {
-        console.error('Error finding product:', error);
-      }
-    };
-    getProduct();
+  // Fetch product details
+  const fetchProductDetails = useCallback(() => {
+    if (!productId || !products) return null;
+    return products.find(p => p.id === productId) || null;
   }, [productId, products]);
 
-  useEffect(() => {
-    let isMounted = true;
+  // Check cart status
+  const checkCartStatus = useCallback(async () => {
+    if (!isUserLoggedIn || !currentUserId) return false;
 
-    const checkCartStatus = async () => {
-      if (!isUserLoggedIn || !currentUserId) return;
-
-      try {
-        const cartItems = await getCart(currentUserId);
-        if (isMounted) {
-          setIsAddedToCart(cartItems?.some(item => item.productId === productId) || false);
-          setCartItems(cartItems || []);
-        }
-      } catch (error) {
-        console.error('Error checking cart status:', error);
-        if (isMounted) {
-          setIsAddedToCart(false);
-        }
-      }
-    };
-
-    checkCartStatus();
-    return () => {
-      isMounted = false;
-    };
+    try {
+      const cartItems = await getCart(currentUserId);
+      const isInCart = cartItems?.some(item => item.productId === productId) || false;
+      setIsAddedToCart(isInCart);
+      setCartItems(cartItems || []);
+      return isInCart;
+    } catch (error) {
+      console.error('Error checking cart status:', error);
+      setIsAddedToCart(false);
+      return false;
+    }
   }, [isUserLoggedIn, currentUserId, productId, getCart, setCartItems]);
 
-  if (!product) return null;
+  // Effect to load product details
+  useEffect(() => {
+    const loadProduct = async () => {
+      const foundProduct = fetchProductDetails();
+      setProduct(foundProduct);
+    };
+    loadProduct();
+  }, [fetchProductDetails]);
 
-  const handleClick = () => {
+  // Effect to check cart status
+  useEffect(() => {
+    let isMounted = true;
+    const verifyCartStatus = async () => {
+      if (isMounted) await checkCartStatus();
+    };
+    verifyCartStatus();
+    return () => { isMounted = false; };
+  }, [checkCartStatus]);
+
+  // Navigation handler
+  const handleProductNavigation = () => {
+    if (!product) return;
     setTimeout(() => {
       navigate(`/products/${product.catagory}/${product.id}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 300);
   };
 
-  const handleRemove = async (productId) => {
+  // Remove from wishlist handler
+  const handleRemoveFromWishlist = async () => {
     if (!isUserLoggedIn) {
-      toast.error('Please login to manage wishlist');
-      return;
-    }
-
-    try {
-      // await removeFromWishlist(productId, currentUserId);
-      await removeFromWishlist(currentUserId,productId);
-      setWishlistItems((prevItems) => prevItems.filter((item) => item.id !== productId));
-      toast.success('Product removed from wishlist', {
+      toast.error('Please login to manage wishlist', {
         position: "bottom-right",
         autoClose: 1000,
         hideProgressBar: false,
-        closeOnClick: false,
+        closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "colored",
       });
-    } catch (error) {
-      console.error('Error removing product from wishlist:', error);
-      toast.error('Error removing product from wishlist');
-    }
-  };
-
-  const handleAddToCart = async (productId) => {
-    if (!isUserLoggedIn) {
-      toast.error('Please login to add products to cart');
       return;
     }
 
     try {
-      if (isAddedToCart) {
-        await removeFromCart(productId, currentUserId);
-        setCartItems(prev => prev.filter(item => item.productId !== productId));
-        setIsAddedToCart(false);
-        toast.success('Product removed from cart');
-      } else {
-        await addToCart(productId, currentUserId);
-        // await removeFromWishlist(currentUserId,productId);
-        const cartItems = await getCart(currentUserId);
-        setCartItems(cartItems || []);
-        setIsAddedToCart(true);
-        toast.success('Product added to cart successfully', {
-          position: "bottom-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      }
+      await removeFromWishlist(currentUserId, productId);
+      setWishlistItems((prevItems) => 
+        prevItems.filter((item) => item.id !== productId)
+      );
     } catch (error) {
-      console.error('Error updating cart:', error);
-      toast.error('Failed to update cart');
+      console.error('Error removing product from wishlist:', error);
+      toast.error('Failed to remove product from wishlist', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
+
+  // Add to cart handler
+  const handleAddToCart = async () => {
+    if (!isUserLoggedIn) {
+      toast.error('Please login to add products to cart', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+
+    if (isAddedToCart) {
+      toast.info('Product already in cart', {
+        position: "bottom-right",
+        autoClose: 1000,
+        theme: "colored",
+      });
+      return;
+    }
+
+    try {
+      await addToCart(productId, currentUserId);
+      const updatedCartItems = await getCart(currentUserId);
+      
+      setCartItems(updatedCartItems || []);
+      setIsAddedToCart(true);
+
+      // Remove from wishlist after successful cart addition
+      await handleRemoveFromWishlist();
+
+      toast.success('Product added to cart successfully', {
+        position: "bottom-right",
+        autoClose: 1000,
+        theme: "colored",
+      });
+    } catch (error) { 
+      console.error('Error updating cart:', error);
+      toast.error('Failed to add product to cart');
+    }
+  };
+
+  // Render nothing if no product found
+  if (!product) return null;
+
+  // Star rating renderer
+  const renderStarRating = () => (
+    <div className="flex items-center mb-1">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <span
+          key={star}
+          className={`text-sm ${star <= product.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+        >
+          ★
+        </span>
+      ))}
+    </div>
+  );
 
   return (
     <div 
       className="w-screen cursor-pointer max-w-4xl mx-auto rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-[1.02] bg-white mb-4"
-      onClick={handleClick}
+      onClick={handleProductNavigation}
     >
       <div className="flex">
+        {/* Product Image */}
         <div className="relative w-40 h-40">
           <img 
             src={imageError ? '/placeholder-image.jpg' : product.imageUrl}
@@ -154,27 +189,24 @@ const WishlistProductCard = ({ productId }) => {
           />
         </div>
 
+        {/* Product Details */}
         <div className="flex-1 p-4">
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-lg font-bold text-gray-800 mb-1" title={product.title}>
+              <h2 
+                className="text-lg font-bold text-gray-800 mb-1" 
+                title={product.title}
+              >
                 {product.title}
               </h2>
-              <div className="flex items-center mb-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                    key={star}
-                    className={`text-sm ${star <= product.rating ? 'text-yellow-400' : 'text-gray-300'}`}
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
+              {renderStarRating()}
             </div>
+
+            {/* Remove from Wishlist Button */}
             <button 
               onClick={(e) => {
                 e.stopPropagation();
-                handleRemove(product.id);
+                handleRemoveFromWishlist();
               }}
               className="text-red-500 hover:text-red-700 transition-colors duration-200 hover:scale-110"
             >
@@ -194,6 +226,8 @@ const WishlistProductCard = ({ productId }) => {
               </svg>
             </button>
           </div>
+
+          {/* Product Description */}
           <div className="relative">
             <p 
               onClick={(e) => {
@@ -205,7 +239,9 @@ const WishlistProductCard = ({ productId }) => {
               {product.description}
             </p>
           </div>
-          <div className="flex flex-col md:flex-row justify-between  md:items-center">
+
+          {/* Price and Add to Cart */}
+          <div className="flex flex-col md:flex-row justify-between md:items-center">
             <div className="flex items-center gap-2">
               <span className="text-base font-bold text-gray-900">&#x20B9;{product.price}</span>
               <span className="text-xs text-gray-400 line-through">&#x20B9;{product.mrp}</span>
@@ -216,12 +252,11 @@ const WishlistProductCard = ({ productId }) => {
             <button 
               onClick={(e) => {
                 e.stopPropagation();
-                handleAddToCart(productId);
-                handleRemove(product.id);
+                handleAddToCart();
               }}
               className="px-3 mt-1 md:mt-0 py-2 md:py-1.5 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition-colors duration-300"
             >
-              Add to Cart
+              {isAddedToCart ? 'In Cart' : 'Add to Cart'}
             </button>
           </div>
         </div>
