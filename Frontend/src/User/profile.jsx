@@ -47,12 +47,17 @@ const Profile = () => {
         <div className="bg-gray-100 text-white rounded-2xl shadow-xl overflow-hidden  lg:w-[20%] sm:w-[80%] fixed top-16 right-1 lg:right-10">
           <div className="bg-gradient-to-r from-green-600 to-green-700 p-6">
             <div className="flex items-center space-x-6 h-[100%] w-[100%]">
+              {user?.providerData?.[0]?.photoURL ?
               <motion.img
                 whileHover={{ scale: 1.1 }}
                 src={user?.providerData?.[0]?.photoURL || "https://via.placeholder.com/150"}
                 alt="Profile"
                 className="w-16 h-16 rounded-full border-4 border-white shadow-lg"
-              />
+              /> : 
+              <div className="w-16 h-16 font-bold text-2xl rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+                {user?.providerData?.[0]?.displayName.charAt(0).toUpperCase() || user?.displayName.charAt(0).toUpperCase() || "G"}
+              </div> 
+              }
               <div>
                 <h1 className="text-2xl font-bold">{user?.providerData?.[0]?.displayName || user?.displayName || "Guest User"}</h1>
                 <p className="opacity-90 text-sm">{user?.providerData?.[0]?.email || user?.email || "No email available"}</p>
