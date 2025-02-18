@@ -321,37 +321,6 @@ const ProductDetailPage = () => {
     );
   }
 
-  const specifications = [
-    {
-      title: "Product Specifications",
-      content: "Detailed technical specifications of the product..."
-    },
-    {
-      title: "Usage Instructions",
-      content: "Step by step guide on how to use the product..."
-    },
-    {
-      title: "Safety Guidelines",
-      content: "Important safety information and precautions..."
-    },
-    {
-      title: "Maintenance",
-      content: "Instructions for proper maintenance and care..."
-    },
-    {
-      title: "Warranty Information",
-      content: "Details about product warranty and coverage..."
-    },
-    {
-      title: "Package Contents",
-      content: "List of items included in the package..."
-    },
-    {
-      title: "Additional Information",
-      content: "Other relevant product details and information..."
-    }
-  ];
-
   // Calculate savings only if both mrp and price exist
   const savings = product.mrp && product.price 
     ? ((product.mrp - product.price) / product.mrp * 100).toFixed(0)
@@ -463,68 +432,31 @@ const ProductDetailPage = () => {
                   </span>
                 </button>
               )}
-              
-              <div className="border-t pt-4">
-                <h3 className="text-lg font-semibold mb-2">Product Rating</h3>
-                <div className="flex flex-col gap-4">
-                  {/* Average Rating Display */}
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <span
-                          key={star}
-                          className={`text-2xl ${star <= averageRating ? 'text-yellow-400' : 'text-gray-300'}`}
-                        >
-                          ★
-                        </span>
-                      ))}
-                    </div>
-                    <span className="text-sm text-gray-600">
-                      {averageRating !== undefined && !isNaN(averageRating) 
-                        ? `(${averageRating.toFixed(1)})` 
-                        : '(N/A)'} {totalRatings} {totalRatings === 1 ? 'rating' : 'ratings'}
-                    </span>
-                  </div>
+            </div>
 
-                  {/* User Rating Section */}
-                  {isUserLoggedIn ? (
-                    <div className="mt-2">
-                      <p className="text-sm font-medium mb-2">
-                        {hasUserRated ? 'Your Rating:' : 'Rate this Product:'}
-                      </p>
-                      <div className="flex items-center gap-4">
-                        <div className="flex gap-1">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <button
-                              key={star}
-                              onClick={() => handleRatingSubmit(star)}
-                              className={`text-2xl transition-colors duration-200 
-                                ${star <= (hasUserRated ? userRating : (rating || 0)) ? 'text-yellow-400' : 'text-gray-300'} 
-                                hover:text-yellow-400`}
-                              onMouseEnter={() => !hasUserRated && setRating(star)}
-                              onMouseLeave={() => !hasUserRated && setRating(0)}
-                            >
-                              ★
-                            </button>
-                          ))}
-                        </div>
-                        {hasUserRated && (
-                          <span className="text-sm text-gray-600">
-                            You rated this product {userRating} {userRating === 1 ? 'star' : 'stars'}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => setShowSignIn(true)}
-                      className="text-sm text-green-600 hover:text-green-700 font-medium"
-                    >
-                      Sign in to rate this product
-                    </button>
-                  )}
-                </div>
-              </div>
+            {/* Why Choose R-DENTAL section */}
+            <div className="hidden lg:block bg-white rounded-lg shadow-md p-4 mt-6">
+              <h2 className="text-lg font-semibold mb-3">Why Choose <span className="text-green-500">R</span>-DENTAL?</h2>
+              <ul className="space-y-2">
+                <li className="flex items-center gap-2 text-sm">
+                  <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Premium Quality Products
+                </li>
+                <li className="flex items-center gap-2 text-sm">
+                  <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Expert Customer Support
+                </li>
+                <li className="flex items-center gap-2 text-sm">
+                  <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Fast & Secure Shipping
+                </li>
+              </ul>
             </div>
           </div>
 
@@ -607,26 +539,67 @@ const ProductDetailPage = () => {
               )}
             </div>
 
-            {/* Specification Cards */}
-            <div className="space-y-2">
-              {specifications.map((spec, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg shadow-md overflow-hidden"
-                >
-                  <button
-                    className="w-full px-6 py-3 text-left font-semibold hover:bg-gray-50"
-                    onClick={() => setExpandedCard(expandedCard === index ? null : index)}
-                  >
-                    {spec.title}
-                  </button>
-                  {expandedCard === index && (
-                    <div className="px-6 py-3 bg-gray-50">
-                      {spec.content}
-                    </div>
-                  )}
+            {/* Moved Ratings Section */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h3 className="text-lg font-semibold mb-2">Product Rating</h3>
+              <div className="flex flex-col gap-4">
+                {/* Average Rating Display */}
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span
+                        key={star}
+                        className={`text-2xl ${star <= averageRating ? 'text-yellow-400' : 'text-gray-300'}`}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                  <span className="text-sm text-gray-600">
+                    {averageRating !== undefined && !isNaN(averageRating) 
+                      ? `(${averageRating.toFixed(1)})` 
+                      : '(N/A)'} {totalRatings} {totalRatings === 1 ? 'rating' : 'ratings'}
+                  </span>
                 </div>
-              ))}
+
+                {/* User Rating Section */}
+                {isUserLoggedIn ? (
+                  <div className="mt-2">
+                    <p className="text-sm font-medium mb-2">
+                      {hasUserRated ? 'Your Rating:' : 'Rate this Product:'}
+                    </p>
+                    <div className="flex items-center gap-4">
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            onClick={() => handleRatingSubmit(star)}
+                            className={`text-2xl transition-colors duration-200 
+                              ${star <= (hasUserRated ? userRating : (rating || 0)) ? 'text-yellow-400' : 'text-gray-300'} 
+                              hover:text-yellow-400`}
+                            onMouseEnter={() => !hasUserRated && setRating(star)}
+                            onMouseLeave={() => !hasUserRated && setRating(0)}
+                          >
+                            ★
+                          </button>
+                        ))}
+                      </div>
+                      {hasUserRated && (
+                        <span className="text-sm text-gray-600">
+                          You rated this product {userRating} {userRating === 1 ? 'star' : 'stars'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setShowSignIn(true)}
+                    className="text-sm text-green-600 hover:text-green-700 font-medium"
+                  >
+                    Sign in to rate this product
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -637,31 +610,34 @@ const ProductDetailPage = () => {
                 Order Summary
               </h2>
               <div className="space-y-4">
-                {/* Items Summary */}
-                <div className="text-sm text-gray-600 mb-4">
-                  <div className="flex justify-between mb-2">
-                    <span>Items ({quantity})</span>
-                    <span className="font-medium">₹{subtotal}</span>
+                {/* Product Details Summary */}
+                <div className="bg-gray-50 rounded-md p-4 mb-4">
+                  <div className="flex gap-4 items-start">
+                    <img 
+                      src={imageError ? '/placeholder-image.jpg' : product.imageUrl}
+                      alt={product.title}
+                      className="w-20 h-20 object-cover rounded"
+                    />
+                    <div>
+                      <h3 className="font-medium text-gray-800">{product.title}</h3>
+                      <p className="text-sm text-gray-500 mt-1">Quantity: {quantity}</p>
+                      <p className="text-sm text-gray-500">Unit Price: ₹{product.price}</p>
+                    </div>
                   </div>
                 </div>
 
                 {/* Shipping Information */}
-                <div className="bg-gray-50 rounded-md p-3 space-y-2">
+                <div className="bg-gray-50 rounded-md p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                        />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/>
                       </svg>
                       <span className="text-sm font-medium text-gray-700">Standard Shipping</span>
                     </div>
                     <span className="text-sm font-medium text-gray-700">₹{shipping}</span>
                   </div>
-                  <p className="text-xs text-gray-500">Estimated delivery: 3-5 business days</p>
+                  <p className="text-xs text-gray-500 mt-2">Estimated delivery: 3-5 business days</p>
                 </div>
 
                 {/* Price Breakdown */}
@@ -678,6 +654,10 @@ const ProductDetailPage = () => {
                     <span>Estimated Tax</span>
                     <span>₹{tax}</span>
                   </div>
+                  <div className="flex justify-between text-gray-600">
+                    <span>Discount</span>
+                    <span className="text-green-600">-₹{((product.mrp - product.price) * quantity).toFixed(2)}</span>
+                  </div>
                   <div className="border-t pt-3">
                     <div className="flex justify-between text-lg font-bold text-gray-900">
                       <span>Total</span>
@@ -692,14 +672,14 @@ const ProductDetailPage = () => {
 
               {/* Checkout Button */}
               <button 
-                  onClick={handleCheckout}
-                  className="w-full mt-6 relative px-6 py-2 rounded-lg shadow-md 
-                  before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
-                  before:transition-all before:duration-500 hover:before:opacity-0
-                  after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
-                  after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
-                  transform hover:scale-105 transition-all duration-300 ease-in-out
-                  hover:shadow-lg hover:shadow-green-200 overflow-hidden">
+                onClick={handleCheckout}
+                className="w-full mt-6 relative px-6 py-3 rounded-lg shadow-md 
+                before:absolute before:inset-0 before:bg-gradient-to-r before:from-green-600 before:to-emerald-500
+                before:transition-all before:duration-500 hover:before:opacity-0
+                after:absolute after:inset-0 after:bg-gradient-to-r after:from-teal-500 after:to-green-500
+                after:opacity-0 hover:after:opacity-100 after:transition-all after:duration-500
+                transform hover:scale-105 transition-all duration-300 ease-in-out
+                hover:shadow-lg hover:shadow-green-200 overflow-hidden">
                 <span className="relative z-10 flex items-center justify-center gap-2 text-white font-semibold tracking-wide">
                   Proceed to Checkout
                   <svg
@@ -719,53 +699,22 @@ const ProductDetailPage = () => {
                 </span>
               </button>
 
-              {/* Additional Information */}
-              <div className="mt-6 space-y-2">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {/* Trust Indicators */}
+              <div className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-600">
+                <div className="flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                   <span>Secure checkout</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>Money-back guarantee</span>
                 </div>
               </div>
             </div>
-
-          {/* Company Features */}
-          <div className="bg-white rounded-lg shadow-md p-6 mt-6">
-            <h2 className="text-xl font-semibold mb-4">Why Choose <span className="text-green-500">R</span>-DENTAL?</h2>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Premium Quality Products
-              </li>
-              <li className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Expert Customer Support
-              </li>
-              <li className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Fast & Secure Shipping
-              </li>
-              <li className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
-                100% Satisfaction Guarantee
-              </li>
-            </ul>
-          </div>
           </div>
         </div>
 
