@@ -568,6 +568,7 @@ const MyState = (props) => {
     
         // Navigate to home if not already there
         navigate('/');
+        window.location.reload();
         toast.success('Logged out successfully', {
           position: "bottom-right",
           autoClose: 1000,

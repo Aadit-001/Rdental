@@ -440,12 +440,6 @@ const OrderConfirmationPage = () => {
             My Orders
           </button>
           <button
-            onClick={() => {sendEmail()}}
-            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold"
-          >
-            Email Order Details
-          </button>
-          <button
             onClick={() => {
               // Select the three divs you want to print
               const orderDetails = document.getElementById('order-details').innerHTML;

@@ -61,8 +61,9 @@ const Login = () => {
       // Then update app state
       setIsUserLoggedIn(true);
       setShowSignIn(false);
-      setCurrentUserId(user.uid);
+      setCurrentUserId(result.user.uid);
       setUser(docSnap.exists() ? docSnap.data() : user);
+      window.location.reload();
 
       toast.success('User Logged in successfully', {
         position: "bottom-right",
@@ -91,20 +92,15 @@ const Login = () => {
       
       // Specific error handling
       if (error.code === 'auth/popup-closed-by-user') {
-        toast.info('Sign-in popup was closed. Please try again.', {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        // toast.info('Sign-in popup was closed. Please try again.', {
+        //   position: "bottom-right",
+        //   autoClose: 2000,
+        // });
+        window.alert('Please unblock the popup in your browser, or try manual login.');
       } else if (error.code === 'auth/cancelled-popup-request') {
-        toast.info('Sign-in request was cancelled. Please try again.', {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        window.alert('Sign-in request was cancelled. Please try again.');
       } else {
-        toast.error('Authentication failed. Please try again.', {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        window.alert('Authentication failed. Please try again.');
       }
     }
   };
@@ -133,7 +129,7 @@ const Login = () => {
       setShowSignIn(false);
       setCurrentUserId(user.user.uid);
       setUser(docSnap.data());
-      // window.location.reload();
+      window.location.reload();
 
       toast.success('User Logged in successfully', {
         position: "bottom-right",

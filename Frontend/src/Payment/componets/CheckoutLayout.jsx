@@ -512,7 +512,7 @@ const CheckoutLayout = () => {
           <div className="flex flex-col justify-center items-center min-h-[60vh] ">
             <div className="animate-spin h-10 w-10 border-4 border-green-500 border-t-transparent rounded-full" />
             <p className="ml-4 mt-2 mb-1 text-black">Processing...</p>
-            <p className="ml-4 mt-2 mb-1 text-black">Please be patient, we are processing your order...</p>
+            <p className="ml-4 mt-2 mb-1 text-black">Please be patient, we are initializing payment...</p>
             <p className="ml-4 mt-2 mb-1 text-black">This may take a few minutes...</p>
           </div>
         </div>

@@ -63,6 +63,7 @@ const Signup = () => {
       setCurrentUserId(user.uid);
       setUser(result.user);
       setShowSignUp(false);
+      window.location.reload();
 
       toast.success('User Signed up successfully', {
         position: "bottom-right",
