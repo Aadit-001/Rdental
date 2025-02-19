@@ -85,7 +85,7 @@ const ProductCard = ({ id, title, description, price, image, catagory, mrp, rati
     try {
       if(isLiked){
         setIsLiked(false);
-        await removeFromWishlist(id, user.uid);
+        await removeFromWishlist(user.uid,id);
       } else {
         setIsLiked(true);
         await addToWishlist(id, user.uid);
