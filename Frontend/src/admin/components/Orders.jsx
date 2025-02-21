@@ -4,6 +4,7 @@ import { collection, query, orderBy, getDocs, updateDoc, doc, getDoc } from 'fir
 import { fireDB } from '../../firebase/firebaseConfig';
 import { toast } from 'react-toastify';
 import { FaTimes, FaUser, FaMapMarkerAlt, FaEnvelope, FaPhone, FaBox, FaCreditCard, FaPrint } from 'react-icons/fa';
+import axios from 'axios';
 
 const OrderModal = ({ order, onClose }) => {
     const printRef = useRef();
@@ -359,16 +360,163 @@ const Orders = () => {
     const updateOrderStatus = async (orderId, newStatus) => {
         try {
             const orderRef = doc(fireDB, 'orders', orderId);
+            const orderDoc = await getDoc(orderRef);
+            const orderData = orderDoc.data();
+
+            // Check if order is already cancelled or delivered
+            if (orderData.orderStatus === 'cancelled') {
+                toast.error('Cannot modify a cancelled order');
+                return;
+            }
+            if (orderData.orderStatus === 'delivered') {
+                toast.error('Cannot modify a delivered order');
+                return;
+            }
+
             await updateDoc(orderRef, {
                 orderStatus: newStatus,
                 lastUpdated: new Date().toISOString()
             });
+            
+            // Send cancellation email if status is changed to 'cancelled'
+            if (newStatus === 'cancelled') {
+                await sendCancellationEmail(orderData);
+            }
+            
+            // Send delivery confirmation email if status is changed to 'delivered'
+            if (newStatus === 'delivered') {
+                await sendDeliveryConfirmationEmail(orderData);
+            }
             
             toast.success('Order status updated successfully');
             fetchOrders(); // Refresh orders list
         } catch (error) {
             console.error('Error updating order status:', error);
             toast.error('Failed to update order status');
+        }
+    };
+
+    const sendCancellationEmail = async (orderData) => {
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/send-email`, {
+                to: orderData.userInfo.email,
+                subject: "Order Cancellation Notice",
+                html: `
+                    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <div style="background-color:#e74c3c; color: white; padding: 20px; text-align: center; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                            <h1 style="margin: 0; font-size: 24px;">Order Cancellation Notice</h1>
+                        </div>
+                        
+                        <div style="padding: 20px; background-color: white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                            <p style="color: #333; line-height: 1.6;">Dear ${orderData.userInfo.firstName},</p>
+                            
+                            <p style="color: #333; line-height: 1.6;">
+                                We regret to inform you that your order has been cancelled. We apologize for any inconvenience this may cause.
+                            </p>
+                            
+                            <div style="background-color: #fff3f3; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #ffe6e6;">
+                                <h2 style="margin-top: 0; color: #c0392b; border-bottom: 1px solid #ffe6e6; padding-bottom: 10px;">Cancelled Order Details</h2>
+                                <p style="margin: 10px 0;"><strong>Order Number:</strong> ${orderData.orderId}</p>
+                                <p style="margin: 10px 0;"><strong>Order Date:</strong> ${orderData.orderDate}</p>
+                                <p style="margin: 10px 0;"><strong>Total Amount:</strong> ₹${orderData.orderDetails?.total}</p>
+                            </div>
+
+                            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                                <h3 style="margin-top: 0; color: #495057;">Order Summary:</h3>
+                                ${orderData.orderDetails?.items.map(item => `
+                                    <p style="margin: 5px 0;">
+                                        ${item.title} x ${item.quantity} - ₹${item.price * item.quantity}
+                                    </p>
+                                `).join('')}
+                            </div>
+                            
+                            <p style="color: #333; line-height: 1.6;">
+                                If you have already made a payment for this order, a refund will be processed according to our refund policy.
+                            </p>
+                            
+                            <p style="color: #333; line-height: 1.6;">
+                                If you have any questions about this cancellation or need further assistance, please don't hesitate to contact our customer support team.
+                            </p>
+                            
+                            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e0e0e0; text-align: center;">
+                                <p style="color: #666; font-size: 14px;">
+                                    Best regards,<br>
+                                    <strong>RDental Customer Care Team</strong>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 10px; color: #888; font-size: 12px;">
+                            © ${new Date().getFullYear()} RDental. All rights reserved.
+                        </div>
+                    </div>
+                `
+            });
+
+            console.log('Cancellation email sent successfully');
+        } catch (error) {
+            console.error('Error sending cancellation email:', error);
+            toast.error('Failed to send cancellation email');
+        }
+    };
+
+    const sendDeliveryConfirmationEmail = async (orderData) => {
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/send-email`, {
+                to: orderData.userInfo.email,
+                subject: "Order Delivered Successfully",
+                html: `
+                    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <div style="background-color:#2ecc71; color: white; padding: 20px; text-align: center; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                            <h1 style="margin: 0; font-size: 24px;">Order Delivered Successfully!</h1>
+                        </div>
+                        
+                        <div style="padding: 20px; background-color: white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                            <p style="color: #333; line-height: 1.6;">Dear ${orderData.userInfo.firstName},</p>
+                            
+                            <p style="color: #333; line-height: 1.6;">
+                                Great news! Your order has been successfully delivered. We hope you are satisfied with your purchase.
+                            </p>
+                            
+                            <div style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; margin: 20px 0; border: 1px solid #e6f2ff;">
+                                <h2 style="margin-top: 0; color: #0077be; border-bottom: 1px solid #e6f2ff; padding-bottom: 10px;">Order Details</h2>
+                                <p style="margin: 10px 0;"><strong>Order Number:</strong> ${orderData.orderId}</p>
+                                <p style="margin: 10px 0;"><strong>Order Date:</strong> ${orderData.orderDate}</p>
+                                <p style="margin: 10px 0;"><strong>Total Amount:</strong> ₹${orderData.orderDetails?.total}</p>
+                            </div>
+
+                            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                                <h3 style="margin-top: 0; color: #495057;">Order Summary:</h3>
+                                ${orderData.orderDetails?.items.map(item => `
+                                    <p style="margin: 5px 0;">
+                                        ${item.title} x ${item.quantity} - ₹${item.price * item.quantity}
+                                    </p>
+                                `).join('')}
+                            </div>
+                            
+                            <p style="color: #333; line-height: 1.6;">
+                                If you have any questions about your order or need assistance, please don't hesitate to contact our customer support team.
+                            </p>
+                            
+                            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e0e0e0; text-align: center;">
+                                <p style="color: #666; font-size: 14px;">
+                                    Thank you for shopping with us!<br>
+                                    <strong>RDental Customer Care Team</strong>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 10px; color: #888; font-size: 12px;">
+                            © ${new Date().getFullYear()} RDental. All rights reserved.
+                        </div>
+                    </div>
+                `
+            });
+
+            console.log('Delivery confirmation email sent successfully');
+        } catch (error) {
+            console.error('Error sending delivery confirmation email:', error);
+            toast.error('Failed to send delivery confirmation email');
         }
     };
 
@@ -492,7 +640,12 @@ const Orders = () => {
                                                     <select
                                                         value={order.orderStatus || ''}
                                                         onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                                                        className="block w-32 text-sm border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                                        className={`block w-32 text-sm border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ${
+                                                            order.orderStatus === 'cancelled' || order.orderStatus === 'delivered' 
+                                                                ? 'opacity-50 cursor-not-allowed' 
+                                                                : ''
+                                                        }`}
+                                                        disabled={order.orderStatus === 'cancelled' || order.orderStatus === 'delivered'}
                                                     >
                                                         <option value="pending">Pending</option>
                                                         <option value="processing">Processing</option>
@@ -559,7 +712,12 @@ const Orders = () => {
                                         <select
                                             value={order.orderStatus || ''}
                                             onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                                            className="block w-24 text-xs border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                            className={`block w-24 text-xs border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ${
+                                                order.orderStatus === 'cancelled' || order.orderStatus === 'delivered' 
+                                                    ? 'opacity-50 cursor-not-allowed' 
+                                                    : ''
+                                            }`}
+                                            disabled={order.orderStatus === 'cancelled' || order.orderStatus === 'delivered'}
                                         >
                                             <option value="pending">Pending</option>
                                             <option value="processing">Processing</option>

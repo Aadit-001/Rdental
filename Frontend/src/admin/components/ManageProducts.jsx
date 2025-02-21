@@ -68,13 +68,13 @@ const ManageProducts = () => {
             </div>
 
             {/* Products Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1 sm:gap-2 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-1 sm:gap-2 md:gap-8">
                 {filteredProducts?.map((product) => (
                     <div 
                         key={product.id} 
-                        className="bg-white border border-gray-200 rounded-lg overflow-hidden transition-colors hover:bg-gray-50 w-48 md:w-56 h-96"
+                        className="bg-white border border-gray-200 rounded-lg overflow-hidden transition-colors hover:bg-gray-50 w-full sm:w-48 md:w-56 h-auto sm:h-96"
                     >
-                        <div className="relative h-48">
+                        <div className="relative h-40 sm:h-48">
                             <img
                                 src={product.imageUrl}
                                 alt={product.title}
@@ -82,7 +82,7 @@ const ManageProducts = () => {
                             />
                         </div>
                         <div className="p-4">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-1 overflow-hidden h-6 hover:h-auto">{product.title}</h3>
+                            <h3 className="text-lg font-semibold text-gray-800 mb-1 overflow-hidden h-auto sm:h-6 hover:h-auto">{product.title}</h3>
                             <div className="">
                                 <p className="text-gray-800">
                                     <span className="font-small">Price:</span>{' '}
@@ -117,16 +117,16 @@ const ManageProducts = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="mt-4 flex gap-2 pt-2">
+                            <div className="mt-4 flex gap-2 pt-2 pb-2 sm:pb-0">
                                 <button
                                     onClick={() => handleEdit(product)}
-                                    className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors"
+                                    className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors text-sm sm:text-base"
                                 >
                                     Edit
                                 </button>
                                 <button
                                     onClick={() => handleDelete(product.id)}
-                                    className="flex-1 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
+                                    className="flex-1 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors text-sm sm:text-base"
                                 >
                                     Delete
                                 </button>

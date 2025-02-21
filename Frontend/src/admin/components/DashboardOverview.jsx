@@ -1,4 +1,5 @@
-import { FiPackage, FiShoppingBag, FiUsers, FiDollarSign, FiTrendingUp, FiCalendar } from 'react-icons/fi';
+import { FiPackage, FiShoppingBag, FiUsers, FiTrendingUp, FiCalendar } from 'react-icons/fi';
+import { BiRupee } from 'react-icons/bi';
 import { collection, getDocs } from 'firebase/firestore';
 import { fireDB } from '../../firebase/firebaseConfig';
 import { useEffect, useState } from 'react';
@@ -100,7 +101,7 @@ const DashboardOverview = () => {
                     <div className="hidden md:block">
                         <div className="relative">
                             <div className="w-20 h-20 rounded-full bg-gradient-to-r from-teal-400 to-cyan-400 flex items-center justify-center text-white text-3xl font-bold">
-                                <FiTrendingUp className="animate-bounce" />
+                                <FiTrendingUp className="" />
                             </div>
                             <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-400 rounded-full border-4 border-white"></div>
                         </div>
@@ -135,7 +136,7 @@ const DashboardOverview = () => {
                     {
                         title: 'Revenue',
                         value: `₹${stats.revenue}`,
-                        icon: <FiDollarSign className="text-xl" />,
+                        icon: <BiRupee className="text-xl" />,
                         color: 'bg-gradient-to-r from-yellow-400 to-yellow-500',
                         textColor: 'text-yellow-600',
                     },
