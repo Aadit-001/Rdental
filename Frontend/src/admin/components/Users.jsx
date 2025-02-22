@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { getAuth} from "firebase/auth";
+import { collection, getDocs, query} from "firebase/firestore";
 import { fireDB } from "../../firebase/firebaseConfig";
-import { collection, getDocs, query, where } from "firebase/firestore";
 
 const Users = () => {
     const [users, setUsers] = useState([]);
-    const auth = getAuth();
 
     useEffect(() => {
         const getUsers = async () => {

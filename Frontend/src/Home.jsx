@@ -299,7 +299,7 @@ const Home = () => {
               <div className="absolute md:flex md:flex-col md:justify-start md:items-start inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
                 <div className="absolute bottom-2 md:bottom-6 left-6 text-white">
                   <span className="text-sm font-medium bg-blue-500 px-3 py-1 rounded-full hidden sm:block">Most Popular</span>
-                  <div className="text-sm md:text-2xl font-bold mt-2 absolute -top-4 md:-top-6 md:relative md:top-0">General Dentistry</div>
+                  <div className="text-xs md:text-2xl font-bold mt-2 absolute -top-10 md:-top-6 md:relative md:top-0">General Dentistry</div>
                   <p className="text-sm mt-1 mb-3 text-gray-200 hidden sm:block">Essential equipment & supplies</p>
                   <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                     onClick={() => { navigate('/products/general'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -320,7 +320,7 @@ const Home = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
                 <div className="absolute bottom-2 md:bottom-6 left-6 text-white">
-                  <h3 className="text-sm md:text-lg md:font-bold absolute -top-4 md:-top-1 md:relative md:top-0">Disposables</h3>
+                  <h3 className="text-xs md:text-lg md:font-bold absolute -top-4 md:-top-1 md:relative md:top-0">Disposables</h3>
                   <p className="text-sm mt-1 hidden sm:block">Essential daily supplies</p>
                   <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                     onClick={() => { navigate('/products/disposables'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -344,8 +344,8 @@ const Home = () => {
 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                  <div className="absolute bottom-2 md:bottom-6 left-2 md:left-6 text-white">
-                    <h3 className="text-sm md:text-lg absolute -top-4 md:-top-1 md:relative md:top-0">Equipment</h3>
+                  <div className="absolute bottom-2 md:bottom-6 left-1 md:left-6 text-white">
+                    <h3 className="text-xs md:text-lg absolute -top-4 md:-top-1 md:relative md:top-0">Equipment</h3>
                     <p className="text-sm mt-1 hidden sm:block">Modern tech</p>
                     <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                       onClick={() => { navigate('/products/equipment'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -364,8 +364,8 @@ const Home = () => {
 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                  <div className="absolute bottom-2 md:bottom-6 left-2 md:left-6 text-white">
-                    <h3 className="text-sm md:text-lg md:font-bold absolute -top-4 md:-top-1 md:relative md:top-0">Restoratives</h3>
+                  <div className="absolute bottom-2 md:bottom-6 left-1 md:left-6 text-white">
+                    <h3 className="text-xs md:text-lg md:font-bold absolute -top-4 md:-top-1 md:relative md:top-0">Restoratives</h3>
                     <p className="text-sm mt-1 hidden sm:block">Quality materials</p>
                     <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                       onClick={() => { navigate('/products/restoratives'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -386,9 +386,9 @@ const Home = () => {
 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
-                <div className="absolute bottom-2 md:bottom-6 left-6 text-white">
+                <div className="absolute bottom-2 md:bottom-6 left-8 text-white">
                   <span className="text-sm font-medium hidden sm:block bg-green-500 px-3 py-1 rounded-full">New Arrivals</span>
-                  <h3 className="text-sm md:text-lg font-bold absolute -top-4 md:mt-2 md:relative md:top-0">Endodontics</h3>
+                  <h3 className="text-xs text-center md:text-lg font-bold absolute -top-4 md:mt-2 md:relative md:top-0">Endodontics</h3>
                   <p className="text-sm mt-1 mb-3 hidden sm:block">Specialized tools & materials</p>
                   <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     onClick={() => { navigate('/products/endodontics'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -412,8 +412,8 @@ const Home = () => {
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                <div className="absolute bottom-2 md:bottom-6 left-2 md:left-6 text-white">
-                  <h3 className="text-sm md:text-lg md:font-bold absolute -top-4 md:-top-1 md:relative md:top-0">Instruments</h3>
+                <div className="absolute bottom-2 md:bottom-6 left-3 md:left-6 text-white">
+                  <h3 className="text-xs md:text-lg md:font-bold absolute -top-4 md:-top-1 md:relative md:top-0">Instruments</h3>
                   <p className="text-sm mt-1 hidden sm:block">Precision tools</p>
                   <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
                     onClick={() => { navigate('/products/instruments'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -432,9 +432,9 @@ const Home = () => {
                 className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent">
-                <div className="absolute bottom-2 md:bottom-6 left-2 md:left-6 text-white">
+                <div className="absolute bottom-2 md:bottom-6 left-3 md:left-6 text-white">
                   <span className="text-sm hidden sm:block font-medium bg-purple-500 px-3 py-1 rounded-2xl">Featured</span>
-                  <h3 className="text-sm md:text-lg absolute -top-4 md:-top-1 md:relative md:top-0">Sterilization</h3>
+                  <h3 className="text-xs md:text-lg absolute -top-4 md:relative md:top-0">Sterilization</h3>
                   <p className="text-sm mt-1 hidden sm:block">Safety first</p>
                   <button className="bg-white/20 hidden sm:block hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     onClick={() => { navigate('/products/sterilization'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
