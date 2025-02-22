@@ -13,43 +13,39 @@ import UserInfoForm from './userInfoForm';
 
 const steps = ['Shipping Information', 'Payment Information', 'Review Order'];
 
-const loadScript = (src) => {
-  // Check if script is already cached in localStorage
-  const cachedScript = localStorage.getItem('razorpayScript');
-  const cachedTimestamp = localStorage.getItem('razorpayScriptTimestamp');
-  const cacheExpiry = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+const RAZORPAY_SCRIPT_URL = 'https://checkout.razorpay.com/v2/checkout.js';
 
-  // If script is cached and not expired, return cached version
-  if (cachedScript && cachedTimestamp && (Date.now() - parseInt(cachedTimestamp)) < cacheExpiry) {
-    return Promise.resolve(true);
-  }
+const loadRazorpayScript = () => {
+  return new Promise((resolve, reject) => {
+    // Check if Razorpay is already loaded
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
 
-  return new Promise((resolve) => {
-    // Check if script is already loaded in DOM
-    if (document.querySelector(`script[src="${src}"]`)) {
+    // Check if script is already in DOM
+    if (document.querySelector(`script[src="${RAZORPAY_SCRIPT_URL}"]`)) {
       resolve(true);
       return;
     }
 
     const script = document.createElement('script');
-    script.src = src;
+    script.src = RAZORPAY_SCRIPT_URL;
+    script.async = true;
+    
     script.onload = () => {
-      // Cache the script and timestamp
-      localStorage.setItem('razorpayScript', src);
-      localStorage.setItem('razorpayScriptTimestamp', Date.now().toString());
+      console.log('Razorpay script loaded successfully');
       resolve(true);
     };
-    script.onerror = () => {
-      localStorage.removeItem('razorpayScript');
-      localStorage.removeItem('razorpayScriptTimestamp');
-      resolve(false);
+    
+    script.onerror = (error) => {
+      console.error('Failed to load Razorpay script:', error);
+      reject(new Error('Razorpay script loading failed'));
     };
+
     document.body.appendChild(script);
   });
 };
-
-
-
 
 const CheckoutLayout = () => {
   const { setUserInfo,currentUserId} = useContext(myContext);
@@ -60,8 +56,6 @@ const CheckoutLayout = () => {
   const [paymentMethodSelected, setPaymentMethodSelected] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [razorpayInstance, setRazorpayInstance] = useState(null);
-
-
 
   useEffect(() => {
     const fetchProductDetails = async (productId) => {
@@ -128,15 +122,16 @@ const CheckoutLayout = () => {
       }
     };
 
-    const loadRazorpay = async () => {
-      const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js');
-      if (!res) {
-        toast.error('Razorpay SDK failed to load. Please check your internet connection.');
-        return;
+    const initializeRazorpay = async () => {
+      try {
+        await loadRazorpayScript();
+      } catch (error) {
+        toast.error('Failed to initialize payment. Please check your internet connection.');
+        console.error('Razorpay initialization error:', error);
       }
     };
 
-    loadRazorpay();
+    initializeRazorpay();
 
     initializeOrderDetails();
   }, [location.state, navigate]);
@@ -228,7 +223,7 @@ const CheckoutLayout = () => {
       },
       { 
         field: 'address', 
-        validate: (value) => value && value.length >= 10 && value.length <= 200 
+        validate: (value) => value && value.length >= 5 && value.length <= 200 
       }
     ];
   
@@ -283,6 +278,9 @@ const CheckoutLayout = () => {
   const handleBack = () => {
     setActiveStep((prevStep) => prevStep - 1);
   };
+
+
+
 
   const handlePayment = async () => {
     if (isProcessing) {
@@ -373,14 +371,59 @@ const CheckoutLayout = () => {
                   orderId: orderData.id
                 }
               });
-              // sendEmail(orderDetails,orderData.id,user?.email);
-              // console.log(orderData.id);
-              // console.log(user?.email);
-              // console.log(orderDetails)
             } else {
               toast.error('Payment failed');
             }
+
+
           },
+          // handler: async function (response) {
+          //   console.log(response);
+          //   try {
+          //     // Verify payment on the server
+          //     const verificationResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/verify-payment`, {
+          //       method: 'POST',
+          //       headers: {
+          //         'Content-Type': 'application/json',
+          //       },
+          //       body: JSON.stringify({
+          //         razorpay_order_id: orderData.id,
+          //         razorpay_payment_id: response.razorpay_payment_id,
+          //         razorpay_signature: response.razorpay_signature
+          //       })
+          //     });
+  
+          //     const verificationResult = await verificationResponse.json();
+
+          //     console.log(verificationResult);
+  
+          //     if (verificationResult.status === 'success') {
+          //       // Payment verified successfully
+          //       setIsProcessing(false);
+          //       navigate('/orderConfirmation', {
+          //         state: {
+          //           paymentDetails: response,
+          //           orderDetails: orderDetails,
+          //           paymentMethod: paymentMethodSelected,
+          //           userId: currentUserId,
+          //           userInfo: formData,
+          //           orderDate: new Date().toLocaleDateString(),
+          //           orderTime: new Date().toLocaleTimeString(),
+          //           orderStatus: 'processing',
+          //           orderId: orderData.id
+          //         }
+          //       });
+          //     } else {
+          //       // Payment verification failed
+          //       toast.error('Payment verification failed');
+          //       setIsProcessing(false);
+          //     }
+          //   } catch (verificationError) {
+          //     console.error('Payment verification error:', verificationError);
+          //     toast.error('Payment verification failed');
+          //     setIsProcessing(false);
+          //   }
+          // },  
           modal: {
             ondismiss: function () {
               setIsProcessing(false);
