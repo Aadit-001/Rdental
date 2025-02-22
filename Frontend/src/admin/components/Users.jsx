@@ -9,30 +9,23 @@ const Users = () => {
 
     useEffect(() => {
         const getUsers = async () => {
-            const q = query(collection(fireDB, "users"), where("uid", "==", auth.currentUser.uid));
-            const querySnapshot = await getDocs(q);
-            const usersData = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            }));
-            setUsers(usersData);
+            try {
+                const q = query(collection(fireDB, "users"));
+                const querySnapshot = await getDocs(q);
+                const usersData = querySnapshot.docs.map((doc) => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        ...data,
+                    };
+                });
+                setUsers(usersData);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
         };
         getUsers();
-    }, [auth.currentUser]);
-
-    const renderStatus = (status = 'Active') => {
-        const statusColors = {
-            'Active': 'bg-green-100 text-green-800',
-            'Inactive': 'bg-red-100 text-red-800',
-            'Pending': 'bg-yellow-100 text-yellow-800'
-        };
-
-        return (
-            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[status] || statusColors['Active']}`}>
-                {status}
-            </span>
-        );
-    };
+    }, []);
 
     return (
         <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 min-h-[calc(100vh-16rem)]">
@@ -59,12 +52,6 @@ const Users = () => {
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Email
                                         </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Registered Date
-                                        </th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Status
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
@@ -78,12 +65,6 @@ const Users = () => {
                                             </td>
                                             <td className="px-6 py-4 text-sm text-gray-900">
                                                 {user.email}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'N/A'}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                {renderStatus()}
                                             </td>
                                         </tr>
                                     ))}
@@ -103,19 +84,14 @@ const Users = () => {
                                     <div className="text-sm font-semibold text-gray-900">
                                         User ID: {user.id}
                                     </div>
-                                    {renderStatus()}
                                 </div>
 
                                 <div className="text-sm text-gray-700 mb-2">
                                     <strong>Name:</strong> {user.displayName}
                                 </div>
 
-                                <div className="text-sm text-gray-700 mb-2">
-                                    <strong>Email:</strong> {user.email}
-                                </div>
-
                                 <div className="text-sm text-gray-700">
-                                    <strong>Registered:</strong> {user.createdAt ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'N/A'}
+                                    <strong>Email:</strong> {user.email}
                                 </div>
                             </div>
                         ))}

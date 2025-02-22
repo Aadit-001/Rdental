@@ -45,12 +45,15 @@ const formatDate = (timestamp) => {
 const OrderCard = ({ order }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Ensure order has default values to prevent undefined errors
+  // Updated safeOrder to correctly access nested orderDetails
   const safeOrder = {
     id: order.id || 'N/A',
     status: order.status || 'Processing',
     items: order.items || [],
-    total: order.total || 0,
+    total: order.orderDetails?.total || order.total || 0,
+    subtotal: order.orderDetails?.subtotal || order.subtotal || 0,
+    tax: order.orderDetails?.tax || order.tax || 0,
+    shipping: order.orderDetails?.shipping || order.shipping || 0,
     createdAt: order.createdAt || new Date(),
     shippingAddress: order.shippingAddress || {},
     paymentMethod: order.paymentMethod || 'N/A'
@@ -73,6 +76,112 @@ const OrderCard = ({ order }) => {
     }
   };
 
+  const handlePrintReceipt = () => {
+    const printWindow = window.open('', '', 'width=600,height=800');
+    
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Order Receipt #${safeOrder.id}</title>
+          <style>
+            body { 
+              font-family: Arial, sans-serif; 
+              max-width: 800px; 
+              margin: 0 auto; 
+              padding: 20px; 
+            }
+            .print-section { 
+              border: 1px solid #e0e0e0; 
+              margin-bottom: 20px; 
+              padding: 20px; 
+              page-break-inside: avoid; 
+            }
+            h2 { 
+              color: #333; 
+              border-bottom: 2px solid #f0f0f0; 
+              padding-bottom: 10px; 
+            }
+            .item { 
+              border-bottom: 1px solid #eee; 
+              padding: 10px 0; 
+            }
+            .total { 
+              font-weight: bold; 
+              margin-top: 20px; 
+              padding-top: 10px; 
+              border-top: 2px solid #eee; 
+            }
+            .summary-item {
+              display: flex;
+              justify-content: space-between;
+              padding: 5px 0;
+            }
+            .summary-total {
+              border-top: 2px solid #eee;
+              margin-top: 10px;
+              padding-top: 10px;
+              font-weight: bold;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="print-section">
+            <h2>Order Details #${safeOrder.id}</h2>
+            <p>Date: ${formatDate(safeOrder.createdAt)}</p>
+            <p>Status: ${safeOrder.status}</p>
+            
+            <h3>Items:</h3>
+            ${safeOrder.items.map(item => `
+              <div class="item">
+                <p><strong>${item.title}</strong></p>
+                <p>Quantity: ${item.quantity}</p>
+                <p>Price: ₹${item.price.toLocaleString('en-IN')}</p>
+              </div>
+            `).join('')}
+            
+            <div class="total">
+              <div class="summary-item">
+                <span>Subtotal:</span>
+                <span>₹${safeOrder.subtotal.toLocaleString('en-IN')}</span>
+              </div>
+              ${safeOrder.tax > 0 ? `
+                <div class="summary-item">
+                  <span>Tax:</span>
+                  <span>₹${safeOrder.tax.toLocaleString('en-IN')}</span>
+                </div>
+              ` : ''}
+              ${safeOrder.shipping > 0 ? `
+                <div class="summary-item">
+                  <span>Shipping:</span>
+                  <span>₹${safeOrder.shipping.toLocaleString('en-IN')}</span>
+                </div>
+              ` : ''}
+              <div class="summary-item summary-total">
+                <span>Total Amount:</span>
+                <span>₹${safeOrder.total.toLocaleString('en-IN')}</span>
+              </div>
+            </div>
+          </div>
+
+          ${safeOrder.shippingAddress ? `
+            <div class="print-section">
+              <h2>Shipping Address</h2>
+              <p>${safeOrder.shippingAddress.firstName} ${safeOrder.shippingAddress.lastName}</p>
+              <p>${safeOrder.shippingAddress.street}</p>
+              <p>${safeOrder.shippingAddress.city}, ${safeOrder.shippingAddress.state}</p>
+              <p>PIN: ${safeOrder.shippingAddress.pincode}</p>
+              ${safeOrder.shippingAddress.phone ? `<p>Phone: ${safeOrder.shippingAddress.phone}</p>` : ''}
+            </div>
+          ` : ''}
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.close();
+  };
+
   return (
     <motion.div 
       layout
@@ -83,12 +192,14 @@ const OrderCard = ({ order }) => {
     >
       <div className="p-6">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
-          <div className="flex items-center space-x-3">
+          <div className="flex flex-col xs:flex-row items-start xs:items-center gap-3">
             <div className="bg-primary/10 p-2 rounded-lg">
               <FaClipboardList className="text-primary text-2xl" />
             </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-800">Order #{safeOrder.id}</h2>
+            <div className="break-all xs:break-normal">
+              <h2 className="text-xl font-bold text-gray-800">
+                Order #{safeOrder.id}
+              </h2>
               <p className="text-sm text-gray-500">
                 {formatDate(safeOrder.createdAt)}
               </p>
@@ -116,15 +227,15 @@ const OrderCard = ({ order }) => {
           <div className="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
             <FaShippingFast className="text-primary" />
             <div>
-              <p className="text-sm text-gray-600">Shipping Method</p>
-              <p className="font-semibold">{safeOrder.shippingMethod || 'Standard Delivery'}</p>
+              <p className="text-sm text-gray-600">Shipping</p>
+              <p className="font-semibold">₹{safeOrder.shipping.toLocaleString('en-IN')}</p>
             </div>
           </div>
           <div className="flex items-center space-x-3 bg-gray-50 p-3 rounded-lg">
             <FaMoneyBillWave className="text-primary" />
             <div>
-              <p className="text-sm text-gray-600">Payment Method</p>
-              <p className="font-semibold">{safeOrder.paymentMethod}</p>
+              <p className="text-sm text-gray-600">Tax</p>
+              <p className="font-semibold">₹{safeOrder.tax.toLocaleString('en-IN')}</p>
             </div>
           </div>
         </div>
@@ -174,6 +285,29 @@ const OrderCard = ({ order }) => {
                   </div>
                 ))}
 
+                {/* Order Summary Section */}
+                <div className="bg-gray-50 p-4 rounded-lg mt-4">
+                  <h3 className="font-semibold text-gray-800 mb-3">Order Summary</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-gray-600">
+                      <span>Subtotal</span>
+                      <span>₹{safeOrder.subtotal.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-600">
+                      <span>Tax</span>
+                      <span>₹{safeOrder.tax.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div className="flex justify-between text-gray-600">
+                      <span>Shipping</span>
+                      <span>₹{safeOrder.shipping.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div className="flex justify-between font-semibold text-gray-800 pt-2 border-t border-gray-200 mt-2">
+                      <span>Total</span>
+                      <span>₹{safeOrder.total.toLocaleString('en-IN')}</span>
+                    </div>
+                  </div>
+                </div>
+
                 {safeOrder.shippingAddress && (
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <h3 className="font-semibold text-gray-800 mb-2">Shipping Address</h3>
@@ -193,12 +327,21 @@ const OrderCard = ({ order }) => {
           </AnimatePresence>
         </motion.div>
 
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="mt-4 w-full text-center text-primary font-semibold hover:text-primary-dark transition-colors"
-        >
-          {isExpanded ? 'Show Less' : 'View Details'}
-        </button>
+        <div className="mt-4 flex justify-between items-center">
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-primary font-semibold hover:text-primary-dark transition-colors"
+          >
+            {isExpanded ? 'Show Less' : 'View Details'}
+          </button>
+          
+          <button
+            onClick={handlePrintReceipt}
+            className="flex items-center space-x-2 text-gray-600 hover:text-primary transition-colors"
+          >
+            <span className="text-sm font-medium">Print Receipt</span>
+          </button>
+        </div>
       </div>
     </motion.div>
   );
